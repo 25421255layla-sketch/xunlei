@@ -3047,6 +3047,9 @@
       cursor: pointer;
     }
     .asset-action-link:hover { color: #7c3aed; text-decoration: underline; }
+
+    .field.input-error { border-color:#ef4444!important; box-shadow:0 0 0 3px rgba(239,68,68,.10)!important; }
+    .asset-form-tip { margin-top:6px; color:#7b8495; font-size:12px; line-height:1.4; }
     .spark-bars {
       display: inline-flex;
       align-items: end;
@@ -4338,6 +4341,8 @@
       font-weight: 750;
     }
     .rt-name-combo .field { border: 0; border-radius: 0; box-shadow: none; }
+    .rt-name-combo.invalid { border-color:#ef4444!important; box-shadow:0 0 0 3px rgba(239,68,68,.10)!important; }
+    .tag-name-error { margin-top:6px; font-size:12px; color:#dc2626; }
     .rt-rule-shell { background: transparent; border: 0; padding: 0; }
     .rt-layer-tabs { margin-top: 8px; }
     .rt-add-layer { min-height: 36px; }
@@ -6305,7 +6310,7 @@
 <div class="content">
 <div class="filters tag-filter-grid">
 <div class="tag-filter-field search"><label>搜索</label><input class="field" id="tagSearch" placeholder="搜索标签名/业务口径"/></div>
-<div class="tag-filter-field"><label>业务域</label><select class="select" id="tagDomainFilter"><option>全部</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>会员</option><option>触达</option><option>生态</option><option>公共</option><option>主端</option><option>中台</option><option>取回</option><option>转存</option><option>分享</option><option>活跃</option></select></div>
+<div class="tag-filter-field"><label>业务域</label><select class="select" id="tagDomainFilter"><option>全部</option><option>公共</option><option>主端</option><option>会员</option><option>生态</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>触达</option><option>中台</option></select></div>
 <div class="tag-filter-field"><label>值类型</label><select class="select" id="tagValueFilter"><option>全部</option></select></div>
 <div class="tag-filter-field"><label>创建方式</label><select class="select" id="tagCreateFilter"><option>全部</option><option>系统预置</option><option>规则标签创建</option><option>计算标签</option><option>RFM模型</option><option>人群池沉淀</option><option>SQL规则</option><option>数据资产同步</option></select></div>
 <div class="tag-filter-field"><label>标签状态</label><select class="select" id="tagStatusFilter"><option>全部</option><option>已上线</option><option>草稿</option><option>待上线</option></select></div>
@@ -6377,7 +6382,7 @@
 <div class="form-row rt-biz-domain-filter">
 <label>业务域筛选</label>
 <div class="rt-select-with-clear">
-<select class="select" id="tagBizDomain"><option value="">请选择业务域</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>会员</option><option>触达</option><option>生态</option><option>公共</option><option>主端</option><option>中台</option><option>取回</option><option>转存</option><option>分享</option><option>活跃</option></select>
+<select class="select" id="tagBizDomain"><option value="">请选择业务域</option><option>公共</option><option>主端</option><option>会员</option><option>生态</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>触达</option><option>中台</option></select>
 <button class="rt-clear-select" id="clearTagBizDomain" title="清空业务域" type="button">×</button>
 </div>
 </div>
@@ -7396,7 +7401,13 @@ HarmonyOS"></textarea>
     }
 
     const currentAssetOperator = "雷婷婷";
-    const metadataDomainOptions = ["广告", "下载", "云盘", "播放", "搜索", "会员", "触达", "生态", "公共", "主端", "中台", "取回", "转存", "分享", "活跃"];
+    const metadataDomainOptions = ["公共", "主端", "会员", "生态", "广告", "下载", "云盘", "播放", "搜索", "触达", "中台"];
+    const metadataDomainSet = new Set(metadataDomainOptions);
+    function normalizeMetadataDomain(domain) {
+      const raw = String(domain || "").trim();
+      const map = { "取回":"云盘", "转存":"云盘", "分享":"生态", "活跃":"主端", "站点":"主端", "全播":"播放", "浏览":"主端" };
+      return metadataDomainSet.has(raw) ? raw : (map[raw] || (raw ? "公共" : "公共"));
+    }
 
     const curatedTags = [
       { name: "产品", team: "公共", teamKey: "all", category: "基础画像", type: "原子标签", valueType: "枚举型", cover: "全量", coverValue: 1200, rate: "100%", rateValue: 100, updated: "2026-05-07", update: "T+1", calls: 356, method: "系统预置", status: "已上线", color: "gray" },
@@ -7500,8 +7511,8 @@ HarmonyOS"></textarea>
           <td><span class="badge ${t.status === "已上线" ? "green" : t.status === "待上线" ? "amber" : "gray"}">${escapeHtml(t.status)}</span></td>
           <td><span class="tag-action-cell">
             <button class="tag-action-link" data-action="copy-tag" data-tag-name="${escapeHtml(t.name)}" type="button">复制</button>
-            <button class="tag-action-link ${editable ? "" : "disabled-link"}" data-action="edit-tag" data-tag-name="${escapeHtml(t.name)}" type="button">编辑</button>
-            <button class="tag-action-link danger-link ${deletable ? "" : "disabled-link"}" data-action="delete-tag" data-tag-name="${escapeHtml(t.name)}" type="button">删除</button>
+            <button class="tag-action-link ${editable ? "" : "disabled-link"}" data-action="edit-tag" data-tag-name="${escapeHtml(t.name)}" title="${editable ? "编辑标签" : "仅创建人可编辑"}" aria-disabled="${editable ? "false" : "true"}" type="button">编辑</button>
+            <button class="tag-action-link danger-link ${deletable ? "" : "disabled-link"}" data-action="delete-tag" data-tag-name="${escapeHtml(t.name)}" title="${deletable ? "删除标签" : "仅创建人可删除"}" aria-disabled="${deletable ? "false" : "true"}" type="button">删除</button>
           </span></td>
         </tr>`;
       }).join("");
@@ -7584,16 +7595,18 @@ HarmonyOS"></textarea>
       let name = baseName;
       let idx = 2;
       while (curatedTags.some(t => t.name === name)) {
-        name = `${baseName}${idx++}`;
+        name = `${baseName} ${idx++}`;
       }
       const clone = {
         ...tag,
         name,
+        tagSuffix: `${slugifyTagName(tag.tagSuffix || tag.name)}_copy`,
         method: tag.method === "系统预置" ? "复制资产" : tag.method,
         status: "草稿",
         calls: 0,
         createdAt: Date.now(),
         createdBy: currentAssetOperator,
+        isMine: true,
         updated: getXlTodayString ? getXlTodayString() : tag.updated
       };
       curatedTags.unshift(clone);
@@ -7602,7 +7615,9 @@ HarmonyOS"></textarea>
       tagPageState.page = 1;
       refreshTagSideCounts();
       renderTags();
-      showToast(`已复制标签：${name}`);
+      showToast(`已复制为草稿，请确认后保存：${name}`);
+      // 复制后进入编辑页，让用户确认名称、规则和业务域，不直接静默生成最终标签。
+      setTimeout(() => openTagForEdit(clone), 80);
     }
 
     function deleteTagAsset(tag) {
@@ -10036,7 +10051,7 @@ HarmonyOS"></textarea>
         el.innerHTML = clean.map(v => `<option value="${escapeHtml(v)}" ${v === current ? "selected" : ""}>${escapeHtml(v)}</option>`).join("");
         if (!clean.includes(current)) el.value = keep;
       };
-      setOptions("tagDomainFilter", curatedTags.map(t => t.team));
+      setOptions("tagDomainFilter", metadataDomainOptions);
       setOptions("tagValueFilter", curatedTags.map(t => t.valueType));
       setOptions("tagCreateFilter", curatedTags.map(t => t.method));
       setOptions("tagStatusFilter", curatedTags.map(t => t.status));
@@ -10622,7 +10637,8 @@ HarmonyOS"></textarea>
       dataAssetState.sortKey = "";
       document.getElementById("assetDrawerMask")?.classList.remove("show");
       renderDataAssets();
-      showToast(`已复制为我的资产：${copy.display}`);
+      showToast(`已复制为我的资产草稿，请确认后保存：${copy.display}`);
+      setTimeout(() => openAssetEditModal(copy.id), 80);
     }
 
     function deleteAsset(id) {
@@ -10634,7 +10650,9 @@ HarmonyOS"></textarea>
         return;
       }
       const label = row.display || row.name || "该资产";
-      if (!window.confirm(`确认删除「${label}」吗？`)) return;
+      const refs = row.downstream ? (Number(row.downstream.tags || 0) + Number(row.downstream.segments || 0) + Number(row.downstream.boards || 0)) : 0;
+      const warn = refs > 0 ? `\n该资产当前存在 ${refs} 个下游引用，删除可能影响规则标签、分群或看板。` : "";
+      if (!window.confirm(`确认删除「${label}」吗？${warn}`)) return;
       const idx = def.rows.findIndex(item => item.id === id);
       if (idx >= 0) def.rows.splice(idx, 1);
       document.getElementById("assetDrawerMask")?.classList.remove("show");
@@ -11528,8 +11546,8 @@ HarmonyOS"></textarea>
       if (assetCreateType === "event") {
         wrap.innerHTML = `
           ${buildAssetSourceFields({ fieldLabel: "行为字段", fieldRequired: true })}
-          <input type="hidden" id="assetNewName">
-          <input type="hidden" id="assetNewDisplay">
+          ${assetCreateField("base", "事件名", `${assetCreateInput("assetNewName", "如 download_create，仅支持英文/数字/下划线")}<div class="asset-form-tip">保存为后台事件标识，不允许中文、空格或特殊字符。</div>`, false, true)}
+          ${assetCreateField("base", "事件显示名", assetCreateInput("assetNewDisplay", "如 创建下载任务"), false, true)}
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
           ${assetCreateField("base", "事件类型", eventTypeControl, false, true)}
           ${assetCreateField("base", "事件标签", assetCreateInput("assetNewEventTag", "多个标签用逗号分隔"), false, false)}
@@ -11631,6 +11649,11 @@ HarmonyOS"></textarea>
       }
       bindAssetSourcePickers();
       bindAssetEventAttrControls();
+      if (assetCreateType === "event") {
+        document.getElementById("assetNewName")?.addEventListener("input", e => {
+          markAssetInputError("assetNewName", Boolean(e.currentTarget.value.trim()) && !validateEventAssetName(e.currentTarget.value));
+        });
+      }
     }
 
     function assetVal(id) { return (document.getElementById(id)?.value || "").trim(); }
@@ -11727,8 +11750,17 @@ HarmonyOS"></textarea>
       if (!def) return;
       const name = assetVal("assetNewName");
       const display = assetVal("assetNewDisplay");
+      markAssetInputError("assetNewName", false);
+      markAssetInputError("assetNewDisplay", false);
       if (!name || !display) {
-        showToast(assetCreateType === "event" ? "请先选择行为字段" : "请先填写名称和显示名");
+        markAssetInputError("assetNewName", !name);
+        markAssetInputError("assetNewDisplay", !display);
+        showToast(assetCreateType === "event" ? "请填写事件名和事件显示名" : "请先填写名称和显示名");
+        return;
+      }
+      if (assetCreateType === "event" && !validateEventAssetName(name)) {
+        markAssetInputError("assetNewName", true);
+        showToast("事件名仅支持英文、数字和下划线");
         return;
       }
       const now = Date.now();
@@ -15361,10 +15393,11 @@ where dt = '\${bizdate}'</textarea></div>
 
     function validateXlRuleBasicInfo() {
       const missing = [];
+      updateTagNameSuffixValidation(true);
       if (!document.getElementById("tagDisplayName")?.value.trim()) missing.push("标签显示名");
       const suffix = document.getElementById("tagNameSuffix")?.value.trim();
       if (!suffix) missing.push("标签名称");
-      if (suffix && !/^[a-zA-Z0-9_]+$/.test(suffix)) missing.push("标签名称只能包含英文、数字、下划线");
+      if (suffix && !/^[a-z0-9_]+$/.test(suffix)) missing.push("标签名称只能包含小写英文、数字、下划线");
       if (!document.getElementById("tagCategory1")?.value) missing.push("一级标签");
       const emptyLayer = window.xunleiRuleState?.layers?.find((layer, idx) => !xlLayerFallbackName(layer, idx).trim());
       if (emptyLayer) missing.push("分层名");
@@ -15372,7 +15405,7 @@ where dt = '\${bizdate}'</textarea></div>
     }
 
     function getXlTodayString(){const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`;}
-    function xlMakeCreatedTag(status="草稿"){const cfg=xlGetUpdateConfig();const c1=document.getElementById("tagCategory1")?.value||"行为画像";const c2=document.getElementById("tagCategory2")?.value||"";const domain=document.getElementById("tagBizDomain")?.value||"未分配";const cover=document.getElementById("coverCount")?.textContent||"待计算";const teamKeyMap={"公共":"all","未分配":"all","主端":"main","会员":"member","生态":"eco","中台":"center","广告":"main","下载":"main","云盘":"main","播放":"main","搜索":"main","触达":"main","取回":"main","转存":"main","分享":"main","活跃":"main"};const colorMap={"公共":"gray","未分配":"gray","主端":"blue","会员":"amber","生态":"teal","中台":"gray","广告":"blue","下载":"blue","云盘":"blue","播放":"teal","搜索":"teal","触达":"amber","取回":"blue","转存":"blue","分享":"teal","活跃":"teal"};return {name:document.getElementById("tagDisplayName")?.value.trim()||"未命名规则标签",tagSuffix:document.getElementById("tagNameSuffix")?.value.trim()||"rule_tag",description:document.getElementById("tagDescription")?.value.trim()||"",team:domain,teamKey:teamKeyMap[domain]||"all",category:c1,category2:c2,type:"规则标签",valueType:"枚举型",cover,coverValue:parseFloat(String(cover).replace(/[^0-9.]/g,""))||0,rate:"待计算",rateValue:0,updated:getXlTodayString(),update:cfg.update_mode==="routine"?`每日 ${cfg.earliest_time}`:"手动",calls:0,method:"规则标签创建",status,color:colorMap[domain]||"gray",createdAt:Date.now(),createdBy:currentAssetOperator};}
+    function xlMakeCreatedTag(status="草稿"){const cfg=xlGetUpdateConfig();const c1=document.getElementById("tagCategory1")?.value||"行为画像";const c2=document.getElementById("tagCategory2")?.value||"";const domain=normalizeMetadataDomain(document.getElementById("tagBizDomain")?.value||"公共");const cover=document.getElementById("coverCount")?.textContent||"待计算";const teamKeyMap={"公共":"all","未分配":"all","主端":"main","会员":"member","生态":"eco","中台":"center","广告":"main","下载":"main","云盘":"main","播放":"main","搜索":"main","触达":"main","取回":"main","转存":"main","分享":"main","活跃":"main"};const colorMap={"公共":"gray","未分配":"gray","主端":"blue","会员":"amber","生态":"teal","中台":"gray","广告":"blue","下载":"blue","云盘":"blue","播放":"teal","搜索":"teal","触达":"amber","取回":"blue","转存":"blue","分享":"teal","活跃":"teal"};return {name:document.getElementById("tagDisplayName")?.value.trim()||"未命名规则标签",tagSuffix:document.getElementById("tagNameSuffix")?.value.trim()||"rule_tag",description:document.getElementById("tagDescription")?.value.trim()||"",team:domain,teamKey:teamKeyMap[domain]||"all",category:c1,category2:c2,type:"规则标签",valueType:"枚举型",cover,coverValue:parseFloat(String(cover).replace(/[^0-9.]/g,""))||0,rate:"待计算",rateValue:0,updated:getXlTodayString(),update:cfg.update_mode==="routine"?`每日 ${cfg.earliest_time}`:"手动",calls:0,method:"规则标签创建",status,color:colorMap[domain]||"gray",createdAt:Date.now(),createdBy:currentAssetOperator};}
     function xlUpsertCreatedTag(status="草稿"){const tag=xlMakeCreatedTag(status);const keyName=window.currentEditingTagName||tag.name;const i=curatedTags.findIndex(x=>x.name===keyName);if(i>=0)curatedTags.splice(i,1);curatedTags.unshift(tag);window.currentEditingTagName=tag.name;tagSortState.key="createdAt";tagSortState.dir="desc";tagPageState.page=1;document.querySelectorAll("#view-tags th.sortable").forEach(x=>x.classList.remove("asc","desc"));document.querySelectorAll(".team-tabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.team==="all"));currentTagTeam="all";refreshTagSideCounts(); return tag;}
     function xlSaveRuleDraftFromQuickButton(){initXunleiRuleState();const missing=validateXlRuleBasicInfo();if(missing.length){showToast(`请先补充：${missing.join("、")}`);return false;}const tag=xlUpsertCreatedTag("草稿");switchView("tags",{trackHistory:false});resetTagListFiltersForAction();activateTagSideFilter("草稿");refreshTagSideCounts();renderTags("all");showToast(`规则标签草稿已保存：${tag.name}`);return true;}
 
@@ -15420,6 +15453,28 @@ where dt = '\${bizdate}'</textarea></div>
         returnToPreviousView("tags");
         showToast("已取消创建");
       });
+    }
+
+    function updateTagNameSuffixValidation(showWhenEmpty = false) {
+      const input = document.getElementById("tagNameSuffix");
+      if (!input) return true;
+      const combo = input.closest(".rt-name-combo");
+      let err = document.getElementById("tagNameSuffixError");
+      if (!err) {
+        err = document.createElement("div");
+        err.id = "tagNameSuffixError";
+        err.className = "tag-name-error";
+        combo?.insertAdjacentElement("afterend", err);
+      }
+      const value = input.value.trim();
+      let message = "";
+      if (!value && showWhenEmpty) message = "标签名称后缀必填";
+      else if (value && !/^[a-z0-9_]+$/.test(value)) message = "仅支持小写英文、数字、下划线";
+      combo?.classList.toggle("invalid", Boolean(message));
+      input.setAttribute("aria-invalid", message ? "true" : "false");
+      err.textContent = message;
+      err.style.display = message ? "block" : "none";
+      return !message;
     }
 
     function rewireRuleTagSubmitButtons() {
@@ -15470,7 +15525,7 @@ where dt = '\${bizdate}'</textarea></div>
       });
       ["tagDisplayName", "tagNameSuffix", "tagDescription", "tagBizDomain", "tagCategory1", "tagCategory2"].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.addEventListener(id === "tagDisplayName" || id === "tagNameSuffix" || id === "tagDescription" ? "input" : "change", () => updateCreatePreview("rule"));
+        if (el) el.addEventListener(id === "tagDisplayName" || id === "tagNameSuffix" || id === "tagDescription" ? "input" : "change", () => { if (id === "tagNameSuffix") updateTagNameSuffixValidation(false); updateCreatePreview("rule"); });
       });
     }
 
@@ -15479,6 +15534,7 @@ where dt = '\${bizdate}'</textarea></div>
     document.getElementById("clearTagBizDomain")?.addEventListener("click",()=>{const s=document.getElementById("tagBizDomain"); if(s){s.value=""; updateCreatePreview("rule"); showToast("已清空业务域");}});
     document.getElementById("quickBackTop")?.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
     document.getElementById("quickSaveDraft")?.addEventListener("click",()=>xlSaveRuleDraftFromQuickButton());
+    updateTagNameSuffixValidation(false);
     document.getElementById("ruleEarliestTime")?.addEventListener("click",e=>{if(e.currentTarget.showPicker) e.currentTarget.showPicker();});
     rewireRuleTagSubmitButtons();
     initXlUpdateControls();
