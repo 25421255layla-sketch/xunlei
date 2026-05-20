@@ -7456,6 +7456,7 @@ HarmonyOS"></textarea>
     const tagSortState = { key: "calls", dir: "desc" };
     let currentTagTeam = "all";
     const tagPageState = { page: 1, pageSize: 10, lastRows: [] };
+    const tagValueTypeOptions = ["整数", "浮点数", "字符串", "布尔", "时间", "对象", "对象组", "列表"];
 
     function normalizeTagCreateMethod(method = "") {
       if (method === "数据资产同步") return "元数据中心同步";
@@ -7463,8 +7464,16 @@ HarmonyOS"></textarea>
       return method || "元数据中心同步";
     }
 
+    function tagSelectedValues(id, allLabel = "全部") {
+      const el = document.getElementById(id);
+      if (!el) return [allLabel];
+      const values = Array.from(el.selectedOptions || []).map(opt => opt.value || opt.textContent.trim()).filter(Boolean);
+      return values.length ? values : [allLabel];
+    }
+
     function matchesSelect(value, selected, allLabel) {
-      return selected === allLabel || value === selected;
+      const selectedValues = Array.isArray(selected) ? selected : [selected];
+      return selectedValues.includes(allLabel) || selectedValues.includes(value);
     }
 
     function clampPageNumber(value, totalPages = 1) {
@@ -7476,8 +7485,8 @@ HarmonyOS"></textarea>
     function renderTags(team = currentTagTeam) {
       currentTagTeam = team;
       const search = (document.getElementById("tagSearch")?.value || "").trim().toLowerCase();
-      const domainFilter = document.getElementById("tagDomainFilter")?.value || "全部";
-      const valueFilter = document.getElementById("tagValueFilter")?.value || "全部";
+      const domainFilter = tagSelectedValues("tagDomainFilter");
+      const valueFilter = tagSelectedValues("tagValueFilter");
       const pageSize = Number(document.getElementById("tagPageSize")?.value || tagPageState.pageSize || 10);
       tagPageState.pageSize = pageSize;
       const sideFilter = window.tagSideFilter || { type: "quick", value: "all", key: "全部标签" };
@@ -7587,7 +7596,7 @@ HarmonyOS"></textarea>
       if (search) search.value = "";
       ["tagDomainFilter", "tagValueFilter"].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.value = "全部";
+        if (el) Array.from(el.options || []).forEach(opt => { opt.selected = opt.value === "全部" || opt.textContent.trim() === "全部"; });
       });
       tagPageState.page = 1;
     }
@@ -9098,8 +9107,7 @@ HarmonyOS"></textarea>
     assetDatasets.user_property.filters = [
       { id: "status", label: "显示状态", all: "全部" },
       { id: "domain", label: "业务域", all: "全部" },
-      { id: "type", label: "数据类型", all: "全部" },
-      { id: "update", label: "更新方式", all: "全部" }
+      { id: "type", label: "数据类型", all: "全部" }
     ];
     assetDatasets.user_property.columns = [
       ["name", "属性", "300px", true],
@@ -9732,14 +9740,11 @@ HarmonyOS"></textarea>
         subtitle: "首期常用表进入字段确认；后续数据资产平台新增表先做表确认，纳入 CDP 后再推荐字段。",
         hint: "采用逐行确认模式：新表先确认接入范围，字段再确认生成元事件、事件属性、用户属性或忽略。",
         tableFilters: [
-          { id: "sourceDb", label: "来源库", all: "全部" },
           { id: "layer", label: "数仓层级", all: "全部" },
           { id: "confirmType", label: "系统判断", all: "全部" },
           { id: "status", label: "确认状态", all: "全部" }
         ],
         fieldFilters: [
-          { id: "sourceDb", label: "来源库", all: "全部" },
-          { id: "sourceTable", label: "来源表", all: "全部" },
           { id: "confirmType", label: "确认类型", all: "全部" },
           { id: "status", label: "确认状态", all: "全部" }
         ],
@@ -9941,7 +9946,8 @@ HarmonyOS"></textarea>
     function refreshDataAssetCounts() {
       document.querySelectorAll('.data-nav-item[data-asset-type]').forEach(btn => {
         const type = btn.dataset.assetType;
-        const count = assetDatasets[type]?.rows?.length ?? 0;
+        const rows = assetDatasets[type]?.rows || [];
+        const count = type === "pending_asset" ? rows.filter(row => row.queue === "table" || row.queue === "field").length : rows.length;
         const em = btn.querySelector('em');
         if (em) em.textContent = count;
       });
@@ -10065,13 +10071,14 @@ HarmonyOS"></textarea>
       const setOptions = (id, values, keep = "全部") => {
         const el = document.getElementById(id);
         if (!el) return;
-        const current = el.value || keep;
+        const currentValues = Array.from(el.selectedOptions || []).map(opt => opt.value || opt.textContent.trim()).filter(Boolean);
+        const current = currentValues.length ? currentValues : [el.value || keep];
         const clean = [keep, ...Array.from(new Set(values.filter(Boolean)))];
-        el.innerHTML = clean.map(v => `<option value="${escapeHtml(v)}" ${v === current ? "selected" : ""}>${escapeHtml(v)}</option>`).join("");
-        if (!clean.includes(current)) el.value = keep;
+        const selected = current.some(v => clean.includes(v)) ? current : [keep];
+        el.innerHTML = clean.map(v => `<option value="${escapeHtml(v)}" ${selected.includes(v) ? "selected" : ""}>${escapeHtml(v)}</option>`).join("");
       };
       setOptions("tagDomainFilter", metadataDomainOptions);
-      setOptions("tagValueFilter", curatedTags.map(t => t.valueType));
+      setOptions("tagValueFilter", tagValueTypeOptions);
     }
 
     function syncTagsFromMetadataAssets() {
@@ -10147,6 +10154,42 @@ HarmonyOS"></textarea>
       return [...new Set(values)];
     }
 
+    function fixedAssetFilterOptions(type, filterId) {
+      const dataTypes = DATA_TYPE_OPTIONS.map(item => item.value);
+      const visibleStatuses = ["可见", "不可见"];
+      const yesNo = ["是", "否"];
+      const updateModes = ["实时", "小时级", "T+1", "T+1 增量", "每日00:00", "手动"];
+      const sourceTables = currentWarehouseTables().map(row => row.name).filter(Boolean);
+      const common = {
+        sourceDb: sourceDbList(),
+        sourceTable: sourceTables,
+        domain: metadataDomainOptions,
+        type: dataTypes,
+        status: visibleStatuses,
+        update: updateModes,
+        upload: ["有数据", "无数据"],
+        labelEnabled: yesNo,
+        filterEnabled: yesNo
+      };
+      if (type === "pending_asset") {
+        if (dataAssetState.pendingTab === "table") {
+          return {
+            sourceDb: sourceDbList(),
+            layer: ["ODS层", "DWD层", "DWM层", "DWS层", "DIM层", "ADS 层"],
+            confirmType: ["建议接入", "需人工判断", "暂不接入"],
+            status: ["新表待评估", "已接入", "暂不接入"]
+          }[filterId] || null;
+        }
+        return {
+          sourceDb: sourceDbList(),
+          sourceTable: sourceTables,
+          confirmType: ["元事件", "事件属性", "用户属性", "忽略"],
+          status: ["字段待确认", "变更待复核", "已确认", "已忽略"]
+        }[filterId] || null;
+      }
+      return common[filterId] || null;
+    }
+
     function renderAssetFilters() {
       const def = dataAssetCurrentDef();
       const bar = document.getElementById("assetFilterBar");
@@ -10161,7 +10204,7 @@ HarmonyOS"></textarea>
         ? (dataAssetState.pendingTab === "field" ? def.fieldFilters : def.tableFilters)
         : def.filters;
       const selects = (filters || []).map(filter => {
-        const options = uniqueOptions(activeRows, filter.id);
+        const options = filter.options || fixedAssetFilterOptions(type, filter.id) || uniqueOptions(activeRows, filter.id);
         return `<div class="asset-filter-field"><label>${escapeHtml(filter.label)}</label><select class="select asset-filter-control" data-asset-filter="${filter.id}">
           <option value="all">${escapeHtml(filter.all || "全部")}</option>
           ${options.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(filter.id === "type" ? dataTypeLabel(v) : v)}</option>`).join("")}
@@ -10200,15 +10243,15 @@ HarmonyOS"></textarea>
       const v = String(value ?? "");
       let cls = "asset-pill";
       if (["是", "有数据", "可见", "允许", "已上线", "正常", "已确认", "已纳入 CDP 接入范围", "接入 CDP"].includes(v)) cls += " green";
-      else if (["异常", "近7天无入库", "待确认", "否", "新表待评估", "字段待确认", "变更待复核", "需人工判断"].includes(v)) cls += " amber";
-      else if (["隐藏", "停用", "已下线", "暂不接入", "已忽略", "仅保留血缘", "忽略"].includes(v)) cls += " gray";
+      else if (["异常", "无数据", "近7天无入库", "待确认", "否", "新表待评估", "字段待确认", "变更待复核", "需人工判断"].includes(v)) cls += " amber";
+      else if (["隐藏", "不可见", "停用", "已下线", "暂不接入", "已忽略", "仅保留血缘", "忽略"].includes(v)) cls += " gray";
       else cls += " blue";
       return `<span class="${cls}">${escapeHtml(v)}</span>`;
     }
 
     function statusText(value) {
       const v = String(value ?? "-");
-      const cls = ["异常", "近7天无入库", "待确认", "否", "新表待评估", "字段待确认", "变更待复核"].includes(v) ? "warn" : ["隐藏", "停用", "已下线", "暂不接入", "已忽略", "仅保留血缘"].includes(v) ? "gray" : "";
+      const cls = ["异常", "无数据", "近7天无入库", "待确认", "否", "新表待评估", "字段待确认", "变更待复核"].includes(v) ? "warn" : ["隐藏", "不可见", "停用", "已下线", "暂不接入", "已忽略", "仅保留血缘"].includes(v) ? "gray" : "";
       return `<span class="asset-status-dot ${cls}">${escapeHtml(v)}</span>`;
     }
 
@@ -10316,17 +10359,36 @@ HarmonyOS"></textarea>
       return String(row[key] ?? "");
     }
 
+    function normalizeAssetFilterValue(key, value) {
+      const v = String(value ?? "");
+      if (key !== "upload") return v;
+      if (["有", "有数据"].includes(v)) return "有数据";
+      if (["无", "无数据", "暂无", "近7天无入库", "待入库"].includes(v)) return "无数据";
+      return v;
+    }
+
+    function assetFilterMatches(row, key, value) {
+      if (value === "all") return true;
+      if (Array.isArray(value)) return value.some(item => assetFilterMatches(row, key, item));
+      const rowValue = row[key];
+      if (Array.isArray(rowValue)) return rowValue.some(item => normalizeAssetFilterValue(key, item) === normalizeAssetFilterValue(key, value));
+      return normalizeAssetFilterValue(key, rowValue) === normalizeAssetFilterValue(key, value);
+    }
+
     function getFilteredAssets() {
       const def = dataAssetCurrentDef();
       const search = (document.getElementById("assetSearchInput")?.value || "").trim().toLowerCase();
       const filters = {};
-      document.querySelectorAll("[data-asset-filter]").forEach(select => filters[select.dataset.assetFilter] = select.value);
+      document.querySelectorAll("[data-asset-filter]").forEach(select => {
+        const values = Array.from(select.selectedOptions || []).map(opt => opt.value).filter(value => value && value !== "all");
+        filters[select.dataset.assetFilter] = values.length ? values : "all";
+      });
       let rows = def.rows.filter(row => {
         const keyword = row._searchText || Object.values(row).flat().join(" ").toLowerCase();
         if (search && !keyword.includes(search)) return false;
         if (dataAssetState.type === "pending_asset" && row.queue !== dataAssetState.pendingTab) return false;
         if (dataAssetState.onlyPublic && ["event_property", "user_property"].includes(dataAssetState.type) && row.public !== "是") return false;
-        return Object.entries(filters).every(([key, value]) => value === "all" || String(row[key] ?? "") === value || (Array.isArray(row[key]) && row[key].includes(value)));
+        return Object.entries(filters).every(([key, value]) => assetFilterMatches(row, key, value));
       });
       if (dataAssetState.sortKey) {
         const dir = dataAssetState.sortDir === "asc" ? 1 : -1;
@@ -10797,26 +10859,120 @@ HarmonyOS"></textarea>
       if (row) row._searchText = Object.values(row).flat().join(" ").toLowerCase();
     }
 
+    function pendingSafeId(value) {
+      return String(value || "").replace(/[^a-zA-Z0-9_]/g, "_").replace(/^_+|_+$/g, "").slice(0, 96) || "field";
+    }
+
+    function pendingSubjectIdForField(table, field, tableRow) {
+      const text = `${warehouseSafeText(table?.grain)} ${warehouseSafeText(tableRow?.grain)} ${warehouseSafeText(field?.name)}`.toLowerCase();
+      if (/user_id/.test(text)) return "user_id";
+      if (/guid/.test(text)) return "guid";
+      if (/device/.test(text)) return "device_id";
+      return warehouseSafeText(tableRow?.grain) || warehouseSafeText(table?.grain) || "-";
+    }
+
+    function pendingRecommendationForField(table, field) {
+      const name = warehouseSafeText(field?.name).toLowerCase();
+      if (warehouseIsEventField(field)) {
+        return { type: "元事件", reason: `${warehouseFieldType(field)} 行为计数字段，推荐生成元事件，后续可用于行为满足规则。` };
+      }
+      if (warehouseIsEventPropertyField(field, table)) {
+        return { type: "事件属性", reason: "行为明细表上下文字段，推荐作为事件属性，供元事件筛选使用。" };
+      }
+      if (warehouseIsUserPropertyField(field, table)) {
+        return { type: "用户属性", reason: "用户/设备粒度状态或画像字段，推荐生成为用户属性。" };
+      }
+      if (WAREHOUSE_SENSITIVE_FIELDS.has(name)) {
+        return { type: "忽略", reason: "标识或敏感字段默认不进入业务资产，必要时由数据负责人单独确认。" };
+      }
+      return { type: "忽略", reason: "暂未识别稳定业务口径，默认不生成业务资产，可后续手动登记。" };
+    }
+
+    function pendingGeneratedFieldsForTable(tableRow) {
+      const def = assetDatasets.pending_asset;
+      const tableName = tableRow?.name || "";
+      const table = currentWarehouseTables().find(item => item.name === tableName) || tableRow || {};
+      const existingKeys = new Set((def?.rows || []).filter(row => row.queue === "field").map(row => `${row.sourceTable || ""}::${row.sourceField || row.name || ""}`));
+      const priority = { "元事件": 1, "事件属性": 2, "用户属性": 3, "忽略": 9 };
+      const candidates = warehouseFieldRowsForTable(tableName).map(field => {
+        const recommend = pendingRecommendationForField(table, field);
+        return { field, recommend, priority: priority[recommend.type] || 9 };
+      }).filter(item => !existingKeys.has(`${tableName}::${item.field.name}`));
+      const recommended = candidates.filter(item => item.recommend.type !== "忽略").sort((a, b) => a.priority - b.priority);
+      const picked = (recommended.length ? recommended : candidates.sort((a, b) => a.priority - b.priority)).slice(0, 8);
+      return picked.map(({ field, recommend }) => {
+        const fieldName = warehouseSafeText(field.name);
+        const fieldDisplay = warehouseDisplayFromField(field);
+        const id = `pa_field_${pendingSafeId(tableName)}_${pendingSafeId(fieldName)}`;
+        const fieldType = warehouseFieldType(field);
+        const subjectId = pendingSubjectIdForField(table, field, tableRow);
+        return {
+          id,
+          queue: "field",
+          stage: "字段待确认",
+          name: fieldName,
+          display: fieldDisplay || fieldName,
+          domain: warehouseBizDomainFrom(table, field),
+          layer: tableRow.layer || table.layer || "-",
+          grain: tableRow.grain || table.grain || subjectId,
+          subjectId,
+          sourceDb: tableRow.sourceDb || String(tableName).split(".")[0] || "dw_xlyun",
+          sourceTable: tableName,
+          sourceField: fieldName,
+          sourceFieldType: fieldType,
+          sourceFieldDesc: warehouseSafeText(field.desc),
+          recommendedType: recommend.type,
+          reason: recommend.reason,
+          confirmType: recommend.type,
+          status: "字段待确认",
+          owner: tableRow.owner || table.owner || currentAssetOperator,
+          update: tableRow.update || table.update || "T+1",
+          sensitive: WAREHOUSE_SENSITIVE_FIELDS.has(fieldName.toLowerCase()) ? "高敏" : "普通",
+          generatedFromTableId: tableRow.id,
+          generatedAt: "2026-05-18"
+        };
+      });
+    }
+
     function acceptPendingTable(id) {
       const row = findPendingAsset(id);
-      if (!row) return;
-      row.status = "已纳入 CDP 接入范围";
+      if (!row || row.queue !== "table") return;
+      const generatedRows = pendingGeneratedFieldsForTable(row);
+      row.queue = "processed_table";
+      row.status = "已接入";
+      row.stage = "字段推荐中";
       row.confirmType = "接入 CDP";
       row.createdConfirmer = currentAssetOperator;
+      row.processedAt = "2026-05-18";
+      row.generatedFieldCount = generatedRows.length;
       updatePendingAssetSearch(row);
+      generatedRows.forEach(updatePendingAssetSearch);
+      if (generatedRows.length) assetDatasets.pending_asset.rows.unshift(...generatedRows);
       document.getElementById("assetDrawerMask")?.classList.remove("show");
+      dataAssetState.type = "pending_asset";
+      dataAssetState.pendingTab = "field";
+      dataAssetState.page = 1;
+      dataAssetState.sortKey = "";
+      dataAssetState.sortDir = "desc";
+      document.querySelectorAll(".data-nav-item").forEach(item => item.classList.toggle("active", item.dataset.assetType === "pending_asset"));
+      syncPendingAssetNav();
+      renderAssetFilters();
       renderDataAssets();
-      showToast("已纳入 CDP 接入范围，后续新增字段会进入字段待确认队列");
+      showToast(generatedRows.length ? `已接入该表，并生成 ${generatedRows.length} 个字段待确认` : "已接入该表，字段已在确认队列或暂无可推荐字段");
     }
 
     function keepPendingTableLineage(id) {
       const row = findPendingAsset(id);
-      if (!row) return;
+      if (!row || row.queue !== "table") return;
+      row.queue = "processed_table";
       row.status = "暂不接入";
+      row.stage = "仅保留血缘";
       row.confirmType = "仅保留血缘";
       row.createdConfirmer = currentAssetOperator;
+      row.processedAt = "2026-05-18";
       updatePendingAssetSearch(row);
       document.getElementById("assetDrawerMask")?.classList.remove("show");
+      renderAssetFilters();
       renderDataAssets();
       showToast("已设为暂不接入，仅保留数据表血缘");
     }
@@ -11368,9 +11524,16 @@ HarmonyOS"></textarea>
       if (!row) return false;
       const name = row.querySelector(".asset-event-attr-name")?.value.trim() || "";
       const display = row.querySelector(".asset-event-attr-display")?.value.trim() || "";
-      const desc = row.querySelector(".asset-event-attr-desc")?.value.trim() || "";
-      const dict = row.querySelector(".asset-event-attr-dict")?.value || "";
-      return !name && !display && !desc && !dict;
+      return !name && !display;
+    }
+
+    function pruneBlankEventAttrRows() {
+      const box = document.getElementById("assetEventAttrRows");
+      if (!box) return;
+      [...box.querySelectorAll("[data-event-attr-row]")].forEach(row => {
+        if (isBlankEventAttrRow(row)) row.remove();
+      });
+      syncEventAttrTextarea();
     }
 
     function existingAttrSearchText(row = {}) {
@@ -11660,8 +11823,8 @@ HarmonyOS"></textarea>
       if (title) title.textContent = `${pendingConfirmId ? "确认新增" : assetEditMode ? "编辑" : "手动登记"}${assetTypeLabels[assetCreateType] || "元数据资产"}`;
       const domains = metadataDomainOptions;
       const yesNo = ["是", "否"];
-      const visible = ["可见", "隐藏"];
-      const upload = ["有", "暂无", "近7天无入库"];
+      const visible = ["可见", "不可见"];
+      const upload = ["有数据", "无数据"];
       const updateOptions = ["实时", "小时级", "T+1", "每日00:00", "手动"];
       const eventTypeControl = pendingConfirmId
         ? assetCreateSelect("assetNewBehaviorSource", ["自定义事件", "汇总型", "明细型"])
@@ -11825,7 +11988,7 @@ HarmonyOS"></textarea>
         setAssetVal("assetNewDefaultMetric", row.defaultMetric || "次数");
         setAssetVal("assetNewSubjectId", row.subjectId || "guid");
         setAssetVal("assetNewIdMapping", row.idMappingStatus || "接入中");
-        setAssetVal("assetNewUpload", row.upload || "有数据");
+        setAssetVal("assetNewUpload", normalizeAssetFilterValue("upload", row.upload || "有数据"));
         setAssetVal("assetNewReceive", row.receive || "允许");
         setAssetVal("assetNewLabelEnabled", row.labelEnabled || "是");
         setAssetVal("assetNewPlatform", row.platform || "全部");
@@ -11896,13 +12059,14 @@ HarmonyOS"></textarea>
       const sourcePayload = getAssetSourcePayload();
       let row;
       if (assetCreateType === "event") {
+        pruneBlankEventAttrRows();
         const props = collectEventAttrRows();
         const eventTags = assetVal("assetNewEventTag").split(/,|，/).map(x => x.trim()).filter(Boolean);
         const table = selectedWarehouseTable();
         const field = selectedWarehouseField();
         const measureSource = field ? warehouseMeasureSourceFieldsForField(field) : {};
         const sourceType = table ? warehouseEventSourceType(table) : (assetVal("assetNewBehaviorSource") || existing?.sourceType || "自定义事件");
-        row = { ...(existing || {}), id: existing?.id || `custom_event_${now}`, name, display, domain, behaviorSource:pendingConfirmId ? (assetVal("assetNewBehaviorSource") || sourceType) : "自定义事件", timeGrain:assetVal("assetNewTimeGrain") || existing?.timeGrain || "天", defaultMetric:field ? warehouseDefaultMetricLabel(field) : (assetVal("assetNewDefaultMetric") || existing?.defaultMetric || "次数"), subjectId:assetVal("assetNewSubjectId") || existing?.subjectId || "guid", idMappingStatus:assetVal("assetNewIdMapping") || existing?.idMappingStatus || "接入中", upload:assetVal("assetNewUpload") || existing?.upload || "有数据", status:assetVal("assetNewStatus") || "可见", receive:assetVal("assetNewReceive") || "允许", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:"是", attrs:props.length || 0, volume30d:existing?.volume30d || "待计算", lastIngest:existing?.lastIngest || "待入库", lastUpdater:owner, lastUpdatedAt:assetToday, owner, desc, properties:props, eventTags, downstream:existing?.downstream || {tags:0, segments:0, boards:0}, trend:existing?.trend || trend(1), public:existing?.public || "否", platform:assetVal("assetNewPlatform") || existing?.platform || "全部", volumeSort:existing?.volumeSort || 0, sourceType, behaviorSourceType:sourceType, timeField:table ? warehouseTimeFieldForEvent(table, warehouseFieldRowsForTable(table.name)) : (existing?.timeField || "ds"), countField:measureSource.countField || existing?.countField || "", distributionField:measureSource.distributionField || existing?.distributionField || "", durationField:measureSource.durationField || existing?.durationField || "", amountField:measureSource.amountField || existing?.amountField || "", capacityField:measureSource.capacityField || existing?.capacityField || "", primaryMeasureType:measureSource.primaryMeasureType || existing?.primaryMeasureType || "count", supportedMeasures:field ? warehouseSupportedMeasuresForField(field, table || {}) : (existing?.supportedMeasures || ["总次数", "分布"]), ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
+        row = { ...(existing || {}), id: existing?.id || `custom_event_${now}`, name, display, domain, behaviorSource:pendingConfirmId ? (assetVal("assetNewBehaviorSource") || sourceType) : "自定义事件", timeGrain:assetVal("assetNewTimeGrain") || existing?.timeGrain || "天", defaultMetric:field ? warehouseDefaultMetricLabel(field) : (assetVal("assetNewDefaultMetric") || existing?.defaultMetric || "次数"), subjectId:assetVal("assetNewSubjectId") || existing?.subjectId || "guid", idMappingStatus:assetVal("assetNewIdMapping") || existing?.idMappingStatus || "接入中", upload:normalizeAssetFilterValue("upload", assetVal("assetNewUpload") || existing?.upload || "有数据"), status:assetVal("assetNewStatus") || "可见", receive:assetVal("assetNewReceive") || "允许", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:"是", attrs:props.length || 0, volume30d:existing?.volume30d || "待计算", lastIngest:existing?.lastIngest || "待入库", lastUpdater:owner, lastUpdatedAt:assetToday, owner, desc, properties:props, eventTags, downstream:existing?.downstream || {tags:0, segments:0, boards:0}, trend:existing?.trend || trend(1), public:existing?.public || "否", platform:assetVal("assetNewPlatform") || existing?.platform || "全部", volumeSort:existing?.volumeSort || 0, sourceType, behaviorSourceType:sourceType, timeField:table ? warehouseTimeFieldForEvent(table, warehouseFieldRowsForTable(table.name)) : (existing?.timeField || "ds"), countField:measureSource.countField || existing?.countField || "", distributionField:measureSource.distributionField || existing?.distributionField || "", durationField:measureSource.durationField || existing?.durationField || "", amountField:measureSource.amountField || existing?.amountField || "", capacityField:measureSource.capacityField || existing?.capacityField || "", primaryMeasureType:measureSource.primaryMeasureType || existing?.primaryMeasureType || "count", supportedMeasures:field ? warehouseSupportedMeasuresForField(field, table || {}) : (existing?.supportedMeasures || ["总次数", "分布"]), ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "event_property") {
         row = { ...(existing || {}), id: existing?.id || `custom_ep_${now}`, name, display, domain, propertyKind:"自定义资产", type:assetVal("assetNewDataType") || "STRING", propertyScope:existing?.propertyScope || "待关联", enum:existing?.enum || "否", filterEnabled:existing?.filterEnabled || "是", events:existing?.events || ["待关联元事件"], dict:existing?.dict || "无", fillRate:existing?.fillRate || "待计算", fillSort:existing?.fillSort || 0, sample:existing?.sample || "--", owner, desc, enumValues:existing?.enumValues || [], upload:existing?.upload || "有", update:assetVal("assetNewUpdate") || "T+1", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:existing?.public || "否", ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "user_property") {
@@ -15766,9 +15930,18 @@ where dt = '\${bizdate}'</textarea></div>
   function makeSearchSelect(select, opts = {}){
     if (!select || select.dataset.xlSearchEnhanced === '1') return;
     if (select.closest('.rt-rule-search-select')) return;
+    const isMulti = Boolean(opts.multi);
     select.dataset.xlSearchEnhanced = '1';
+    if (isMulti) {
+      const selectedValues = Array.from(select.selectedOptions || []).map(opt => opt.value).filter(value => value && value !== 'all');
+      select.multiple = true;
+      Array.from(select.options).forEach(opt => {
+        opt.selected = selectedValues.length ? selectedValues.includes(opt.value) : opt.value === 'all';
+      });
+    }
     const wrapper = document.createElement('span');
     wrapper.className = 'rt-rule-search-select xl-search-v24';
+    if (isMulti) wrapper.classList.add('xl-search-multi');
     if (opts.compact) wrapper.classList.add('xl-compact-source');
     select.classList.add('rt-native-hidden');
     select.parentNode.insertBefore(wrapper, select);
@@ -15791,20 +15964,41 @@ where dt = '\${bizdate}'</textarea></div>
     input.autocomplete = 'off';
     const list = document.createElement('div');
     list.className = 'rt-rule-search-options';
+    const tools = document.createElement('div');
+    tools.className = 'rt-rule-search-tools';
+    tools.innerHTML = `<button type="button" class="rt-rule-search-clear-menu">${isMulti ? '清空' : '清除'}</button>`;
     menu.appendChild(input);
+    if (isMulti || opts.clearable) menu.appendChild(tools);
     menu.appendChild(list);
     document.body.appendChild(menu);
     mountedMenus.add(menu);
 
+    const selectedRealOptions = () => Array.from(select.options).filter(opt => opt.selected && opt.value !== 'all');
+    const selectAllOption = () => {
+      Array.from(select.options).forEach(opt => { opt.selected = opt.value === 'all'; });
+    };
     const renderList = () => {
       const q = input.value.trim().toLowerCase();
       const options = Array.from(select.options).filter(opt => !q || optionSearchText(opt).includes(q));
+      const selectedValues = selectedRealOptions().map(opt => opt.value);
       list.innerHTML = options.length ? options.map(opt => {
-        const active = opt.value === select.value ? ' active' : '';
-        return `<button type="button" class="rt-rule-search-option${active}" data-value="${xlEscape(opt.value)}">${xlEscape(optionText(opt))}</button>`;
+        const active = isMulti ? ((opt.value === 'all' && !selectedValues.length) || selectedValues.includes(opt.value)) : opt.value === select.value;
+        const mark = isMulti ? `<span class="rt-rule-search-option-mark">${active ? '✓' : ''}</span>` : '';
+        return `<button type="button" class="rt-rule-search-option${active ? ' active' : ''}" data-value="${xlEscape(opt.value)}">${mark}<span>${xlEscape(optionText(opt))}</span></button>`;
       }).join('') : '<div class="rt-rule-search-empty">没有匹配项</div>';
     };
-    const syncTrigger = () => { trigger.textContent = select.options[select.selectedIndex]?.textContent || '请选择'; };
+    const syncTrigger = () => {
+      if (isMulti) {
+        const selected = selectedRealOptions();
+        wrapper.classList.toggle('has-value', selected.length > 0);
+        trigger.textContent = selected.length === 0
+          ? (Array.from(select.options).find(opt => opt.value === 'all')?.textContent || '全部')
+          : (selected.length === 1 ? optionText(selected[0]) : `已选 ${selected.length} 项`);
+        return;
+      }
+      wrapper.classList.toggle('has-value', Boolean(select.value && select.value !== 'all'));
+      trigger.textContent = select.options[select.selectedIndex]?.textContent || '请选择';
+    };
 
     trigger.addEventListener('click', ev => {
       ev.preventDefault();
@@ -15820,15 +16014,45 @@ where dt = '\${bizdate}'</textarea></div>
       setTimeout(() => { input.focus(); positionPortalMenu(wrapper); }, 0);
     });
     input.addEventListener('input', () => { renderList(); positionPortalMenu(wrapper); });
+    tools.querySelector('.rt-rule-search-clear-menu')?.addEventListener('click', ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (isMulti) selectAllOption();
+      else select.value = Array.from(select.options).some(opt => opt.value === 'all') ? 'all' : '';
+      syncTrigger();
+      renderList();
+      select.dispatchEvent(new Event('change', { bubbles:true }));
+      if (!isMulti) closeSearchSelect(wrapper);
+    });
     list.addEventListener('click', ev => {
       const btn = ev.target.closest('.rt-rule-search-option[data-value]');
       if (!btn) return;
+      if (isMulti) {
+        const value = btn.dataset.value;
+        if (value === 'all') {
+          selectAllOption();
+        } else {
+          const option = Array.from(select.options).find(opt => opt.value === value);
+          Array.from(select.options).forEach(opt => { if (opt.value === 'all') opt.selected = false; });
+          if (option) option.selected = !option.selected;
+          if (!selectedRealOptions().length) selectAllOption();
+        }
+        syncTrigger();
+        renderList();
+        positionPortalMenu(wrapper);
+        select.dispatchEvent(new Event('change', { bubbles:true }));
+        return;
+      }
       select.value = btn.dataset.value;
       syncTrigger();
       closeSearchSelect(wrapper);
       select.dispatchEvent(new Event('change', { bubbles:true }));
     });
-    select.addEventListener('change', syncTrigger);
+    select.addEventListener('change', () => {
+      if (isMulti && !selectedRealOptions().length) selectAllOption();
+      syncTrigger();
+    });
+    syncTrigger();
   }
 
   window.xlEnhanceSearchSelectsV24 = function(root = document){
@@ -15837,7 +16061,9 @@ where dt = '\${bizdate}'</textarea></div>
       .forEach(select => makeSearchSelect(select, { placeholder:'搜索名称' }));
     root.querySelectorAll('select.xl-source-picker').forEach(select => makeSearchSelect(select, { placeholder:'搜索来源', compact:true }));
     root.querySelectorAll('#assetFilterBar select.asset-filter-control, #view-data select.asset-filter-control')
-      .forEach(select => makeSearchSelect(select, { placeholder:'搜索筛选项' }));
+      .forEach(select => makeSearchSelect(select, { placeholder:'搜索筛选项', multi:true, clearable:true }));
+    root.querySelectorAll('#view-tags .tag-filter-grid select')
+      .forEach(select => makeSearchSelect(select, { placeholder:'搜索筛选项', multi:true, clearable:true }));
   };
 
   window.enhanceXlRuleAssetSelects = function(){
@@ -15903,7 +16129,35 @@ where dt = '\${bizdate}'</textarea></div>
 }
 .rt-rule-search-menu.xl-select-portal.is-open { display: block !important; }
 .rt-rule-search-options { max-height: 238px !important; overflow-y: auto !important; overscroll-behavior: contain; }
-.rt-rule-search-option { min-height: 36px; line-height: 1.35; }
+.rt-rule-search-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin: -2px 0 6px;
+}
+.rt-rule-search-clear-menu {
+  border: 0;
+  background: transparent;
+  color: #5d50ff;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+.rt-rule-search-clear-menu:hover { background: #f2f0ff; }
+.rt-rule-search-option { display: flex !important; align-items: center; gap: 8px; min-height: 36px; line-height: 1.35; }
+.rt-rule-search-option-mark {
+  width: 16px;
+  min-width: 16px;
+  color: #5d50ff;
+  font-size: 13px;
+  font-weight: 900;
+}
+.xl-search-multi.has-value .rt-rule-search-trigger {
+  color: #4f46e5;
+  background: #f8f7ff;
+  border-color: rgba(99,91,255,.28);
+}
 .xl-compact-source .rt-rule-search-trigger { min-width: 240px; }
 .asset-create-form .rt-rule-search-select { width: 100%; }
 .asset-create-form .rt-rule-search-trigger { width: 100%; min-width: 0; }
@@ -17334,6 +17588,47 @@ where dt = '\${bizdate}'</textarea></div>
   min-height: 34px !important;
   padding: 0 18px !important;
   font-size: 13px !important;
+}
+#assetCreateModal .asset-create-field:not(.asset-create-full) > .field,
+#assetCreateModal .asset-create-field:not(.asset-create-full) > .select,
+#assetCreateModal .asset-create-field:not(.asset-create-full) > .rt-rule-search-select,
+#assetCreateModal .asset-create-field:not(.asset-create-full) .rt-rule-search-trigger {
+  width: min(320px, 100%) !important;
+  max-width: 320px !important;
+}
+#assetCreateModal #assetNewDb,
+#assetCreateModal #assetNewTable,
+#assetCreateModal #assetNewColumn {
+  width: min(320px, 100%) !important;
+  max-width: 320px !important;
+}
+#assetCreateModal .asset-event-attr-row .select,
+#assetCreateModal .asset-event-attr-row .field,
+#assetCreateModal .asset-event-attr-row .rt-rule-search-select,
+#assetCreateModal .asset-event-attr-row .rt-rule-search-trigger {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+#view-tags .tag-directory-panel .tag-filter-grid {
+  grid-template-columns: minmax(360px, 1.5fr) repeat(2, minmax(150px, 180px)) !important;
+  align-items: end !important;
+}
+#view-tags .tag-filter-field .rt-rule-search-select {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+#view-tags .tag-filter-field .rt-rule-search-trigger {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+  box-shadow: none !important;
+}
+#view-tags .tag-filter-field .rt-rule-search-trigger:focus {
+  outline: none !important;
 }
 
   </style>
