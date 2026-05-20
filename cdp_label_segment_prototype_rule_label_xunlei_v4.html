@@ -4059,6 +4059,17 @@
     }
     .rt-filter-panel-head b { color: var(--ink); font-weight: 600; }
     .rt-filter-panel-collapse { cursor: pointer; color: var(--ink-3); }
+    .rt-filter-panel-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .rt-filter-logic-label {
+      color: var(--ink-3);
+      font-weight: 800;
+    }
     .rt-filter-row {
       display: flex;
       align-items: center;
@@ -6275,13 +6286,6 @@
 <div>
 <div class="panel-title">标签目录</div>
 </div>
-<div class="tabs team-tabs">
-<button class="tab active" data-team="all">全部</button>
-<button class="tab" data-team="main">主端</button>
-<button class="tab" data-team="eco">生态</button>
-<button class="tab" data-team="member">会员</button>
-<button class="tab" data-team="center">中台</button>
-</div>
 </div>
 <div class="workspace">
 <div class="tree">
@@ -6291,14 +6295,6 @@
 <div class="tree-row active">全部标签 <span class="count">0</span></div>
 <div class="tree-row">我创建的 <span class="count">0</span></div>
 <div class="tree-row">草稿 <span class="count">0</span></div>
-</div>
-<div class="tree-group">
-<div class="tree-title">业务分类</div>
-<div class="tree-row">公共标签 <span class="count">4</span></div>
-<div class="tree-row">主端标签 <span class="count">9</span></div>
-<div class="tree-row">会员标签 <span class="count">4</span></div>
-<div class="tree-row">生态标签 <span class="count">1</span></div>
-<div class="tree-row">中台标签 <span class="count">4</span></div>
 </div>
 <div class="tree-group">
 <div class="tree-title">标签类型</div>
@@ -6312,9 +6308,6 @@
 <div class="tag-filter-field search"><label>搜索</label><input class="field" id="tagSearch" placeholder="搜索标签名/业务口径"/></div>
 <div class="tag-filter-field"><label>业务域</label><select class="select" id="tagDomainFilter"><option>全部</option><option>公共</option><option>主端</option><option>会员</option><option>生态</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>触达</option><option>中台</option></select></div>
 <div class="tag-filter-field"><label>值类型</label><select class="select" id="tagValueFilter"><option>全部</option></select></div>
-<div class="tag-filter-field"><label>创建方式</label><select class="select" id="tagCreateFilter"><option>全部</option><option>系统预置</option><option>规则标签创建</option><option>计算标签</option><option>RFM模型</option><option>人群池沉淀</option><option>SQL规则</option><option>数据资产同步</option></select></div>
-<div class="tag-filter-field"><label>标签状态</label><select class="select" id="tagStatusFilter"><option>全部</option><option>已上线</option><option>草稿</option><option>待上线</option></select></div>
-<div class="tag-filter-field"><label>更新周期</label><select class="select" id="tagUpdateFilter"><option>全部</option><option>实时</option><option>小时级</option><option>T+1</option><option>手动</option></select></div>
 </div>
 <div class="tag-table-scroll">
 <table class="tag-table">
@@ -6358,9 +6351,9 @@
 <h1>创建标签</h1>
 <div class="subline">业务用户走无代码路径，SQL 标签保留给数分维护。</div>
 </div>
-<div aria-hidden="true" class="actions rt-create-top-actions">
-<button class="btn" id="saveDraftLabel" tabindex="-1">保存草稿</button>
-<button class="btn primary" id="publishLabel" tabindex="-1">提交上线</button>
+<div class="actions rt-create-top-actions">
+<button class="btn" id="saveDraftLabel" type="button">保存草稿</button>
+<button class="btn primary" id="publishLabel" type="button">提交上线</button>
 </div>
 </div>
 <div class="grid-2 rt-create-grid">
@@ -7291,14 +7284,6 @@ HarmonyOS"></textarea>
           ["待上线", "tags", "W"],
           ["运行失败", "tags", "!"]
         ]},
-        { title: "业务目录", items: [
-          ["公共标签", "tags", "C"],
-          ["主端标签", "tags", "M"],
-          ["会员标签", "tags", "V"],
-          ["生态标签", "tags", "E"],
-          ["商业策略", "tags", "B"],
-          ["技术中台", "tags", "P"]
-        ]},
         { title: "标签类型", items: [
           ["时间窗口标签", "tags", "N"],
           ["规则标签", "tags", "G"],
@@ -7442,6 +7427,12 @@ HarmonyOS"></textarea>
     let currentTagTeam = "all";
     const tagPageState = { page: 1, pageSize: 10, lastRows: [] };
 
+    function normalizeTagCreateMethod(method = "") {
+      if (method === "数据资产同步") return "元数据中心同步";
+      if (method === "无代码规则") return "规则标签创建";
+      return method || "元数据中心同步";
+    }
+
     function matchesSelect(value, selected, allLabel) {
       return selected === allLabel || value === selected;
     }
@@ -7457,9 +7448,6 @@ HarmonyOS"></textarea>
       const search = (document.getElementById("tagSearch")?.value || "").trim().toLowerCase();
       const domainFilter = document.getElementById("tagDomainFilter")?.value || "全部";
       const valueFilter = document.getElementById("tagValueFilter")?.value || "全部";
-      const createFilter = document.getElementById("tagCreateFilter")?.value || "全部";
-      const statusFilter = document.getElementById("tagStatusFilter")?.value || "全部";
-      const updateFilter = document.getElementById("tagUpdateFilter")?.value || "全部";
       const pageSize = Number(document.getElementById("tagPageSize")?.value || tagPageState.pageSize || 10);
       tagPageState.pageSize = pageSize;
       const sideFilter = window.tagSideFilter || { type: "quick", value: "all", key: "全部标签" };
@@ -7477,12 +7465,9 @@ HarmonyOS"></textarea>
       const rows = curatedTags
         .filter(t => team === "all" || t.teamKey === team)
         .filter(applySideFilter)
-        .filter(t => !search || `${t.name}${t.team}${t.category}${t.type}${t.valueType}${t.method}`.toLowerCase().includes(search))
+        .filter(t => !search || `${t.name}${t.team}${t.category}${t.type}${t.valueType}${normalizeTagCreateMethod(t.method)}`.toLowerCase().includes(search))
         .filter(t => matchesSelect(t.team, domainFilter, "全部"))
         .filter(t => matchesSelect(t.valueType, valueFilter, "全部"))
-        .filter(t => matchesSelect(t.method, createFilter, "全部"))
-        .filter(t => matchesSelect(t.status, statusFilter, "全部"))
-        .filter(t => updateFilter === "全部" || t.update.includes(updateFilter))
         .sort((a, b) => {
           const dir = tagSortState.dir === "asc" ? 1 : -1;
           const key = tagSortState.key;
@@ -7498,6 +7483,7 @@ HarmonyOS"></textarea>
       tagRows.innerHTML = visibleRows.map(t => {
         const editable = canEditTag(t);
         const deletable = canEditTag(t);
+        const copyable = canCopyTag(t);
         return `
         <tr>
           <td><span class="tag-name" title="${escapeHtml(t.name)}">${escapeHtml(t.name)}</span></td>
@@ -7507,10 +7493,10 @@ HarmonyOS"></textarea>
           <td>${escapeHtml(t.updated)}</td>
           <td>${escapeHtml(t.update)}</td>
           <td>${t.calls}</td>
-          <td>${escapeHtml(t.method)}</td>
+          <td>${escapeHtml(normalizeTagCreateMethod(t.method))}</td>
           <td><span class="badge ${t.status === "已上线" ? "green" : t.status === "待上线" ? "amber" : "gray"}">${escapeHtml(t.status)}</span></td>
           <td><span class="tag-action-cell">
-            <button class="tag-action-link" data-action="copy-tag" data-tag-name="${escapeHtml(t.name)}" type="button">复制</button>
+            <button class="tag-action-link ${copyable ? "" : "disabled-link"}" data-action="copy-tag" data-tag-name="${escapeHtml(t.name)}" title="${copyable ? "复制标签" : "仅支持复制自己新建的规则标签"}" aria-disabled="${copyable ? "false" : "true"}" type="button">复制</button>
             <button class="tag-action-link ${editable ? "" : "disabled-link"}" data-action="edit-tag" data-tag-name="${escapeHtml(t.name)}" title="${editable ? "编辑标签" : "仅创建人可编辑"}" aria-disabled="${editable ? "false" : "true"}" type="button">编辑</button>
             <button class="tag-action-link danger-link ${deletable ? "" : "disabled-link"}" data-action="delete-tag" data-tag-name="${escapeHtml(t.name)}" title="${deletable ? "删除标签" : "仅创建人可删除"}" aria-disabled="${deletable ? "false" : "true"}" type="button">删除</button>
           </span></td>
@@ -7540,11 +7526,6 @@ HarmonyOS"></textarea>
       "全部标签": { type: "quick", value: "all" },
       "我创建的": { type: "quick", value: "mine" },
       "草稿": { type: "quick", value: "draft" },
-      "公共标签": { type: "team", value: "公共" },
-      "主端标签": { type: "team", value: "主端" },
-      "会员标签": { type: "team", value: "会员" },
-      "生态标签": { type: "team", value: "生态" },
-      "中台标签": { type: "team", value: "中台" },
       "基础画像": { type: "category", value: "基础画像" },
       "行为画像": { type: "category", value: "行为画像" },
       "价值分层": { type: "category", value: "价值分层" },
@@ -7574,7 +7555,7 @@ HarmonyOS"></textarea>
     function resetTagListFiltersForAction() {
       const search = document.getElementById("tagSearch");
       if (search) search.value = "";
-      ["tagDomainFilter", "tagValueFilter", "tagCreateFilter", "tagStatusFilter", "tagUpdateFilter"].forEach(id => {
+      ["tagDomainFilter", "tagValueFilter"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "全部";
       });
@@ -7589,8 +7570,16 @@ HarmonyOS"></textarea>
       return Boolean(tag && (tag.createdBy === currentAssetOperator || tag.createdAt || tag.isMine === true));
     }
 
+    function canCopyTag(tag) {
+      return Boolean(tag && tag.type === "规则标签" && canEditTag(tag));
+    }
+
     function copyTagAsset(tag) {
       if (!tag) return;
+      if (!canCopyTag(tag)) {
+        showToast("仅支持复制自己新建的规则标签，已上线原子标签不可复制");
+        return;
+      }
       const baseName = `${tag.name} 副本`;
       let name = baseName;
       let idx = 2;
@@ -10029,7 +10018,7 @@ HarmonyOS"></textarea>
         updated: row.lastUpdatedAt || row.lastIngest?.slice?.(0, 10) || "2026-05-12",
         update: row.update || (type === "event" ? "T+1" : "T+1"),
         calls: Number(row.calls || 0),
-        method: "数据资产同步",
+        method: "元数据中心同步",
         status: confirmed ? "已上线" : "待上线",
         color: meta.color,
         sourceAssetType: sourceLabel,
@@ -10053,9 +10042,6 @@ HarmonyOS"></textarea>
       };
       setOptions("tagDomainFilter", metadataDomainOptions);
       setOptions("tagValueFilter", curatedTags.map(t => t.valueType));
-      setOptions("tagCreateFilter", curatedTags.map(t => t.method));
-      setOptions("tagStatusFilter", curatedTags.map(t => t.status));
-      setOptions("tagUpdateFilter", curatedTags.map(t => t.update));
     }
 
     function syncTagsFromMetadataAssets() {
@@ -10628,6 +10614,10 @@ HarmonyOS"></textarea>
       copy.display = `${row.display || row.name || "资产"} 副本`;
       copy.owner = currentAssetOperator;
       copy.createdBy = currentAssetOperator;
+      copy.createdConfirmer = currentAssetOperator;
+      copy.lastUpdater = currentAssetOperator;
+      copy.lastUpdatedAt = typeof getXlTodayString === "function" ? getXlTodayString() : (row.lastUpdatedAt || row.updated || "2026-05-20");
+      copy.updated = copy.lastUpdatedAt;
       copy.editable = true;
       copy.status = copy.status || "可见";
       copy.desc = copy.desc || row.desc || "复制生成的资产，请补充口径说明。";
@@ -11091,7 +11081,7 @@ HarmonyOS"></textarea>
           <select class="select asset-event-attr-type">${eventAttrTypeOptions(row.type || "")}</select>
           <input class="field asset-event-attr-desc" autocomplete="off" placeholder="属性说明" value="${escapeHtml(row.desc || "")}">
           <select class="select xl-source-picker asset-event-attr-dict">${eventAttrDictOptions(row.dict || "")}</select>
-          <button class="asset-event-attr-icon asset-event-attr-enum${enumCount ? " has-values" : ""}" type="button" data-event-attr-action="enum" title="${escapeHtml(enumTitle)}" aria-label="${escapeHtml(enumTitle)}">+</button>
+          <button class="asset-event-attr-icon asset-event-attr-enum${enumCount ? " has-values" : ""}" type="button" data-event-attr-action="enum" title="${escapeHtml(enumTitle)}" aria-label="${escapeHtml(enumTitle)}" onclick="window.xlOpenEventAttrEnumEditor?.(this.closest('[data-event-attr-row]')); return false;">+</button>
           <button class="asset-event-attr-icon asset-event-attr-delete" type="button" data-event-attr-action="delete" title="删除">删除</button>
         </div>
       `;
@@ -11183,6 +11173,7 @@ HarmonyOS"></textarea>
       rowsBox.querySelector(".asset-enum-value")?.focus();
       syncActiveEnumValues();
     }
+    window.xlOpenEventAttrEnumEditor = openEventAttrEnumEditor;
 
     function closeEventAttrEnumEditor() {
       document.getElementById("assetEnumModal")?.classList.remove("show");
@@ -11546,7 +11537,7 @@ HarmonyOS"></textarea>
       if (assetCreateType === "event") {
         wrap.innerHTML = `
           ${buildAssetSourceFields({ fieldLabel: "行为字段", fieldRequired: true })}
-          ${assetCreateField("base", "事件名", `${assetCreateInput("assetNewName", "如 download_create，仅支持英文/数字/下划线")}<div class="asset-form-tip">保存为后台事件标识，不允许中文、空格或特殊字符。</div>`, false, true)}
+          ${assetCreateField("base", "事件名", assetCreateInput("assetNewName", "如 download_create，仅支持英文/数字/下划线"), false, true)}
           ${assetCreateField("base", "事件显示名", assetCreateInput("assetNewDisplay", "如 创建下载任务"), false, true)}
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
           ${assetCreateField("base", "事件类型", eventTypeControl, false, true)}
@@ -11825,7 +11816,16 @@ HarmonyOS"></textarea>
     document.getElementById("closeAssetCreate")?.addEventListener("click", closeAssetCreateModal);
     document.getElementById("cancelAssetCreate")?.addEventListener("click", closeAssetCreateModal);
     document.getElementById("confirmAssetCreate")?.addEventListener("click", addCreatedAsset);
-    document.getElementById("assetCreateModal")?.addEventListener("click", e => { if (e.target.id === "assetCreateModal") closeAssetCreateModal(); });
+    document.getElementById("assetCreateModal")?.addEventListener("click", e => {
+      const enumBtn = e.target.closest?.("[data-event-attr-action='enum']");
+      if (enumBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        openEventAttrEnumEditor(enumBtn.closest("[data-event-attr-row]"));
+        return;
+      }
+      if (e.target.id === "assetCreateModal") closeAssetCreateModal();
+    });
     document.getElementById("closeAssetEnumModal")?.addEventListener("click", cancelEventAttrEnumEditor);
     document.getElementById("cancelAssetEnumModal")?.addEventListener("click", cancelEventAttrEnumEditor);
     document.getElementById("saveAssetEnumModal")?.addEventListener("click", saveEventAttrEnumEditor);
@@ -12049,7 +12049,7 @@ HarmonyOS"></textarea>
       });
     });
 
-    ["tagSearch", "tagDomainFilter", "tagValueFilter", "tagCreateFilter", "tagStatusFilter", "tagUpdateFilter", "tagPageSize"].forEach(id => {
+    ["tagSearch", "tagDomainFilter", "tagValueFilter", "tagPageSize"].forEach(id => {
       const control = document.getElementById(id);
       if (!control) return;
       control.addEventListener(id === "tagSearch" ? "input" : "change", () => {
@@ -14616,7 +14616,7 @@ where dt = '\${bizdate}'</textarea></div>
     }
     function makeBehaviorRow(event = null, value = "1") {
       const chosen = event || xlFirstAssetDisplay("event", "");
-      const row = { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event: chosen, measureKey: xlMeasureKey("event_count", "count"), measureType: "event_count", aggregate: "count", measureProperty: "", agg: "总次数", op: "≥", value, unit: "次", filters: [] };
+      const row = { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event: chosen, measureKey: xlMeasureKey("event_count", "count"), measureType: "event_count", aggregate: "count", measureProperty: "", agg: "总次数", op: "≥", value, unit: "次", filterLogic: "and", filters: [] };
       const selectedKey = xlMeasureSelectedKey(row);
       const parsed = xlParseMeasureKey(selectedKey);
       row.measureKey = selectedKey;
@@ -14769,9 +14769,20 @@ where dt = '\${bizdate}'</textarea></div>
 
     function renderXlBehaviorFilters(row) {
       if (!row.filters?.length) return "";
+      const filterLogic = row.filterLogic === "or" ? "or" : "and";
       return `
         <div class="rt-filter-panel">
-          <div class="rt-filter-panel-head"><b>「${escapeHtml(row.event)}」的事件属性筛选</b><span class="rt-filter-panel-collapse" data-action="clear-filters" data-row-id="${row.id}">清空筛选</span></div>
+          <div class="rt-filter-panel-head">
+            <b>「${escapeHtml(row.event)}」的事件属性筛选</b>
+            <div class="rt-filter-panel-tools">
+              <span class="rt-filter-logic-label">筛选关系</span>
+              <span class="rt-inline-relation-toggle rt-filter-logic-toggle" role="group" aria-label="事件属性筛选关系">
+                <button class="${filterLogic === "and" ? "active" : ""}" data-action="set-filter-logic" data-row-id="${row.id}" data-logic="and" type="button">且</button>
+                <button class="${filterLogic === "or" ? "active" : ""}" data-action="set-filter-logic" data-row-id="${row.id}" data-logic="or" type="button">或</button>
+              </span>
+              <span class="rt-filter-panel-collapse" data-action="clear-filters" data-row-id="${row.id}">清空筛选</span>
+            </div>
+          </div>
           ${row.filters.map(filter => `
             <div class="rt-filter-row" data-filter-id="${filter.id}">
               <span class="rt-type-badge filter">筛选</span>
@@ -15170,6 +15181,12 @@ where dt = '\${bizdate}'</textarea></div>
           renderCreateConfig("rule");
           return;
         }
+        if (action === "set-filter-logic") {
+          const found = findXlBehaviorRow(rowId);
+          if (found.row) found.row.filterLogic = target.dataset.logic === "or" ? "or" : "and";
+          renderCreateConfig("rule");
+          return;
+        }
         if (action === "add-row") {
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
           const group = groupId ? groups.find(g => g.id === groupId) : groups[0];
@@ -15356,7 +15373,7 @@ where dt = '\${bizdate}'</textarea></div>
           user_attribute_group_relations: xlGetSectionRelations(layer, "attr").map(r => r === "and" ? "AND" : "OR"),
           user_attributes: layer.attrGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => ({ ...xlAssetTrace(xlResolveAttrAsset(r.field)), field: r.field, op: r.op, value: r.value })) })),
           user_event_group_relations: xlGetSectionRelations(layer, "behavior").map(r => r === "and" ? "AND" : "OR"),
-          user_events: layer.behaviorGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => { const selectedMeasureKey = xlMeasureSelectedKey(r); const parsedMeasure = xlParseMeasureKey(selectedMeasureKey); return ({ time: { label: r.timeLabel, mode: r.timeMode, start: r.start, end: r.end, days: r.days }, action: r.action, ...xlAssetTrace(xlResolveEventAsset(r.event)), event: r.event, filters: r.filters.map(f => ({ ...xlAssetTrace(xlResolveFilterAsset(r.event, f.field)), field: f.field, op: f.op, value: f.value })), measure: { measure_type: parsedMeasure.type, property_name: parsedMeasure.property || null, aggregate: parsedMeasure.aggregate, label: xlMeasureLabelFromKey(selectedMeasureKey) }, aggregate: xlMeasureLabelFromKey(selectedMeasureKey), op: r.op, value: r.value, unit: xlMeasureUnitFromKey(selectedMeasureKey, r.event) || "" }); }) }))
+          user_events: layer.behaviorGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => { const selectedMeasureKey = xlMeasureSelectedKey(r); const parsedMeasure = xlParseMeasureKey(selectedMeasureKey); return ({ time: { label: r.timeLabel, mode: r.timeMode, start: r.start, end: r.end, days: r.days }, action: r.action, ...xlAssetTrace(xlResolveEventAsset(r.event)), event: r.event, filter_logic: r.filterLogic === "or" ? "OR" : "AND", filters: r.filters.map(f => ({ ...xlAssetTrace(xlResolveFilterAsset(r.event, f.field)), field: f.field, op: f.op, value: f.value })), measure: { measure_type: parsedMeasure.type, property_name: parsedMeasure.property || null, aggregate: parsedMeasure.aggregate, label: xlMeasureLabelFromKey(selectedMeasureKey) }, aggregate: xlMeasureLabelFromKey(selectedMeasureKey), op: r.op, value: r.value, unit: xlMeasureUnitFromKey(selectedMeasureKey, r.event) || "" }); }) }))
         }))
       };
     }
@@ -16830,6 +16847,110 @@ where dt = '\${bizdate}'</textarea></div>
   #assetCreateModal .asset-event-attr-head,
   #assetCreateModal .asset-event-attr-row {
     min-width: 820px;
+  }
+}
+
+/* v4 UX fixes: tag center cleanup and visible create actions */
+.rt-create-top-actions {
+  display: flex !important;
+}
+.tag-directory-panel .panel-head {
+  justify-content: flex-start !important;
+}
+.tag-directory-panel .tag-filter-grid {
+  grid-template-columns: minmax(260px, 1.5fr) repeat(2, minmax(180px, 1fr)) !important;
+  gap: 12px !important;
+}
+#assetCreateModal .asset-event-attr-head,
+#assetCreateModal .asset-event-attr-row {
+  grid-template-columns: 42px minmax(88px, .85fr) minmax(94px, .95fr) 104px minmax(114px, 1fr) minmax(86px, .72fr) 76px 48px !important;
+  min-width: 0 !important;
+}
+#assetCreateModal .asset-event-attr-head span,
+#assetCreateModal .asset-event-attr-row > * {
+  padding: 0 5px !important;
+}
+#assetCreateModal .asset-event-attr-icon {
+  height: 32px !important;
+}
+#assetCreateModal .asset-event-attr-row .rt-rule-search-select,
+#assetCreateModal .asset-event-attr-row .xl-search-v24 {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+#assetCreateModal .asset-event-attr-row .rt-rule-search-trigger {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  padding: 0 18px 0 8px !important;
+}
+#assetCreateModal .asset-event-attr-enum {
+  width: 36px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  font-size: 22px !important;
+  font-weight: 500 !important;
+  color: #1677ff !important;
+}
+#assetCreateModal .asset-event-attr-delete {
+  width: 42px !important;
+}
+@media (max-width: 1320px) {
+  .tag-directory-panel .tag-filter-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  }
+}
+@media (max-height: 800px) {
+  #assetCreateModal .modal-head {
+    min-height: 54px !important;
+    padding: 12px 22px !important;
+  }
+  #assetCreateModal .modal-head .panel-title {
+    font-size: 18px !important;
+  }
+  #assetCreateModal .modal-head .panel-sub {
+    margin-top: 2px !important;
+    font-size: 12px !important;
+  }
+  #assetCreateModal .asset-create-body {
+    padding: 14px 24px 18px !important;
+  }
+  #assetCreateModal .asset-create-source-note {
+    margin-bottom: 10px !important;
+    padding: 9px 12px !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+  #assetCreateModal .asset-create-field {
+    grid-template-columns: 116px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  #assetCreateModal .asset-create-field label {
+    font-size: 13px !important;
+  }
+  #assetCreateModal .asset-create-field .field,
+  #assetCreateModal .asset-create-field .select,
+  #assetCreateModal .asset-create-field .rt-rule-search-trigger {
+    height: 36px !important;
+  }
+  #assetCreateModal .asset-create-footer {
+    padding: 10px 22px !important;
+  }
+  #assetCreateModal .asset-event-attr-table {
+    margin-top: 10px !important;
+  }
+  #assetCreateModal .asset-event-attr-head {
+    min-height: 40px !important;
+  }
+  #assetCreateModal .asset-event-attr-row {
+    min-height: 52px !important;
+  }
+  #assetCreateModal .asset-event-attr-row .field,
+  #assetCreateModal .asset-event-attr-row .select,
+  #assetCreateModal .asset-event-attr-row .rt-rule-search-trigger {
+    height: 34px !important;
   }
 }
 
