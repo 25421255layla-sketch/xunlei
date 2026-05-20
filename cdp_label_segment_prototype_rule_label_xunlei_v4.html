@@ -6207,6 +6207,36 @@
 </div>
 </div>
 </div>
+<div class="modal-mask pending-adjust-mask" id="pendingAdjustModal">
+<div class="modal pending-adjust-modal">
+<div class="modal-head">
+<div>
+<div class="panel-title">修改推荐结论</div>
+<div class="panel-sub" id="pendingAdjustSub">先确认该字段实际是否需要生成资产，再进入确认页。</div>
+</div>
+<button class="close-btn" id="closePendingAdjust" type="button">×</button>
+</div>
+<div class="modal-body pending-adjust-body">
+<div class="pending-adjust-current" id="pendingAdjustCurrent"></div>
+<div class="pending-adjust-section">
+<div class="pending-adjust-title">处理结论</div>
+<div class="pending-adjust-options pending-result-options" id="pendingAdjustResultOptions"></div>
+</div>
+<div class="pending-adjust-section" id="pendingAdjustTypeSection">
+<div class="pending-adjust-title">生成为什么资产</div>
+<div class="pending-adjust-options pending-type-options" id="pendingAdjustTypeOptions"></div>
+</div>
+<label class="pending-adjust-reason">
+<span>调整原因</span>
+<textarea class="field" id="pendingAdjustReason" placeholder="可选，说明为什么与系统推荐不一致"></textarea>
+</label>
+</div>
+<div class="modal-footer pending-adjust-footer">
+<button class="btn" id="cancelPendingAdjust" type="button">取消</button>
+<button class="btn primary" id="confirmPendingAdjust" type="button">下一步确认资产</button>
+</div>
+</div>
+</div>
 <div class="modal-mask asset-enum-mask" id="assetEnumModal">
 <div class="modal asset-enum-modal">
 <div class="modal-head">
@@ -10658,6 +10688,107 @@ HarmonyOS"></textarea>
       return "";
     }
 
+    const pendingAdjustAssetTypes = ["event", "event_property", "user_property"];
+    const pendingAdjustResults = [
+      { value: "important", title: "实际重要", desc: "继续生成资产，下一步进入确认页" },
+      { value: "ignore", title: "实际不重要", desc: "标记为忽略，不生成业务资产" }
+    ];
+    let pendingAdjustId = null;
+    let pendingAdjustDraft = { result: "important", assetType: "event_property" };
+
+    function pendingAssetTypeFromRow(row) {
+      const type = pendingTypeToAssetType(row?.confirmType) || pendingTypeToAssetType(row?.recommendedType);
+      return pendingAdjustAssetTypes.includes(type) ? type : "event_property";
+    }
+
+    function renderPendingAdjustModal() {
+      const row = findPendingAsset(pendingAdjustId);
+      if (!row) return;
+      const current = document.getElementById("pendingAdjustCurrent");
+      const resultBox = document.getElementById("pendingAdjustResultOptions");
+      const typeBox = document.getElementById("pendingAdjustTypeOptions");
+      const typeSection = document.getElementById("pendingAdjustTypeSection");
+      const confirmBtn = document.getElementById("confirmPendingAdjust");
+      if (current) {
+        const source = [row.sourceDb, row.sourceTable, row.sourceField].filter(Boolean).join(" / ");
+        current.innerHTML = `
+          <div class="pending-adjust-kicker">当前字段</div>
+          <div class="pending-adjust-name">${escapeHtml(row.display || row.name || "-")} <code>${escapeHtml(row.name || "")}</code></div>
+          <div class="pending-adjust-meta">
+            <span>来源：${escapeHtml(source || "-")}</span>
+            <span>系统推荐：${escapeHtml(row.recommendedType || "-")}</span>
+            <span>当前结论：${escapeHtml(row.confirmType || row.status || "-")}</span>
+          </div>
+          <div class="pending-adjust-reason-text">推荐依据：${escapeHtml(row.reason || "-")}</div>
+        `;
+      }
+      if (resultBox) {
+        resultBox.innerHTML = pendingAdjustResults.map(item => `
+          <button class="pending-adjust-option ${pendingAdjustDraft.result === item.value ? "active" : ""}" data-pending-adjust-result="${item.value}" type="button">
+            <b>${item.title}</b>
+            <span>${item.desc}</span>
+          </button>
+        `).join("");
+      }
+      if (typeBox) {
+        typeBox.innerHTML = pendingAdjustAssetTypes.map(type => `
+          <button class="pending-adjust-option ${pendingAdjustDraft.assetType === type ? "active" : ""}" data-pending-adjust-type="${type}" type="button">
+            <b>${assetTypeLabels[type]}</b>
+            <span>${type === "event" ? "行为事件，可统计次数/时长" : type === "event_property" ? "行为上下文筛选字段" : "用户维度状态或画像字段"}</span>
+          </button>
+        `).join("");
+      }
+      typeSection?.classList.toggle("is-disabled", pendingAdjustDraft.result !== "important");
+      if (confirmBtn) confirmBtn.textContent = pendingAdjustDraft.result === "ignore" ? "保存并忽略" : "下一步确认资产";
+    }
+
+    function openPendingAdjustModal(id) {
+      const row = findPendingAsset(id);
+      if (!row || row.queue !== "field") return;
+      pendingAdjustId = id;
+      pendingAdjustDraft = {
+        result: row.confirmType === "忽略" || row.recommendedType === "忽略" || row.status === "已忽略" ? "ignore" : "important",
+        assetType: pendingAssetTypeFromRow(row)
+      };
+      const reason = document.getElementById("pendingAdjustReason");
+      if (reason) reason.value = row.adjustReason || "";
+      renderPendingAdjustModal();
+      document.getElementById("pendingAdjustModal")?.classList.add("show");
+    }
+
+    function closePendingAdjustModal() {
+      document.getElementById("pendingAdjustModal")?.classList.remove("show");
+      pendingAdjustId = null;
+    }
+
+    function applyPendingAdjustModal() {
+      const row = findPendingAsset(pendingAdjustId);
+      if (!row || row.queue !== "field") return;
+      const reason = (document.getElementById("pendingAdjustReason")?.value || "").trim();
+      row.adjustReason = reason;
+      row.adjustedBy = currentAssetOperator;
+      row.adjustedAt = "2026-05-18";
+      row.createdConfirmer = currentAssetOperator;
+      if (pendingAdjustDraft.result === "ignore") {
+        row.status = "已忽略";
+        row.stage = "已忽略";
+        row.confirmType = "忽略";
+        updatePendingAssetSearch(row);
+        document.getElementById("assetDrawerMask")?.classList.remove("show");
+        closePendingAdjustModal();
+        renderDataAssets();
+        showToast("已调整为实际不重要，不生成业务资产");
+        return;
+      }
+      row.status = "字段待确认";
+      row.stage = "字段待确认";
+      row.confirmType = assetTypeLabels[pendingAdjustDraft.assetType] || "事件属性";
+      updatePendingAssetSearch(row);
+      closePendingAdjustModal();
+      renderDataAssets();
+      openPendingConfirmModal(row.id);
+    }
+
     function findPendingAsset(id) {
       return assetDatasets.pending_asset?.rows?.find(row => row.id === id) || null;
     }
@@ -10695,6 +10826,7 @@ HarmonyOS"></textarea>
       if (!row) return;
       row.status = "已忽略";
       row.confirmType = "忽略";
+      row.stage = "已忽略";
       row.createdConfirmer = currentAssetOperator;
       updatePendingAssetSearch(row);
       document.getElementById("assetDrawerMask")?.classList.remove("show");
@@ -11554,7 +11686,7 @@ HarmonyOS"></textarea>
               <div id="assetEventAttrRows">${eventAttrRowHtml()}</div>
             </div>
             <div class="asset-event-attr-actions">
-              <button class="btn primary" type="button" id="assetLinkExistingAttr">关联已有属性</button>
+              <button class="btn asset-soft-btn" type="button" id="assetLinkExistingAttr">关联已有属性</button>
               <button class="btn primary" type="button" id="assetAddNewAttr">添加新属性</button>
             </div>
             <textarea id="assetNewProps" hidden></textarea>
@@ -11634,7 +11766,8 @@ HarmonyOS"></textarea>
       }
       const pending = pendingConfirmId ? findPendingAsset(pendingConfirmId) : null;
       if (pending) {
-        wrap.insertAdjacentHTML("afterbegin", `<div class="asset-create-source-note"><strong>系统推荐</strong>：${escapeHtml(pending.recommendedType)}。<br>推荐依据：${escapeHtml(pending.reason || "-")}<br>请确认或修改类型，确认后生成正式资产；敏感字段默认受控。</div>`);
+        const adjustNote = pending.confirmType && pending.confirmType !== pending.recommendedType ? `<br>人工调整：${escapeHtml(pending.confirmType)}${pending.adjustReason ? `（${escapeHtml(pending.adjustReason)}）` : ""}` : "";
+        wrap.insertAdjacentHTML("afterbegin", `<div class="asset-create-source-note"><strong>系统推荐</strong>：${escapeHtml(pending.recommendedType)}。${adjustNote}<br>推荐依据：${escapeHtml(pending.reason || "-")}<br>请确认或修改类型，确认后生成正式资产；敏感字段默认受控。</div>`);
       } else if (!assetEditMode) {
         wrap.insertAdjacentHTML("afterbegin", `<div class="asset-create-source-note"><strong>手动登记</strong>：仅用于系统推荐遗漏、历史资产迁移或临时补录。请先选择来源库 / 表 / 字段，系统会自动带出字段类型、字段描述和来源血缘。</div>`);
       }
@@ -11890,6 +12023,24 @@ HarmonyOS"></textarea>
       check.checked = !check.checked;
       check.dispatchEvent(new Event("change", { bubbles: true }));
     });
+    document.getElementById("closePendingAdjust")?.addEventListener("click", closePendingAdjustModal);
+    document.getElementById("cancelPendingAdjust")?.addEventListener("click", closePendingAdjustModal);
+    document.getElementById("pendingAdjustModal")?.addEventListener("click", e => {
+      if (e.target.id === "pendingAdjustModal") closePendingAdjustModal();
+    });
+    document.getElementById("pendingAdjustResultOptions")?.addEventListener("click", e => {
+      const btn = e.target.closest("[data-pending-adjust-result]");
+      if (!btn) return;
+      pendingAdjustDraft.result = btn.dataset.pendingAdjustResult || "important";
+      renderPendingAdjustModal();
+    });
+    document.getElementById("pendingAdjustTypeOptions")?.addEventListener("click", e => {
+      const btn = e.target.closest("[data-pending-adjust-type]");
+      if (!btn || pendingAdjustDraft.result !== "important") return;
+      pendingAdjustDraft.assetType = btn.dataset.pendingAdjustType || "event_property";
+      renderPendingAdjustModal();
+    });
+    document.getElementById("confirmPendingAdjust")?.addEventListener("click", applyPendingAdjustModal);
     document.addEventListener("click", e => {
       const createBtn = e.target.closest("#requestAssetBtn");
       if (createBtn) {
@@ -11911,7 +12062,7 @@ HarmonyOS"></textarea>
       if (action === "pending_accept_table") acceptPendingTable(id);
       if (action === "pending_keep_lineage") keepPendingTableLineage(id);
       if (action === "pending_confirm_field") openPendingConfirmModal(id);
-      if (action === "pending_change_type") openPendingConfirmModal(id, true);
+      if (action === "pending_change_type") openPendingAdjustModal(id);
       if (action === "pending_ignore_field") ignorePendingField(id);
     });
     dataAssetState.sortKey = "lastUpdatedAt";
@@ -16387,6 +16538,144 @@ where dt = '\${bizdate}'</textarea></div>
 #assetCreateModal #confirmAssetCreate {
   min-width: 92px !important;
 }
+#pendingAdjustModal.modal-mask {
+  z-index: 92;
+}
+#pendingAdjustModal .pending-adjust-modal {
+  width: min(680px, calc(100vw - 64px));
+  max-height: min(640px, calc(100vh - 56px));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+#pendingAdjustModal .modal-head {
+  padding: 14px 20px;
+}
+#pendingAdjustModal .modal-head .panel-title {
+  font-size: 18px;
+  font-weight: 950;
+}
+#pendingAdjustModal .modal-head .panel-sub {
+  margin-top: 3px;
+  color: #667085;
+  font-size: 12px;
+}
+#pendingAdjustModal .pending-adjust-body {
+  display: grid;
+  gap: 12px;
+  padding: 16px 20px 18px;
+  overflow: auto;
+}
+#pendingAdjustModal .pending-adjust-current {
+  padding: 11px 13px;
+  border: 1px solid #e5edfa;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+#pendingAdjustModal .pending-adjust-kicker {
+  margin-bottom: 5px;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 800;
+}
+#pendingAdjustModal .pending-adjust-name {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 950;
+}
+#pendingAdjustModal .pending-adjust-name code {
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: #eef4ff;
+  color: #175cd3;
+  font-size: 12px;
+}
+#pendingAdjustModal .pending-adjust-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 8px;
+  color: #475467;
+  font-size: 12px;
+}
+#pendingAdjustModal .pending-adjust-reason-text {
+  margin-top: 6px;
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.5;
+}
+#pendingAdjustModal .pending-adjust-title {
+  margin-bottom: 6px;
+  color: #1f2937;
+  font-size: 13px;
+  font-weight: 900;
+}
+#pendingAdjustModal .pending-adjust-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+#pendingAdjustModal .pending-type-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+#pendingAdjustModal .pending-adjust-option {
+  min-height: 62px;
+  padding: 9px 12px;
+  border: 1px solid #d8e2f2;
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+  color: #344054;
+  cursor: pointer;
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+#pendingAdjustModal .pending-adjust-option b {
+  display: block;
+  color: #101828;
+  font-size: 13px;
+  font-weight: 950;
+}
+#pendingAdjustModal .pending-adjust-option span {
+  display: block;
+  margin-top: 4px;
+  color: #667085;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+#pendingAdjustModal .pending-adjust-option.active {
+  border-color: #1677ff;
+  background: #f5f9ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, .12);
+}
+#pendingAdjustModal .pending-adjust-section.is-disabled {
+  opacity: .48;
+}
+#pendingAdjustModal .pending-adjust-section.is-disabled .pending-adjust-option {
+  cursor: not-allowed;
+}
+#pendingAdjustModal .pending-adjust-reason {
+  display: grid;
+  gap: 6px;
+}
+#pendingAdjustModal .pending-adjust-reason span {
+  color: #1f2937;
+  font-size: 13px;
+  font-weight: 900;
+}
+#pendingAdjustModal .pending-adjust-reason textarea {
+  min-height: 54px;
+  max-height: 84px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+#pendingAdjustModal .pending-adjust-footer {
+  border-top: 1px solid #edf1f8;
+  padding: 12px 20px;
+}
 #assetCreateModal .asset-event-attr-section {
   margin-top: 22px !important;
 }
@@ -16489,6 +16778,18 @@ where dt = '\${bizdate}'</textarea></div>
   border-radius: 8px;
   font-size: 15px;
   font-weight: 900;
+}
+#assetCreateModal .asset-event-attr-actions .asset-soft-btn {
+  border-color: #d8e2f2;
+  background: #f8fbff;
+  color: #175cd3;
+  box-shadow: 0 4px 12px rgba(43, 46, 103, .06);
+}
+#assetCreateModal .asset-event-attr-actions .asset-soft-btn:hover {
+  border-color: #b9cff5;
+  background: #eef6ff;
+  color: #175cd3;
+  box-shadow: 0 6px 16px rgba(43, 46, 103, .08);
 }
 #assetEnumModal.modal-mask {
   z-index: 92;
@@ -16848,6 +17149,10 @@ where dt = '\${bizdate}'</textarea></div>
   #assetCreateModal .asset-event-attr-row {
     min-width: 820px;
   }
+  #pendingAdjustModal .pending-adjust-options,
+  #pendingAdjustModal .pending-type-options {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* v4 UX fixes: tag center cleanup and visible create actions */
@@ -16952,6 +17257,83 @@ where dt = '\${bizdate}'</textarea></div>
   #assetCreateModal .asset-event-attr-row .rt-rule-search-trigger {
     height: 34px !important;
   }
+}
+
+/* v4 density pass: shrink buttons in metadata and tag centers */
+#view-data .btn,
+#view-tags .btn,
+#assetCreateModal .btn,
+#assetEnumModal .btn,
+#assetExistingAttrModal .btn,
+#pendingAdjustModal .btn {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 0 11px !important;
+  border-radius: 7px !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+#view-data .btn.small,
+#view-tags .btn.small,
+#assetCreateModal .btn.small,
+#assetEnumModal .btn.small,
+#assetExistingAttrModal .btn.small,
+#pendingAdjustModal .btn.small {
+  min-height: 28px !important;
+  height: 28px !important;
+  padding: 0 8px !important;
+  font-size: 12px !important;
+}
+#view-data #manualAssetBtn,
+#view-tags #openCreateTag {
+  min-height: 36px !important;
+  height: 36px !important;
+  font-size: 13px !important;
+}
+#assetCreateModal .asset-create-footer .btn,
+#assetEnumModal .asset-enum-footer .btn,
+#assetExistingAttrModal .asset-existing-attr-footer .btn,
+#pendingAdjustModal .pending-adjust-footer .btn {
+  min-width: 76px !important;
+}
+#assetCreateModal .asset-event-attr-actions {
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+#assetCreateModal .asset-event-attr-actions .btn {
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+}
+#assetEnumModal .asset-enum-add {
+  height: 34px !important;
+  min-height: 34px !important;
+  font-size: 13px !important;
+}
+#view-data .asset-action-row,
+#view-tags .asset-action-row {
+  gap: 6px !important;
+}
+#view-data .asset-action-link,
+#view-tags .asset-action-link {
+  min-height: 24px !important;
+  padding: 0 4px !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+#ruleUpdateCard .rt-bottom-actions {
+  margin: 18px -20px -12px !important;
+  padding: 16px 20px 14px !important;
+  gap: 12px !important;
+}
+#ruleUpdateCard .rt-bottom-actions .btn {
+  min-width: 82px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 18px !important;
+  font-size: 13px !important;
 }
 
   </style>
