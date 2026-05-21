@@ -51,11 +51,12 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-width: 1080px;
+      min-width: 0;
       background: linear-gradient(180deg, #ffffff 0%, var(--bg) 280px);
       color: var(--text);
       font-size: 14px;
       letter-spacing: 0;
+      overflow-x: hidden;
     }
 
     button, input, select, textarea { font: inherit; }
@@ -74,6 +75,20 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       min-height: 100vh;
+    }
+
+    body.ui-scaled .app {
+      width: calc(100vw / var(--ui-scale, 1));
+      min-height: calc(100vh / var(--ui-scale, 1));
+      zoom: var(--ui-scale, 1);
+    }
+
+    @supports not (zoom: 1) {
+      body.ui-scaled .app {
+        zoom: 1;
+        transform: scale(var(--ui-scale, 1));
+        transform-origin: top left;
+      }
     }
 
     .side {
@@ -1355,6 +1370,224 @@
 
     .segment-mode { display: none; }
     .segment-mode.active { display: block; }
+
+    .segment-center-layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .segment-nav-panel {
+      position: sticky;
+      top: 76px;
+      padding: 16px 10px;
+      background: #f8fafc;
+      border-color: #edf1f8;
+      box-shadow: none;
+    }
+
+    .segment-create-nav-btn {
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .segment-create-choice-modal {
+      width: min(880px, 100%);
+    }
+
+    .segment-create-choice-modal .modal-head {
+      position: relative;
+      justify-content: space-between;
+      text-align: left;
+      min-height: auto;
+    }
+
+    .segment-create-choice-modal .modal-head .panel-title {
+      font-size: 16px;
+    }
+
+    .segment-create-choice-modal .modal-head .panel-sub {
+      display: block;
+    }
+
+    .segment-create-choice-modal .close-btn {
+      position: static;
+      flex: 0 0 auto;
+    }
+
+    .segment-create-types {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .segment-create-type-card {
+      min-height: 118px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 760px) {
+      .segment-create-types {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    .segment-create-choice-body {
+      display: grid;
+      gap: 16px;
+      padding: 22px;
+    }
+
+    .segment-create-option {
+      width: 100%;
+      min-height: 156px;
+      border: 1px solid #dbe5f2;
+      border-radius: 8px;
+      background: #fff;
+      padding: 22px 28px;
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 24px;
+      align-items: center;
+      text-align: left;
+      color: #344054;
+    }
+
+    .segment-create-option:hover {
+      border-color: #8bb8ff;
+      box-shadow: 0 12px 26px rgba(24, 94, 188, 0.10);
+      transform: translateY(-1px);
+    }
+
+    .segment-create-option-icon {
+      height: 86px;
+      border-right: 1px solid #dbe5f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .segment-create-option-ill {
+      width: 78px;
+      height: 58px;
+      border-radius: 5px;
+      background: linear-gradient(180deg, #f7d2b7, #ffe6c9);
+      position: relative;
+      box-shadow: inset 0 8px 0 rgba(119, 84, 70, 0.72);
+    }
+
+    .segment-create-option-ill::before,
+    .segment-create-option-ill::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      height: 7px;
+      border-radius: 2px;
+      background: rgba(139, 92, 55, 0.26);
+    }
+
+    .segment-create-option-ill::before { top: 22px; }
+    .segment-create-option-ill::after { top: 38px; right: 28px; }
+
+    .segment-create-option-ill.import {
+      width: 62px;
+      height: 76px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #35d3a5 0 70%, #e8fff6 70% 100%);
+      box-shadow: none;
+    }
+
+    .segment-create-option-ill.import::before {
+      left: 14px;
+      top: 30px;
+      width: 34px;
+      height: 26px;
+      background:
+        linear-gradient(#e9fff8 0 0) 0 0 / 100% 1px,
+        linear-gradient(#e9fff8 0 0) 0 50% / 100% 1px,
+        linear-gradient(#e9fff8 0 0) 0 100% / 100% 1px,
+        linear-gradient(90deg, transparent 32%, #e9fff8 32% 36%, transparent 36% 64%, #e9fff8 64% 68%, transparent 68%);
+      background-repeat: no-repeat;
+      border-radius: 0;
+    }
+
+    .segment-create-option-ill.import::after {
+      display: none;
+    }
+
+    .segment-create-option h3 {
+      margin: 0 0 12px;
+      color: #263142;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .segment-create-option p {
+      margin: 0;
+      color: #526071;
+      font-size: 16px;
+      line-height: 1.75;
+      font-weight: 650;
+    }
+
+    .segment-nav-title {
+      margin: 14px 8px 7px;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .segment-nav-item {
+      width: 100%;
+      min-height: 38px;
+      border: 0;
+      border-left: 3px solid transparent;
+      background: transparent;
+      color: #344054;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .segment-nav-item:hover {
+      background: #f3f7ff;
+      color: #155eef;
+    }
+
+    .segment-nav-item.active {
+      border-left-color: var(--green);
+      background: #e9fbf4;
+      color: #087443;
+    }
+
+    .segment-nav-item em {
+      color: #667085;
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .segment-nav-item.active em {
+      color: #087443;
+    }
+
+    .segment-main-panel {
+      min-width: 0;
+    }
+
+    .segment-main-panel #segmentListTabs {
+      display: none;
+    }
+
+    .segment-main-panel .panel-head {
+      align-items: flex-start;
+    }
 
     .qidian-shell {
       display: grid;
@@ -2808,6 +3041,10 @@
         grid-template-columns: 228px minmax(0, 1fr);
       }
 
+      .segment-center-layout {
+        grid-template-columns: 204px minmax(0, 1fr);
+      }
+
       .preview-panel {
         position: static;
       }
@@ -3005,6 +3242,16 @@
     .asset-meta-table tbody tr:hover td:nth-child(1),
     .asset-meta-table tbody tr:hover td:nth-child(2),
     .asset-meta-table tbody tr:hover td:last-child { background: #fbfdff; }
+    .asset-meta-table.asset-event-mode th:nth-child(1),
+    .asset-meta-table.asset-event-mode td:nth-child(1) {
+      width: 240px !important;
+      min-width: 240px !important;
+      max-width: 240px !important;
+    }
+    .asset-meta-table.asset-event-mode th:nth-child(2),
+    .asset-meta-table.asset-event-mode td:nth-child(2) {
+      left: 240px;
+    }
     .asset-key-link {
       border: 0;
       background: transparent;
@@ -6330,7 +6577,7 @@
 <div class="tree-title">标签类型</div>
 <div class="tree-row">规则标签 <span class="count">9</span></div>
 <div class="tree-row">模型标签 <span class="count">2</span></div>
-<div class="tree-row">SQL标签（数分） <span class="count">29</span></div>
+<div class="tree-row">SQL标签 <span class="count">29</span></div>
 </div>
 </div>
 <div class="content">
@@ -6611,24 +6858,21 @@
 </div>
 </section>
 <section class="view" id="view-segment">
-<div class="topbar">
+<div class="topbar data-topbar segment-topbar">
 <div>
 <h1>分群中心</h1>
 <div class="subline">分群是标签的组合应用：拖拽标签和已有人群完成圈选，条件之间支持且/或，人群之间支持交集、并集和差集。</div>
 </div>
-<div class="actions">
-<button class="btn primary" id="segmentPrimaryAction">新建人群</button>
 </div>
-</div>
-<div aria-label="分群创建方式" class="method-switch">
-<span class="method-label">分群资产</span>
-<button class="method-tab active" data-segment-mode="list">分群列表</button>
-<span aria-hidden="true" class="method-divider"></span>
-<span class="method-label create-label">新建人群</span>
-<button class="method-tab" data-segment-mode="canvas">人群圈选</button>
-<button class="method-tab" data-segment-mode="import">导入创建</button>
-<button class="method-tab" data-segment-mode="sql">SQL 创建</button>
-</div>
+<div class="data-asset-layout segment-center-layout">
+<aside class="panel data-asset-nav-panel segment-nav-panel">
+<button class="btn primary asset-create-nav-btn segment-create-nav-btn" id="openSegmentCreateModal" type="button">+ 新建人群</button>
+<div class="data-nav-title segment-nav-title">分群资产</div>
+<button class="data-nav-item segment-nav-item active" data-segment-nav="true" data-segment-mode="list" data-segment-list-filter="all" type="button"><span class="data-nav-dot"></span>全部分群 <em data-segment-count="all">9</em></button>
+<button class="data-nav-item segment-nav-item" data-segment-nav="true" data-segment-mode="list" data-segment-list-filter="mine" type="button"><span class="data-nav-dot"></span>我创建的 <em data-segment-count="mine">0</em></button>
+<button class="data-nav-item segment-nav-item" data-segment-nav="true" data-segment-mode="list" data-segment-list-filter="draft" type="button"><span class="data-nav-dot"></span>草稿 <em data-segment-count="draft">0</em></button>
+</aside>
+<div class="panel data-asset-main-panel segment-main-panel">
 <div class="segment-mode" id="segmentModeCanvas">
 <div class="segment-layout">
 <div class="panel asset-list">
@@ -6834,7 +7078,7 @@
 <div class="panel builder">
 <div class="panel-head" style="padding:0 0 14px;border-bottom:0">
 <div>
-<div class="panel-title" id="segmentBuilderTitle">人群圈选：自定义人群</div>
+<div class="panel-title" id="segmentBuilderTitle">规则创建：自定义人群</div>
 <div class="panel-sub">左侧标签可点击或拖拽到画布；同类标签自动合并，已有群用于交集、并集和差集。</div>
 </div>
 <button class="btn small" id="clearSegmentCanvas" type="button">清空画布</button>
@@ -6979,8 +7223,8 @@ WHERE dt = '${bizdate}'
 </div>
 </div>
 <div class="segment-mode active" id="segmentModeList">
-<div class="panel">
-<div class="panel-head">
+<div class="panel segment-list-shell">
+<div class="panel-head data-asset-head">
 <div>
 <div class="panel-title">分群列表</div>
 <div class="panel-sub">所有画布圈选结果最终沉淀到统一分群资产，可复用、推送、分析和授权。</div>
@@ -6992,8 +7236,49 @@ WHERE dt = '${bizdate}'
 <button class="tab" data-segment-list-filter="ab">AB Test</button>
 </div>
 </div>
-<div class="content">
-<table class="segment-list-table">
+<div class="content data-asset-content segment-list-content">
+<div class="asset-dynamic-filters segment-list-filters">
+<div class="asset-filter-field search segment-search-single">
+<label>搜索</label>
+<input class="field" id="segmentSearchInput" placeholder="搜索分群名称/业务域/应用"/>
+</div>
+<div class="asset-filter-field">
+<label>创建方式</label>
+<select class="select asset-filter-control" id="segmentMethodFilter">
+<option value="all">全部</option>
+<option>规则创建</option>
+<option>导入创建</option>
+<option>SQL 创建</option>
+<option>标签与行为组合</option>
+<option>人群交并差</option>
+<option>RFM 与人群交集</option>
+<option>模板套用画布</option>
+</select>
+</div>
+<div class="asset-filter-field">
+<label>业务域</label>
+<select class="select asset-filter-control" id="segmentDomainFilter">
+<option value="all">全部</option>
+<option>公共</option>
+<option>主端</option>
+<option>会员</option>
+<option>生态</option>
+</select>
+</div>
+<div class="asset-filter-field">
+<label>状态</label>
+<select class="select asset-filter-control" id="segmentStatusFilter">
+<option value="all">全部</option>
+<option>运行中</option>
+<option>已上线</option>
+<option>待确认</option>
+<option>已下线</option>
+<option>草稿</option>
+</select>
+</div>
+</div>
+<div class="asset-table-wrap segment-table-wrap">
+<table class="data-asset-table segment-list-table">
 <colgroup>
 <col style="width:25%"/>
 <col span="6" style="width:12.5%"/>
@@ -7002,9 +7287,68 @@ WHERE dt = '${bizdate}'
 <tbody id="segmentListRows"></tbody>
 </table>
 </div>
+<div class="table-footer segment-table-footer">
+<span id="segmentFooterMeta">共 0 条</span>
+<div class="pager-control">
+<button class="btn small" id="segmentPrevPage" type="button">‹</button>
+<span class="pager-page-jump" id="segmentPageText">第 <input class="pager-page-input" id="segmentPageInput" inputmode="numeric" min="1" type="number" value="1"/> 页 / <span id="segmentTotalPages">1</span> 页</span>
+<button class="btn small" id="segmentNextPage" type="button">›</button>
+<select class="select" id="segmentPageSize">
+<option selected="" value="10">10 条/页</option>
+<option value="20">20 条/页</option>
+<option value="50">50 条/页</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
+<section class="view" id="view-segment-create">
+<div class="topbar">
+<div>
+<h1>创建人群</h1>
+<div class="subline">规则创建用于组合用户属性、标签、行为和已有人群，形成可保存、可推送、可分析的目标人群。</div>
+</div>
+<div class="actions">
+<button class="btn" id="backSegmentListFromCreate" type="button">返回分群列表</button>
+<button class="btn primary" id="saveSegmentRuleCreateTop" type="button">保存人群</button>
+</div>
+</div>
+<div class="segment-rule-create-host" id="segmentRuleCreateHost"></div>
+</section>
+<div class="modal-mask" id="segmentCreateModal">
+<div class="modal segment-create-choice-modal">
+<div class="modal-head">
+<div>
+<div class="panel-title">通过哪种方式创建人群？</div>
+<div class="panel-sub">业务优先选择规则创建；导入创建用于名单沉淀，SQL 创建由数分维护。</div>
+</div>
+<button class="close-btn" id="closeSegmentCreateModal" type="button">×</button>
+</div>
+<div class="modal-body">
+<div class="type-grid modal-types segment-create-types">
+<button class="type-card segment-create-type-card" data-segment-create-choice="canvas" type="button">
+<span class="badge teal">规则</span>
+<span class="type-k">规则创建</span>
+<span class="type-d">使用用户属性与行为条件圈选人群，支持且/或、交并差和动态更新。</span>
+</button>
+<button class="type-card segment-create-type-card" data-segment-create-choice="import" type="button">
+<span class="badge blue">导入</span>
+<span class="type-k">导入创建</span>
+<span class="type-d">上传 userid、guid、one_id 或手机号名单，匹配后沉淀为静态人群。</span>
+</button>
+<button class="type-card segment-create-type-card" data-segment-create-choice="sql" type="button">
+<span class="badge gray">数分维护</span>
+<span class="type-k">SQL 创建</span>
+<span class="type-d">由数分编写 SQL 输出用户 ID，适合复杂口径或跨表计算的人群。</span>
+</button>
+</div>
+</div>
+</div>
+</div>
 <section class="view" id="view-push">
 <div class="topbar">
 <div>
@@ -7279,6 +7623,7 @@ HarmonyOS"></textarea>
       tags: "tags",
       create: "tags",
       segment: "segments",
+      "segment-create": "segments",
       scenario: "templates",
       board: "insights",
       push: "push"
@@ -7319,21 +7664,15 @@ HarmonyOS"></textarea>
           ["规则标签", "tags", "G"],
           ["模型标签", "tags", "R"],
           ["人群池标签", "tags", "U"],
-          ["SQL 标签（数分）", "create", "S"]
+          ["SQL 标签", "create", "S"]
         ]}
       ],
       segments: [
         { title: "分群资产", items: [
-          ["分群列表", "segment", "L", "list", "segments:list"],
-          ["人群圈选", "segment", "J", "canvas", "segments:canvas"],
-          ["导入创建", "segment", "I", "import", "segments:import"],
-          ["SQL 创建", "segment", "Q", "sql", "segments:sql"],
+          ["全部分群", "segment", "L", "list", "segments:list"],
+          ["我创建的", "segment", "I", "list", "segments:list:mine"],
+          ["草稿", "segment", "D", "list", "segments:list:draft"],
           ["模板创建", "scenario", "M"]
-        ]},
-        { title: "分群类型", items: [
-          ["静态分群", "segment", "A", "list", "segments:list:static"],
-          ["动态分群", "segment", "D", "list", "segments:list:dynamic"],
-          ["AB Test", "segment", "B", "list", "segments:list:ab"]
         ]}
       ],
       templates: [
@@ -7570,7 +7909,7 @@ HarmonyOS"></textarea>
       "价值分层": { type: "category", value: "价值分层" },
       "规则标签": { type: "type", value: "规则标签" },
       "模型标签": { type: "type", value: "模型标签" },
-      "SQL标签（数分）": { type: "type", value: "SQL标签" }
+      "SQL标签": { type: "type", value: "SQL标签" }
     };
     window.tagSideFilter = { type: "quick", value: "all", key: "全部标签" };
 
@@ -7842,7 +8181,7 @@ HarmonyOS"></textarea>
         subtitle: "枚举值和中文说明的统一管理，供事件属性、用户属性和标签配置复用。",
         hint: "字典可以帮助业务理解英文值、渠道 code、广告位 ID 等枚举含义。",
         filters: [{ id:"domain", label:"业务域", all:"全部" }],
-        columns: [["name","字典名","24%"],["domain","业务域","10%"],["enumCount","枚举值数量","12%"],["related","关联属性","26%"],["updated","最近更新","13%"],["owner","负责人","10%"],["actions","操作","8%"]],
+        columns: [["name","字典名","24%"],["domain","业务域","200px"],["enumCount","枚举值数量","12%"],["related","关联属性","26%"],["updated","最近更新","13%"],["owner","负责人","10%"],["actions","操作","8%"]],
         rows: [
           { id:"dict_platform", name:"平台字典", domain:"公共", enumCount:8, related:"platform_type / app_platform", updated:"2026-05-08", owner:"数据平台", desc:"Android、iOS、PC、Web 等平台枚举。", enumValues:[["Android","安卓"],["iOS","苹果移动端"],["PC","Windows 客户端"]] },
           { id:"dict_channel", name:"渠道来源字典", domain:"生态", enumCount:326, related:"first_channel_name / channel_name", updated:"2026-05-10", owner:"生态运营", desc:"渠道 code 与中文名称、渠道类型、投放归因的映射。", enumValues:[["paid","标投"],["organic","自然量"],["store","应用商店"]] },
@@ -9052,7 +9391,7 @@ HarmonyOS"></textarea>
       { id: "labelEnabled", label: "标签筛选", all: "全部" }
     ];
     assetDatasets.event.columns = [
-      ["name", "事件名", "300px", true],
+      ["name", "事件名", "240px", true],
       ["domain", "业务域", "110px", true],
       ["upload", "上报数据", "120px", true],
       ["status", "显示状态", "120px", true],
@@ -9082,7 +9421,7 @@ HarmonyOS"></textarea>
     ];
     assetDatasets.event_property.columns = [
       ["name", "属性", "300px", true],
-      ["propertyKind", "资产类型", "125px", true],
+      ["propertyKind", "属性类型", "125px", true],
       ["type", "数据类型", "130px", true],
       ["dict", "字典", "150px", true],
       ["enum", "枚举", "90px", true],
@@ -9111,7 +9450,7 @@ HarmonyOS"></textarea>
     ];
     assetDatasets.user_property.columns = [
       ["name", "属性", "300px", true],
-      ["propertyKind", "资产类型", "125px", true],
+      ["propertyKind", "属性类型", "125px", true],
       ["type", "数据类型", "130px", true],
       ["dict", "字典", "150px", true],
       ["enum", "枚举", "90px", true],
@@ -10436,6 +10775,7 @@ HarmonyOS"></textarea>
       table?.classList.toggle("pending-field-mode", dataAssetState.type === "pending_asset" && dataAssetState.pendingTab === "field");
       table?.classList.toggle("asset-event-mode", dataAssetState.type === "event");
       table?.classList.toggle("asset-property-mode", ["event_property", "user_property"].includes(dataAssetState.type));
+      table?.classList.toggle("asset-dict-mode", dataAssetState.type === "dict");
       table?.classList.toggle("asset-pair-name-mode", ["table", "metric"].includes(dataAssetState.type));
       head.innerHTML = `<tr>${columns.map(([key, label, width, sortable]) => `<th style="width:${width}" class="${sortable ? "sortable" : ""} ${dataAssetState.sortKey === key ? dataAssetState.sortDir : ""}" ${sortable ? `data-asset-sort="${key}"` : ""}>${escapeHtml(label)}</th>`).join("")}</tr>`;
       const filtered = getFilteredAssets();
@@ -12234,19 +12574,47 @@ HarmonyOS"></textarea>
     renderAssetFilters();
     renderDataAssets();
 
+    const segmentPageState = { page: 1, pageSize: 10, lastRows: [] };
+
     const segmentListData = [
-      { kind: "dynamic", name: "超过1个月没有消费的高级会员", method: "人群圈选", domain: "会员", count: "42.8万", update: "每日 01:00", status: "运行中", badge: "green", app: "Push / 站内信" },
-      { kind: "dynamic", name: "近7天高活下载未付费用户", method: "人群圈选", domain: "主端", count: "86.5万", update: "每日 T+1", status: "运行中", badge: "green", app: "App 弹窗" },
+      { kind: "dynamic", name: "超过1个月没有消费的高级会员", method: "规则创建", domain: "会员", count: "42.8万", update: "每日 01:00", status: "运行中", badge: "green", app: "Push / 站内信", isMine: true },
+      { kind: "dynamic", name: "近7天高活下载未付费用户", method: "规则创建", domain: "主端", count: "86.5万", update: "每日 T+1", status: "运行中", badge: "green", app: "App 弹窗", isMine: true },
       { kind: "dynamic", name: "会员到期前7天可召回人群", method: "标签与行为组合", domain: "会员", count: "21.6万", update: "每日 03:00", status: "已上线", badge: "green", app: "站内信" },
       { kind: "static", name: "生态渠道导入名单", method: "导入创建", domain: "生态", count: "18.4万", update: "静态快照", status: "待确认", badge: "amber", app: "分析洞察" },
       { kind: "static", name: "历史付费当前非会员名单包", method: "SQL 创建", domain: "会员", count: "96.8万", update: "手动覆盖", status: "已上线", badge: "green", app: "导出名单" },
       { kind: "static", name: "渠道联运白名单", method: "导入创建", domain: "生态", count: "7.2万", update: "静态快照", status: "已下线", badge: "gray", app: "渠道复盘" },
       { kind: "ab", name: "高活下载非会员转化实验", method: "人群交并差", domain: "主端", count: "128.1万", update: "每日 T+1", status: "已上线", badge: "green", app: "AB Test" },
       { kind: "ab", name: "会员权益价格敏感实验", method: "RFM 与人群交集", domain: "会员", count: "35.9万", update: "每日 01:00", status: "运行中", badge: "green", app: "AB Test" },
-      { kind: "ab", name: "新用户下载引导路径实验", method: "模板套用画布", domain: "主端", count: "52.3万", update: "每日 T+1", status: "草稿", badge: "amber", app: "AB Test" }
+      { kind: "ab", name: "新用户下载引导路径实验", method: "模板套用画布", domain: "主端", count: "52.3万", update: "每日 T+1", status: "草稿", badge: "amber", app: "AB Test", isMine: true }
     ];
 
+    function refreshSegmentNavCounts() {
+      const counts = segmentListData.reduce((acc, row) => {
+        acc.all += 1;
+        acc[row.kind] = (acc[row.kind] || 0) + 1;
+        if (row.isMine || row.createdBy === currentAssetOperator) acc.mine += 1;
+        if (row.status === "草稿") acc.draft += 1;
+        return acc;
+      }, { all: 0, mine: 0, draft: 0, dynamic: 0, static: 0, ab: 0 });
+      Object.entries(counts).forEach(([key, value]) => {
+        document.querySelectorAll(`[data-segment-count="${key}"]`).forEach(el => { el.textContent = value; });
+      });
+    }
+
+    function syncSegmentLocalNav() {
+      document.querySelectorAll("[data-segment-nav]").forEach(btn => {
+        const mode = btn.dataset.segmentMode || "list";
+        const filter = btn.dataset.segmentListFilter || "";
+        const active = mode === "list"
+          ? currentSegmentMode === "list" && (filter && filter !== "all" ? currentSegmentListFilter === filter : currentSegmentListFilter === "all")
+          : currentSegmentMode === mode;
+        btn.classList.toggle("active", active);
+      });
+    }
+
     function segmentFilterFromSideKey() {
+      if (currentSideKey.endsWith(":mine")) return "mine";
+      if (currentSideKey.endsWith(":draft")) return "draft";
       if (currentSideKey.endsWith(":dynamic")) return "dynamic";
       if (currentSideKey.endsWith(":static")) return "static";
       if (currentSideKey.endsWith(":ab")) return "ab";
@@ -12254,16 +12622,59 @@ HarmonyOS"></textarea>
     }
 
     function segmentSideKeyFromFilter(filter) {
+      if (filter === "mine") return "segments:list:mine";
+      if (filter === "draft") return "segments:list:draft";
       if (filter === "dynamic") return "segments:list:dynamic";
       if (filter === "static") return "segments:list:static";
       if (filter === "ab") return "segments:list:ab";
       return "segments:list";
     }
 
+    function segmentSelectedFilterValues(id) {
+      const select = document.getElementById(id);
+      if (!select) return [];
+      return Array.from(select.selectedOptions || [])
+        .map(opt => opt.value)
+        .filter(value => value && value !== "all");
+    }
+
+    function segmentFilterValueMatches(selectedValues, rowValue) {
+      return !selectedValues.length || selectedValues.includes(rowValue);
+    }
+
+    function segmentListSearchFilters() {
+      return {
+        keyword: (document.getElementById("segmentSearchInput")?.value || "").trim().toLowerCase(),
+        method: segmentSelectedFilterValues("segmentMethodFilter"),
+        domain: segmentSelectedFilterValues("segmentDomainFilter"),
+        status: segmentSelectedFilterValues("segmentStatusFilter")
+      };
+    }
+
     function renderSegmentList(filter = currentSegmentListFilter) {
-      const rows = segmentListData.filter(row => filter === "all" || row.kind === filter);
+      const listFilters = segmentListSearchFilters();
+      const filteredRows = segmentListData.filter(row => {
+        if (filter === "all") return true;
+        if (filter === "mine") return row.isMine || row.createdBy === currentAssetOperator;
+        if (filter === "draft") return row.status === "草稿";
+        return row.kind === filter;
+      }).filter(row => {
+        if (!segmentFilterValueMatches(listFilters.method, row.method)) return false;
+        if (!segmentFilterValueMatches(listFilters.domain, row.domain)) return false;
+        if (!segmentFilterValueMatches(listFilters.status, row.status)) return false;
+        if (!listFilters.keyword) return true;
+        const haystack = [row.name, row.method, row.domain, row.status, row.app, row.update].join(" ").toLowerCase();
+        return haystack.includes(listFilters.keyword);
+      });
+      segmentPageState.lastRows = filteredRows;
+      segmentPageState.pageSize = Number(document.getElementById("segmentPageSize")?.value || segmentPageState.pageSize || 10);
+      const totalPages = Math.max(1, Math.ceil(filteredRows.length / segmentPageState.pageSize));
+      segmentPageState.page = clampPageNumber(segmentPageState.page, totalPages);
+      const start = (segmentPageState.page - 1) * segmentPageState.pageSize;
+      const rows = filteredRows.slice(start, start + segmentPageState.pageSize);
       const tableBody = document.getElementById("segmentListRows");
       if (!tableBody) return;
+      refreshSegmentNavCounts();
       tableBody.innerHTML = rows.map(row => `
         <tr>
           <td><span class="tag-name">${row.name}</span></td>
@@ -12274,15 +12685,31 @@ HarmonyOS"></textarea>
           <td><span class="badge ${row.badge}">${row.status}</span></td>
           <td>${row.app}</td>
         </tr>
-      `).join("");
+      `).join("") || `<tr><td colspan="7"><div class="empty" style="min-height:180px">暂无匹配分群</div></td></tr>`;
+      const footer = document.getElementById("segmentFooterMeta");
+      if (footer) footer.textContent = `共 ${filteredRows.length} 条，当前第 ${segmentPageState.page} 页 / ${totalPages} 页`;
+      const pageInput = document.getElementById("segmentPageInput");
+      const totalEl = document.getElementById("segmentTotalPages");
+      if (pageInput) {
+        pageInput.value = String(segmentPageState.page);
+        pageInput.min = "1";
+        pageInput.max = String(totalPages);
+      }
+      if (totalEl) totalEl.textContent = String(totalPages);
+      const prev = document.getElementById("segmentPrevPage");
+      const next = document.getElementById("segmentNextPage");
+      if (prev) prev.disabled = segmentPageState.page <= 1;
+      if (next) next.disabled = segmentPageState.page >= totalPages;
     }
 
     function setSegmentListFilter(filter = "all", options = {}) {
+      if (currentSegmentListFilter !== filter) segmentPageState.page = 1;
       currentSegmentListFilter = filter;
       document.querySelectorAll("[data-segment-list-filter]").forEach(tab => {
         tab.classList.toggle("active", tab.dataset.segmentListFilter === filter);
       });
       renderSegmentList(filter);
+      syncSegmentLocalNav();
       if (options.syncSide && activeView === "segment") {
         currentSideKey = segmentSideKeyFromFilter(filter);
         renderSideMenu("segments", "segment");
@@ -12290,6 +12717,16 @@ HarmonyOS"></textarea>
     }
 
     renderSegmentList();
+    syncSegmentLocalNav();
+
+    function mountSegmentRuleCreatePage() {
+      const host = document.getElementById("segmentRuleCreateHost");
+      const canvasPanel = document.getElementById("segmentModeCanvas");
+      if (host && canvasPanel && canvasPanel.parentElement !== host) {
+        host.appendChild(canvasPanel);
+      }
+    }
+    mountSegmentRuleCreatePage();
 
     function switchView(id, options = {}) {
       const shouldTrack = options.trackHistory !== false;
@@ -12301,6 +12738,7 @@ HarmonyOS"></textarea>
       document.querySelectorAll(".module-tab").forEach(tab => tab.classList.toggle("active", tab.dataset.module === currentModule));
       renderSideMenu(currentModule, id);
       if (id === "data") resetMetadataCenterDefault();
+      if (id === "segment" && currentSegmentMode === "canvas") setSegmentMode("list");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -12319,9 +12757,30 @@ HarmonyOS"></textarea>
         btn.classList.toggle("active", btn.dataset.segmentMode === mode);
       });
       if (mode === "list") setSegmentListFilter(segmentFilterFromSideKey());
+      else syncSegmentLocalNav();
       if (activeView === "segment") renderSideMenu("segments", "segment");
       if (mode === "canvas") renderSegmentCanvas();
       updateSegmentPrimaryAction();
+    }
+
+    function resetSegmentRuleDraft() {
+      segmentCards = [];
+      updateSegmentDraft();
+      renderSegmentCanvas();
+    }
+
+    function openSegmentRuleCreatePage(options = {}) {
+      currentSideKey = "segments:canvas";
+      switchView("segment-create", { trackHistory: options.trackHistory !== false });
+      setSegmentMode("canvas");
+      if (options.reset) resetSegmentRuleDraft();
+    }
+
+    function backToSegmentList() {
+      currentSideKey = segmentSideKeyFromFilter("all");
+      switchView("segment", { trackHistory: false });
+      setSegmentMode("list");
+      setSegmentListFilter("all", { syncSide: true });
     }
 
     function updateSegmentPrimaryAction() {
@@ -12331,16 +12790,100 @@ HarmonyOS"></textarea>
     }
 
     document.querySelectorAll("[data-segment-mode]").forEach(btn => {
-      btn.addEventListener("click", () => setSegmentMode(btn.dataset.segmentMode));
+      btn.addEventListener("click", () => {
+        if (btn.dataset.segmentMode === "canvas") {
+          openSegmentRuleCreatePage();
+          return;
+        }
+        const filter = btn.dataset.segmentListFilter;
+        if (filter) currentSideKey = segmentSideKeyFromFilter(filter);
+        else currentSideKey = `segments:${btn.dataset.segmentMode}`;
+        setSegmentMode(btn.dataset.segmentMode);
+        if (filter) setSegmentListFilter(filter);
+      });
     });
 
     document.querySelectorAll("[data-segment-mode-jump]").forEach(btn => {
-      btn.addEventListener("click", () => setSegmentMode(btn.dataset.segmentModeJump));
+      btn.addEventListener("click", () => {
+        if (btn.dataset.segmentModeJump === "canvas") openSegmentRuleCreatePage();
+        else setSegmentMode(btn.dataset.segmentModeJump);
+      });
     });
     document.getElementById("segmentListTabs").addEventListener("click", event => {
       const tab = event.target.closest("[data-segment-list-filter]");
       if (!tab) return;
       setSegmentListFilter(tab.dataset.segmentListFilter, { syncSide: true });
+    });
+    ["segmentSearchInput", "segmentMethodFilter", "segmentDomainFilter", "segmentStatusFilter"].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener(id === "segmentSearchInput" ? "input" : "change", () => {
+        segmentPageState.page = 1;
+        renderSegmentList();
+      });
+    });
+    document.getElementById("segmentPageSize")?.addEventListener("change", e => {
+      segmentPageState.pageSize = Number(e.target.value || 10);
+      segmentPageState.page = 1;
+      renderSegmentList();
+    });
+    function commitSegmentPageInput() {
+      const input = document.getElementById("segmentPageInput");
+      if (!input) return;
+      const totalPages = Math.max(1, Math.ceil((segmentPageState.lastRows?.length || 0) / segmentPageState.pageSize));
+      segmentPageState.page = clampPageNumber(input.value, totalPages);
+      renderSegmentList();
+    }
+    document.getElementById("segmentPageInput")?.addEventListener("change", commitSegmentPageInput);
+    document.getElementById("segmentPageInput")?.addEventListener("keydown", e => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      commitSegmentPageInput();
+      e.currentTarget.blur();
+    });
+    document.getElementById("segmentPrevPage")?.addEventListener("click", () => {
+      segmentPageState.page = Math.max(1, segmentPageState.page - 1);
+      renderSegmentList();
+    });
+    document.getElementById("segmentNextPage")?.addEventListener("click", () => {
+      const totalPages = Math.max(1, Math.ceil((segmentPageState.lastRows?.length || 0) / segmentPageState.pageSize));
+      segmentPageState.page = Math.min(totalPages, segmentPageState.page + 1);
+      renderSegmentList();
+    });
+
+    const segmentCreateModal = document.getElementById("segmentCreateModal");
+    function openSegmentCreateModal() {
+      segmentCreateModal?.classList.add("show");
+    }
+    function closeSegmentCreateModal() {
+      segmentCreateModal?.classList.remove("show");
+    }
+    document.getElementById("openSegmentCreateModal")?.addEventListener("click", openSegmentCreateModal);
+    document.getElementById("closeSegmentCreateModal")?.addEventListener("click", closeSegmentCreateModal);
+    segmentCreateModal?.addEventListener("click", event => {
+      if (event.target === segmentCreateModal) {
+        closeSegmentCreateModal();
+        return;
+      }
+      const choice = event.target.closest("[data-segment-create-choice]");
+      if (!choice) return;
+      const mode = choice.dataset.segmentCreateChoice || "canvas";
+      closeSegmentCreateModal();
+      if (mode === "canvas") {
+        openSegmentRuleCreatePage({ reset: true });
+      } else {
+        currentSideKey = `segments:${mode}`;
+        switchView("segment");
+        setSegmentMode(mode);
+      }
+      const modeLabel = { canvas: "规则创建", import: "导入创建", sql: "SQL 创建" }[mode] || "规则创建";
+      showToast(`已进入${modeLabel}`);
+    });
+
+    document.getElementById("backSegmentListFromCreate")?.addEventListener("click", backToSegmentList);
+    document.getElementById("saveSegmentRuleCreateTop")?.addEventListener("click", () => {
+      const name = document.getElementById("segmentNameInput")?.value.trim() || "未命名人群";
+      showToast(`人群已保存：${name}`);
     });
 
     renderSideMenu("home", "home");
@@ -12600,8 +13143,7 @@ HarmonyOS"></textarea>
       });
       renderSegmentCanvas();
       closeSqlImport();
-      switchView("segment");
-      setSegmentMode("canvas");
+      openSegmentRuleCreatePage();
       showToast("SQL 已导入画布");
     }
     document.getElementById("closeSqlImport").addEventListener("click", closeSqlImport);
@@ -12769,7 +13311,7 @@ HarmonyOS"></textarea>
       const builderTitle = document.getElementById("segmentBuilderTitle");
       const nameInput = document.getElementById("segmentNameInput");
       const remark = document.getElementById("segmentRemark");
-      builderTitle.textContent = template ? `人群圈选：${template.title}` : "人群圈选：自定义人群";
+      builderTitle.textContent = template ? `规则创建：${template.title}` : "规则创建：自定义人群";
       nameInput.value = template?.name || "";
       remark.value = template?.remark || "";
     }
@@ -12781,8 +13323,7 @@ HarmonyOS"></textarea>
       normalizeOperators();
       updateSegmentDraft(template);
       renderSegmentCanvas();
-      switchView("segment");
-      setSegmentMode("canvas");
+      openSegmentRuleCreatePage();
       showToast(`已套用模板：${template.title}`);
     }
 
@@ -14552,8 +15093,7 @@ where dt = '\${bizdate}'</textarea></div>
       if (createButton) {
         const type = createButton.dataset.createRfmAudience || currentRfmInsightType;
         addSegmentCard({ type: "rfm", title: type, meta: "从RFM分析洞察创建" });
-        switchView("segment");
-        setSegmentMode("canvas");
+        openSegmentRuleCreatePage();
         showToast(`已从 RFM 洞察创建人群：${type}`);
       }
     });
@@ -14590,8 +15130,8 @@ where dt = '\${bizdate}'</textarea></div>
     });
     document.getElementById("segmentPrimaryAction")?.addEventListener("click", () => {
       if (currentSegmentMode === "list") {
-        setSegmentMode("canvas");
-        showToast("已进入人群圈选");
+        openSegmentRuleCreatePage({ reset: true });
+        showToast("已进入规则创建");
         return;
       }
       const name = document.getElementById("segmentNameInput")?.value.trim() || "未命名人群";
@@ -16064,6 +16604,8 @@ where dt = '\${bizdate}'</textarea></div>
       .forEach(select => makeSearchSelect(select, { placeholder:'搜索筛选项', multi:true, clearable:true }));
     root.querySelectorAll('#view-tags .tag-filter-grid select')
       .forEach(select => makeSearchSelect(select, { placeholder:'搜索筛选项', multi:true, clearable:true }));
+    root.querySelectorAll('#view-segment .segment-list-filters select.asset-filter-control')
+      .forEach(select => makeSearchSelect(select, { placeholder:'搜索筛选项', multi:true, clearable:true }));
   };
 
   window.enhanceXlRuleAssetSelects = function(){
@@ -16559,7 +17101,7 @@ where dt = '\${bizdate}'</textarea></div>
   min-width: 1420px !important;
 }
 #view-data .asset-meta-table.asset-event-mode {
-  min-width: 1545px !important;
+  min-width: 1485px !important;
 }
 #view-data .asset-meta-table.asset-property-mode {
   min-width: 1335px !important;
@@ -16567,8 +17109,6 @@ where dt = '\${bizdate}'</textarea></div>
 #view-data .asset-meta-table.pending-field-mode {
   min-width: 1760px !important;
 }
-#view-data .asset-meta-table.asset-event-mode th:nth-child(1),
-#view-data .asset-meta-table.asset-event-mode td:nth-child(1),
 #view-data .asset-meta-table.asset-property-mode th:nth-child(1),
 #view-data .asset-meta-table.asset-property-mode td:nth-child(1),
 #view-data .asset-meta-table.pending-field-mode th:nth-child(1),
@@ -16576,6 +17116,12 @@ where dt = '\${bizdate}'</textarea></div>
   width: 300px !important;
   min-width: 300px !important;
   max-width: 300px !important;
+}
+#view-data .asset-meta-table.asset-event-mode th:nth-child(1),
+#view-data .asset-meta-table.asset-event-mode td:nth-child(1) {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
 }
 #view-data .asset-meta-table.asset-event-mode th:nth-child(2),
 #view-data .asset-meta-table.asset-event-mode td:nth-child(2) {
@@ -17613,12 +18159,148 @@ where dt = '\${bizdate}'</textarea></div>
   grid-template-columns: minmax(360px, 1.5fr) repeat(2, minmax(150px, 180px)) !important;
   align-items: end !important;
 }
-#view-tags .tag-filter-field .rt-rule-search-select {
+#view-tags .tag-directory-panel {
+  padding: 0 !important;
+  border: 1px solid var(--asset-border) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.07) !important;
+}
+#view-tags .tag-directory-panel > .panel-head {
+  min-height: 54px !important;
+  padding: 10px 16px !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+  border-bottom: 1px solid #dbe7f6 !important;
+  background: linear-gradient(90deg, #eef8ff 0%, #f4f1ff 58%, #eefdf8 100%) !important;
+  box-shadow: none !important;
+}
+#view-tags .tag-directory-panel > .panel-head .panel-title {
+  font-size: 18px !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+#view-tags .tag-directory-panel .workspace {
+  display: grid !important;
+  grid-template-columns: 218px minmax(0, 1fr) !important;
+  gap: 0 !important;
+  align-items: stretch !important;
+  min-height: 560px !important;
+}
+#view-tags .tag-directory-panel .tree {
+  padding: 16px 10px !important;
+  background: linear-gradient(180deg, #fbfcff 0%, #f7f9fc 100%) !important;
+  border-right: 1px solid var(--asset-border) !important;
+}
+#view-tags #openCreateTag {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  height: 46px !important;
+  margin: 0 0 22px 0 !important;
+  border: 2px solid transparent !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+  color: #635bff !important;
+  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+}
+#view-tags #openCreateTag:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+}
+#view-tags .tag-directory-panel .tree-group {
+  margin: 0 0 12px !important;
+}
+#view-tags .tag-directory-panel .tree-title {
+  margin: 14px 12px 8px !important;
+  color: #7b8497 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .02em !important;
+}
+#view-tags .tag-directory-panel .tree-row {
+  width: 100% !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-left: 3px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #374151 !important;
+  font-size: 13px !important;
+  font-weight: 760 !important;
+}
+#view-tags .tag-directory-panel .tree-row:hover {
+  background: #eef6ff !important;
+  color: #0f172a !important;
+}
+#view-tags .tag-directory-panel .tree-row.active {
+  background: #e6faf3 !important;
+  border-left-color: var(--asset-green) !important;
+  color: var(--asset-green-strong) !important;
+  box-shadow: none !important;
+}
+#view-tags .tag-directory-panel .tree-row .count {
+  margin-left: auto !important;
+  color: #667085 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+}
+#view-tags .tag-directory-panel .tree-row.active .count {
+  color: var(--asset-green-strong) !important;
+}
+#view-tags .tag-directory-panel .content {
+  min-width: 0 !important;
+  padding: 14px 16px 16px !important;
+  background: #fff !important;
+  overflow: visible !important;
+}
+#view-tags .tag-directory-panel .tag-filter-grid {
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#view-tags .tag-table-scroll {
+  border: 1px solid #edf1f8 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  overflow: auto !important;
+}
+#view-tags .tag-table th {
+  background: #f8fafd !important;
+  color: #526071 !important;
+  font-size: 12px !important;
+  padding: 12px !important;
+}
+#view-tags .tag-table td {
+  padding: 13px 12px !important;
+  vertical-align: middle !important;
+  color: #263142 !important;
+  background: #fff !important;
+}
+#view-data .asset-filter-field .rt-rule-search-select,
+#view-tags .tag-filter-field .rt-rule-search-select,
+#view-segment .segment-list-filters .rt-rule-search-select {
   display: block !important;
   width: 100% !important;
   min-width: 0 !important;
 }
-#view-tags .tag-filter-field .rt-rule-search-trigger {
+#view-data .asset-filter-field .rt-rule-search-trigger,
+#view-tags .tag-filter-field .rt-rule-search-trigger,
+#view-segment .segment-list-filters .rt-rule-search-trigger {
   width: 100% !important;
   min-width: 0 !important;
   height: 40px !important;
@@ -17627,10 +18309,226 @@ where dt = '\${bizdate}'</textarea></div>
   font-weight: 750 !important;
   box-shadow: none !important;
 }
-#view-tags .tag-filter-field .rt-rule-search-trigger:focus {
+#view-data .asset-filter-field .rt-rule-search-trigger:focus,
+#view-tags .tag-filter-field .rt-rule-search-trigger:focus,
+#view-segment .segment-list-filters .rt-rule-search-trigger:focus {
   outline: none !important;
+}
+#view-data .asset-meta-table.asset-dict-mode {
+  min-width: 1160px !important;
+}
+#view-data .asset-meta-table.asset-dict-mode th:nth-child(2),
+#view-data .asset-meta-table.asset-dict-mode td:nth-child(2) {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+}
+#view-data .data-asset-nav-panel > #manualAssetBtn {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10 !important;
+  flex: 0 0 36px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  margin: 0 0 22px !important;
+  pointer-events: auto !important;
+}
+#view-segment .data-asset-layout {
+  --asset-nav-width: 218px;
+  grid-template-columns: var(--asset-nav-width) minmax(0, 1fr) !important;
+  gap: 0 !important;
+}
+#view-segment .data-asset-nav-panel {
+  padding-top: 16px !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+  align-self: start !important;
+}
+#view-segment .data-asset-main-panel {
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+#view-segment .segment-list-shell {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#view-segment .data-asset-main-panel .data-asset-head {
+  position: relative !important;
+  z-index: 3 !important;
+  width: calc(100% + var(--asset-nav-width)) !important;
+  min-height: 54px !important;
+  margin-left: calc(-1 * var(--asset-nav-width)) !important;
+  padding: 10px 16px !important;
+  box-sizing: border-box !important;
+  border-bottom: 1px solid #dbe7f6 !important;
+  background: linear-gradient(90deg, #eef8ff 0%, #f4f1ff 58%, #eefdf8 100%) !important;
+}
+#view-segment .data-asset-main-panel .panel-title {
+  font-size: 18px !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+#view-segment .data-asset-main-panel .panel-sub {
+  margin-top: 4px !important;
+  color: #667085 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+#view-segment .segment-list-content {
+  padding: 14px 16px 16px !important;
+}
+#view-segment .segment-list-filters {
+  display: grid !important;
+  grid-template-columns: minmax(320px, 1.35fr) repeat(3, minmax(140px, 180px)) !important;
+  gap: 12px !important;
+  align-items: end !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#view-segment .segment-list-filters .asset-filter-field {
+  display: grid !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+#view-segment .segment-list-filters label {
+  color: #667085 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+}
+#view-segment .segment-list-filters .field,
+#view-segment .segment-list-filters .select {
+  width: 100% !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  border-color: #dfe6f2 !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+#view-segment .segment-list-filters .field:focus,
+#view-segment .segment-list-filters .select:focus {
+  border-color: #635bff !important;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, .10) !important;
+}
+#view-segment .segment-search-single .field {
+  padding-left: 36px !important;
+  background-image: linear-gradient(transparent, transparent), url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%2392A0B4' d='M6.7 1.5a5.2 5.2 0 0 1 4.13 8.36l2.66 2.65a.7.7 0 0 1-.99.99l-2.65-2.66A5.2 5.2 0 1 1 6.7 1.5Zm0 1.4a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: 12px center !important;
+}
+#view-segment .segment-table-wrap {
+  border: 1px solid #edf1f8 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  overflow: auto !important;
+}
+#view-segment .segment-list-table {
+  min-width: 980px !important;
+}
+#view-segment .segment-list-table th {
+  background: #f8fafd !important;
+  color: #526071 !important;
+  font-size: 12px !important;
+  padding: 12px !important;
+}
+#view-segment .segment-list-table td {
+  padding: 13px 12px !important;
+  vertical-align: middle !important;
+  color: #263142 !important;
+  background: #fff !important;
+}
+#view-segment .segment-nav-item {
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  border: 0 !important;
+  border-left: 3px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #374151 !important;
+  gap: 8px !important;
+  font-weight: 760 !important;
+}
+#view-segment .segment-nav-item:hover {
+  background: #eef6ff !important;
+  border-left-color: transparent !important;
+  color: #0f172a !important;
+}
+#view-segment .segment-nav-item.active {
+  background: #e6faf3 !important;
+  border-left-color: var(--asset-green) !important;
+  color: var(--asset-green-strong) !important;
+  box-shadow: none !important;
+}
+#view-segment .segment-nav-item.active em {
+  color: var(--asset-green-strong) !important;
+}
+#view-segment #openSegmentCreateModal {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10 !important;
+  flex: 0 0 46px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  height: 46px !important;
+  margin: 0 0 22px 0 !important;
+  border: 2px solid transparent !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+  color: #635bff !important;
+  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+  pointer-events: auto !important;
+}
+#view-segment #openSegmentCreateModal:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+}
+#view-segment .segment-main-panel > .segment-mode:not(#segmentModeList) {
+  padding: 16px !important;
+}
+@media (max-width: 1320px) {
+  #view-segment .data-asset-layout {
+    --asset-nav-width: 204px;
+  }
 }
 
   </style>
+<script>
+  (function () {
+    const DESIGN_WIDTH = 1080;
+    const MIN_SCALE = 0.55;
+    function applyResponsiveScale() {
+      const viewport = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      const scale = Math.max(MIN_SCALE, Math.min(1, viewport / DESIGN_WIDTH));
+      document.documentElement.style.setProperty("--ui-scale", scale.toFixed(4));
+      document.body.classList.toggle("ui-scaled", scale < 0.999);
+    }
+    window.addEventListener("resize", applyResponsiveScale, { passive: true });
+    window.addEventListener("orientationchange", applyResponsiveScale, { passive: true });
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", applyResponsiveScale, { once: true });
+    } else {
+      applyResponsiveScale();
+    }
+  })();
+</script>
 </body>
 </html>
