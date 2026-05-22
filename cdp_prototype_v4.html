@@ -1819,20 +1819,37 @@
       overflow: auto;
     }
 
+    #segmentModeCanvas .asset-list #assetSearch {
+      position: sticky;
+      top: 8px;
+      z-index: 12;
+      display: block;
+      margin-bottom: 10px;
+      background: #fff;
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.94), 0 8px 18px rgba(15, 23, 42, 0.06);
+    }
+
     .asset-list .tree-group {
       margin-top: 12px;
-      padding: 10px;
+      padding: 8px;
       border: 1px solid color-mix(in srgb, var(--section-color, #cbd4e6) 24%, var(--line));
       border-radius: 8px;
       background: var(--section-bg, #fbfcff);
     }
 
     .asset-list .tree-title {
-      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 7px;
+      min-height: 32px;
+      margin: 0;
+      padding: 0 8px;
+      border-radius: 7px;
       color: var(--section-color, var(--muted));
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .asset-list .tree-title::before {
@@ -1842,6 +1859,52 @@
       border-radius: 999px;
       background: var(--section-color, var(--muted));
       box-shadow: 0 0 0 4px color-mix(in srgb, var(--section-color, #667085) 12%, transparent);
+    }
+
+    .asset-list .tree-title:hover {
+      background: color-mix(in srgb, var(--section-color, #667085) 10%, #fff);
+    }
+
+    .asset-section-caret {
+      margin-left: auto;
+      color: var(--section-color, var(--muted));
+      font-size: 13px;
+      line-height: 1;
+      transition: transform 0.16s ease;
+    }
+
+    .asset-section.collapsed .asset-section-caret {
+      transform: rotate(-90deg);
+    }
+
+    .asset-section-body {
+      max-height: 402px;
+      margin-top: 8px;
+      padding-right: 4px;
+      overflow-y: auto;
+      transition: max-height 0.18s ease, margin-top 0.18s ease, opacity 0.16s ease;
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in srgb, var(--section-color, #94a3b8) 48%, #d8e1ef) transparent;
+    }
+
+    .asset-section-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .asset-section-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .asset-section-body::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--section-color, #94a3b8) 44%, #d8e1ef);
+    }
+
+    .asset-section.collapsed .asset-section-body {
+      max-height: 0;
+      margin-top: 0;
+      opacity: 0;
+      overflow: hidden;
     }
 
     .tag-section { --section-color: #635bff; --section-bg: #f8f7ff; }
@@ -7091,20 +7154,12 @@
 <div>
 <div class="preview-stat">
 <div class="stat-box">
-<div class="stat-label">初始命中</div>
-<div class="stat-value" id="segmentInitial">188.4万</div>
-</div>
-<div class="stat-box">
-<div class="stat-label">最终可触达</div>
+<div class="stat-label">可触达用户</div>
 <div class="stat-value" id="segmentReachable">128.1万</div>
 </div>
 <div class="stat-box">
 <div class="stat-label">排除用户</div>
 <div class="stat-value" id="segmentExcluded" style="color:var(--red)">60.3万</div>
-</div>
-<div class="stat-box">
-<div class="stat-label">预计首购率</div>
-<div class="stat-value" id="segmentConversionRate">待预估</div>
 </div>
 </div>
 <div class="section-title">不可触达原因</div>
@@ -7150,8 +7205,8 @@
 </div>
 </div>
 <div class="save-actions">
-<button class="btn primary" id="segmentEstimate" type="button">预估</button>
-<button class="btn primary" id="generateAudience" type="button">生成人群保存</button>
+<button class="btn primary" id="segmentEstimate" type="button">计算昨日</button>
+<button class="btn primary" id="generateAudience" type="button">保存</button>
 </div>
 </div>
 </div>
@@ -7339,10 +7394,17 @@ WHERE dt = '${bizdate}'
 <div class="asset-table-wrap segment-table-wrap">
 <table class="data-asset-table segment-list-table">
 <colgroup>
-<col style="width:25%"/>
-<col span="6" style="width:12.5%"/>
+<col style="width:280px"/>
+<col style="width:140px"/>
+<col style="width:160px"/>
+<col style="width:150px"/>
+<col style="width:160px"/>
+<col style="width:190px"/>
+<col style="width:150px"/>
+<col style="width:150px"/>
+<col style="width:156px"/>
 </colgroup>
-<thead><tr><th>分群名称</th><th>创建方式</th><th>业务域</th><th>人数</th><th>更新</th><th>状态</th><th>应用</th></tr></thead>
+<thead><tr><th class="segment-sticky-left">分群 <span class="segment-sort-mark">↕</span></th><th>分群 ID</th><th>人数 <span class="segment-sort-mark">↕</span></th><th>创建方式</th><th>创建者</th><th>创建时间</th><th>更新方式</th><th>应用</th><th class="segment-sticky-right">操作</th></tr></thead>
 <tbody id="segmentListRows"></tbody>
 </table>
 </div>
@@ -11099,7 +11161,7 @@ HarmonyOS"></textarea>
       const def = dataAssetCurrentDef();
       if (!row || !def) return;
       const now = Date.now();
-      const copy = structuredClone ? structuredClone(row) : JSON.parse(JSON.stringify(row));
+      const copy = typeof structuredClone === "function" ? structuredClone(row) : JSON.parse(JSON.stringify(row));
       copy.id = `copy_${dataAssetState.type}_${now}`;
       copy.name = `${row.name || row.display || "asset"}_copy`;
       copy.display = `${row.display || row.name || "资产"} 副本`;
@@ -12646,6 +12708,9 @@ HarmonyOS"></textarea>
       { kind: "ab", name: "会员权益价格敏感实验", method: "RFM 与人群交集", domain: "会员", count: "35.9万", update: "每日 01:00", status: "运行中", badge: "green", app: "AB Test" },
       { kind: "ab", name: "新用户下载引导路径实验", method: "模板套用画布", domain: "主端", count: "52.3万", update: "每日 T+1", status: "草稿", badge: "amber", app: "AB Test", isMine: true }
     ];
+    segmentListData.forEach((row, index) => {
+      row.id = row.id || `segment_${index + 1}`;
+    });
 
     function refreshSegmentNavCounts() {
       const counts = segmentListData.reduce((acc, row) => {
@@ -12710,6 +12775,135 @@ HarmonyOS"></textarea>
       };
     }
 
+    function segmentRowCode(row, index) {
+      if (row.code) return row.code;
+      const methodPrefix = {
+        "规则创建": "rule",
+        "导入创建": "import",
+        "SQL 创建": "sql",
+        "标签与行为组合": "combo",
+        "人群交并差": "mix",
+        "RFM 与人群交集": "rfm",
+        "模板套用画布": "canvas"
+      }[row.method] || row.kind || "segment";
+      return `user_group_${methodPrefix}_${String(index + 1).padStart(3, "0")}`;
+    }
+
+    function segmentGroupId(row, index) {
+      return row.groupId || String(51023 - index);
+    }
+
+    function segmentCreator(row, index) {
+      if (row.creator) return row.creator;
+      if (row.createdBy) return row.createdBy;
+      if (row.isMine) return currentAssetOperator;
+      return ["石日超", "郭宝丰", "雷婷婷"][index % 3];
+    }
+
+    function segmentCreatedAt(row, index) {
+      if (row.createdAtText) return row.createdAtText;
+      const dates = [
+        "2026-05-08 19:30:13",
+        "2026-04-21 16:47:54",
+        "2026-04-21 16:35:58",
+        "2026-04-19 12:44:24",
+        "2026-04-08 18:18:34"
+      ];
+      return dates[index % dates.length];
+    }
+
+    function segmentUpdateMode(row) {
+      const update = row.update || "";
+      if (update.includes("手动") || update.includes("静态")) return "手动";
+      return "例行";
+    }
+
+    function segmentCountNote(row) {
+      if (row.status === "草稿") return "草稿，暂未计算";
+      if (row.status === "待确认") return "等待确认后计算";
+      if (row.status === "已下线") return "已停止更新";
+      return "最近一次数据已更新";
+    }
+
+    function findSegmentRowIndex(id) {
+      return segmentListData.findIndex(row => row.id === id);
+    }
+
+    function findSegmentRow(id) {
+      const index = findSegmentRowIndex(id);
+      return index >= 0 ? segmentListData[index] : null;
+    }
+
+    function canEditSegment(row) {
+      return Boolean(row && (row.isMine || row.createdBy === currentAssetOperator || row.status === "草稿"));
+    }
+
+    function copySegmentRow(id) {
+      const row = findSegmentRow(id);
+      if (!row) return;
+      const now = Date.now();
+      const baseCode = row.code || segmentRowCode(row, findSegmentRowIndex(id));
+      const copy = typeof structuredClone === "function" ? structuredClone(row) : JSON.parse(JSON.stringify(row));
+      copy.id = `segment_copy_${now}`;
+      copy.name = `${row.name || "未命名人群"} 副本`;
+      copy.code = `${baseCode}_copy`;
+      copy.groupId = String(52000 + segmentListData.length + 1);
+      copy.count = "待计算";
+      copy.status = "草稿";
+      copy.badge = "amber";
+      copy.isMine = true;
+      copy.createdBy = currentAssetOperator;
+      copy.creator = currentAssetOperator;
+      copy.createdAtText = typeof getXlTodayString === "function" ? `${getXlTodayString()} 00:00:00` : "2026-05-22 00:00:00";
+      segmentListData.unshift(copy);
+      segmentPageState.page = 1;
+      refreshSegmentNavCounts();
+      renderSegmentList();
+      syncSegmentLocalNav();
+      showToast(`已复制为草稿：${copy.name}`);
+    }
+
+    function editSegmentRow(id) {
+      const row = findSegmentRow(id);
+      if (!row) return;
+      if (!canEditSegment(row)) {
+        showToast("只能编辑自己创建的人群；可先复制后编辑");
+        return;
+      }
+      if (row.method === "SQL 创建") {
+        currentSideKey = "segments:sql";
+        setSegmentMode("sql");
+        showToast(`正在编辑 SQL 人群：${row.name}`);
+        return;
+      }
+      if (row.method === "导入创建") {
+        currentSideKey = "segments:import";
+        setSegmentMode("import");
+        showToast(`正在编辑导入人群：${row.name}`);
+        return;
+      }
+      openSegmentRuleCreatePage({ reset: false });
+      showToast(`正在编辑规则人群：${row.name}`);
+    }
+
+    function deleteSegmentRow(id) {
+      const row = findSegmentRow(id);
+      const index = findSegmentRowIndex(id);
+      if (!row || index < 0) return;
+      if (!canEditSegment(row)) {
+        showToast("只能删除自己创建的人群；可先复制后编辑");
+        return;
+      }
+      if (!window.confirm(`确认删除「${row.name}」吗？`)) return;
+      segmentListData.splice(index, 1);
+      const totalPages = Math.max(1, Math.ceil(segmentListData.length / segmentPageState.pageSize));
+      segmentPageState.page = Math.min(segmentPageState.page, totalPages);
+      refreshSegmentNavCounts();
+      renderSegmentList();
+      syncSegmentLocalNav();
+      showToast(`已删除人群：${row.name}`);
+    }
+
     function renderSegmentList(filter = currentSegmentListFilter) {
       const listFilters = segmentListSearchFilters();
       const filteredRows = segmentListData.filter(row => {
@@ -12734,19 +12928,43 @@ HarmonyOS"></textarea>
       const tableBody = document.getElementById("segmentListRows");
       if (!tableBody) return;
       refreshSegmentNavCounts();
-      tableBody.innerHTML = rows.map(row => `
+      tableBody.innerHTML = rows.map((row, index) => {
+        const absoluteIndex = start + index;
+        const updateMode = segmentUpdateMode(row);
+        const editable = canEditSegment(row);
+        return `
         <tr>
-          <td><span class="tag-name">${row.name}</span></td>
-          <td>${row.method}</td>
-          <td>${row.domain}</td>
-          <td>${row.count}</td>
-          <td>${row.update}</td>
-          <td><span class="badge ${row.badge}">${row.status}</span></td>
-          <td>${row.app}</td>
+          <td class="segment-sticky-left segment-col-name">
+            <div class="segment-name-cell">
+              <div class="segment-name-main"><span class="segment-row-status-dot"></span><span class="segment-name-link">${escapeHtml(row.name)}</span><span class="segment-name-edit" aria-hidden="true">✎</span></div>
+              <div class="segment-name-code">${escapeHtml(segmentRowCode(row, absoluteIndex))}</div>
+            </div>
+          </td>
+          <td class="segment-id-cell">${escapeHtml(segmentGroupId(row, absoluteIndex))}</td>
+          <td>
+            <div class="segment-count-cell"><b>${escapeHtml(row.count || "--")}</b><span><i></i>${escapeHtml(segmentCountNote(row))}</span></div>
+          </td>
+          <td>${escapeHtml(row.method)}</td>
+          <td>${escapeHtml(segmentCreator(row, absoluteIndex))}</td>
+          <td>${escapeHtml(segmentCreatedAt(row, absoluteIndex))}</td>
+          <td><span class="segment-update-icon ${updateMode === "例行" ? "routine" : "manual"}"></span>${escapeHtml(updateMode)}</td>
+          <td>${escapeHtml(row.app || "-")}</td>
+          <td class="segment-sticky-right">
+            <span class="asset-action-row segment-action-row">
+              <button class="asset-action-link primary-link" data-segment-action="copy" data-segment-id="${escapeHtml(row.id)}" type="button" title="复制为我的人群草稿">复制</button>
+              <button class="asset-action-link ${editable ? "" : "disabled-link"}" data-segment-action="edit" data-segment-id="${escapeHtml(row.id)}" type="button" title="${editable ? "编辑人群" : "只能编辑自己创建的人群"}">编辑</button>
+              <button class="asset-action-link danger-link ${editable ? "" : "disabled-link"}" data-segment-action="delete" data-segment-id="${escapeHtml(row.id)}" type="button" title="${editable ? "删除人群" : "只能删除自己创建的人群"}">删除</button>
+            </span>
+          </td>
         </tr>
-      `).join("") || `<tr><td colspan="7"><div class="empty" style="min-height:180px">暂无匹配分群</div></td></tr>`;
+      `;
+      }).join("") || `<tr><td colspan="9"><div class="empty" style="min-height:180px">暂无匹配分群</div></td></tr>`;
       const footer = document.getElementById("segmentFooterMeta");
-      if (footer) footer.textContent = `共 ${filteredRows.length} 条，当前第 ${segmentPageState.page} 页 / ${totalPages} 页`;
+      if (footer) {
+        const visibleStart = filteredRows.length ? start + 1 : 0;
+        const visibleEnd = filteredRows.length ? Math.min(start + rows.length, filteredRows.length) : 0;
+        footer.textContent = `共 ${filteredRows.length} 行，当前展示 ${visibleStart} - ${visibleEnd} 行`;
+      }
       const pageInput = document.getElementById("segmentPageInput");
       const totalEl = document.getElementById("segmentTotalPages");
       if (pageInput) {
@@ -12872,6 +13090,15 @@ HarmonyOS"></textarea>
       const tab = event.target.closest("[data-segment-list-filter]");
       if (!tab) return;
       setSegmentListFilter(tab.dataset.segmentListFilter, { syncSide: true });
+    });
+    document.getElementById("segmentListRows")?.addEventListener("click", event => {
+      const btn = event.target.closest("[data-segment-action]");
+      if (!btn) return;
+      const id = btn.dataset.segmentId;
+      const action = btn.dataset.segmentAction;
+      if (action === "copy") copySegmentRow(id);
+      if (action === "edit") editSegmentRow(id);
+      if (action === "delete") deleteSegmentRow(id);
     });
     ["segmentSearchInput", "segmentMethodFilter", "segmentDomainFilter", "segmentStatusFilter"].forEach(id => {
       const el = document.getElementById(id);
@@ -14721,20 +14948,54 @@ where dt = '\${bizdate}'</textarea></div>
     function updateSegmentEstimate() {
       const count = segmentCards.length;
       if (!count) {
-        document.getElementById("segmentInitial").textContent = "0.0万";
         document.getElementById("segmentExcluded").textContent = "0.0万";
         document.getElementById("segmentReachable").textContent = "0.0万";
-        document.getElementById("segmentConversionRate").textContent = "待预估";
         return;
       }
       const initial = (96.8 + count * 30.4).toFixed(1);
       const excluded = segmentCards.some(card => card.type === "crowd") ? 60.3 : 42.3;
       const reachable = Math.max(12.4, Number(initial) - excluded).toFixed(1);
-      document.getElementById("segmentInitial").textContent = `${initial}万`;
       document.getElementById("segmentExcluded").textContent = `${excluded}万`;
       document.getElementById("segmentReachable").textContent = `${reachable}万`;
-      document.getElementById("segmentConversionRate").textContent = "1.8%";
     }
+
+    function setupAssetAccordions() {
+      const sections = Array.from(document.querySelectorAll("#segmentModeCanvas .asset-list .asset-section"));
+      sections.forEach((section, index) => {
+        const title = section.querySelector(":scope > .tree-title");
+        if (!title) return;
+        let body = section.querySelector(":scope > .asset-section-body");
+        if (!body) {
+          body = document.createElement("div");
+          body.className = "asset-section-body";
+          Array.from(section.querySelectorAll(":scope > .asset")).forEach(asset => body.appendChild(asset));
+          section.appendChild(body);
+        }
+        title.setAttribute("role", "button");
+        title.setAttribute("tabindex", "0");
+        title.setAttribute("aria-expanded", index === 0 ? "true" : "false");
+        if (!title.querySelector(".asset-section-caret")) {
+          const caret = document.createElement("span");
+          caret.className = "asset-section-caret";
+          caret.setAttribute("aria-hidden", "true");
+          caret.textContent = "⌄";
+          title.appendChild(caret);
+        }
+        section.classList.toggle("collapsed", index !== 0);
+        const toggleSection = () => {
+          const isCollapsed = section.classList.toggle("collapsed");
+          title.setAttribute("aria-expanded", String(!isCollapsed));
+        };
+        title.addEventListener("click", toggleSection);
+        title.addEventListener("keydown", event => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          toggleSection();
+        });
+      });
+    }
+
+    setupAssetAccordions();
 
     document.querySelectorAll(".asset").forEach(asset => {
       asset.draggable = true;
@@ -14762,6 +15023,10 @@ where dt = '\${bizdate}'</textarea></div>
           if (visible) visibleCount += 1;
         });
         group.classList.toggle("hidden", !groupVisible);
+        if (query && groupVisible) {
+          group.classList.remove("collapsed");
+          group.querySelector(":scope > .tree-title")?.setAttribute("aria-expanded", "true");
+        }
       });
       if (assetEmpty) assetEmpty.style.display = visibleCount ? "none" : "block";
     }
@@ -15207,13 +15472,13 @@ where dt = '\${bizdate}'</textarea></div>
       showToast(`人群已保存：${name}`);
     });
     document.getElementById("segmentEstimate").addEventListener("click", () => {
-      showToast("人群预估已刷新");
+      showToast("昨日人群已计算");
     });
     const generateAudience = document.getElementById("generateAudience");
     if (generateAudience) {
       generateAudience.addEventListener("click", () => {
         const name = document.getElementById("segmentNameInput").value.trim() || "未命名人群";
-        showToast(`已生成人群：${name}`);
+        showToast(`人群已保存：${name}`);
       });
     }
 
@@ -18499,21 +18764,241 @@ where dt = '\${bizdate}'</textarea></div>
   border-radius: 12px !important;
   background: #fff !important;
   overflow: auto !important;
+  max-height: 520px !important;
+  scrollbar-gutter: stable !important;
 }
 #view-segment .segment-list-table {
-  min-width: 980px !important;
+  min-width: 1540px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: fixed !important;
+}
+#view-segment .segment-list-table th:nth-child(1),
+#view-segment .segment-list-table td:nth-child(1) {
+  width: 280px !important;
+  min-width: 280px !important;
+}
+#view-segment .segment-list-table th:nth-child(2),
+#view-segment .segment-list-table td:nth-child(2) {
+  width: 140px !important;
+  min-width: 140px !important;
+}
+#view-segment .segment-list-table th:nth-child(3),
+#view-segment .segment-list-table td:nth-child(3) {
+  width: 160px !important;
+  min-width: 160px !important;
+}
+#view-segment .segment-list-table th:nth-child(4),
+#view-segment .segment-list-table td:nth-child(4) {
+  width: 150px !important;
+  min-width: 150px !important;
+}
+#view-segment .segment-list-table th:nth-child(5),
+#view-segment .segment-list-table td:nth-child(5) {
+  width: 160px !important;
+  min-width: 160px !important;
+}
+#view-segment .segment-list-table th:nth-child(6),
+#view-segment .segment-list-table td:nth-child(6) {
+  width: 190px !important;
+  min-width: 190px !important;
+}
+#view-segment .segment-list-table th:nth-child(7),
+#view-segment .segment-list-table td:nth-child(7),
+#view-segment .segment-list-table th:nth-child(8),
+#view-segment .segment-list-table td:nth-child(8) {
+  width: 150px !important;
+  min-width: 150px !important;
+}
+#view-segment .segment-list-table th:nth-child(9),
+#view-segment .segment-list-table td:nth-child(9) {
+  width: 156px !important;
+  min-width: 156px !important;
 }
 #view-segment .segment-list-table th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3 !important;
   background: #f8fafd !important;
-  color: #526071 !important;
-  font-size: 12px !important;
-  padding: 12px !important;
+  color: #1f2937 !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  padding: 16px 18px !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  border-bottom: 1px solid #dfe7f2 !important;
 }
 #view-segment .segment-list-table td {
-  padding: 13px 12px !important;
+  height: 74px !important;
+  padding: 16px 18px !important;
   vertical-align: middle !important;
-  color: #263142 !important;
+  color: #405066 !important;
   background: #fff !important;
+  border-bottom: 1px solid #dfe7f2 !important;
+  font-size: 14px !important;
+  font-weight: 760 !important;
+  white-space: nowrap !important;
+}
+#view-segment .segment-list-table tbody tr:first-child td {
+  background: #eefdfc !important;
+}
+#view-segment .segment-list-table tbody tr:hover td {
+  background: #f8fbff !important;
+}
+#view-segment .segment-list-table th.segment-sticky-left,
+#view-segment .segment-list-table td.segment-sticky-left {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 4 !important;
+  background: #fff !important;
+  box-shadow: 1px 0 0 #e6edf5 !important;
+}
+#view-segment .segment-list-table th.segment-sticky-left {
+  z-index: 7 !important;
+  background: #f8fafd !important;
+}
+#view-segment .segment-list-table th.segment-sticky-right,
+#view-segment .segment-list-table td.segment-sticky-right {
+  position: sticky !important;
+  right: 0 !important;
+  z-index: 5 !important;
+  text-align: center !important;
+  background: #fff !important;
+  box-shadow: -14px 0 22px rgba(31, 41, 55, .12) !important;
+}
+#view-segment .segment-list-table th.segment-sticky-right {
+  z-index: 8 !important;
+  background: #f8fafd !important;
+}
+#view-segment .segment-list-table tbody tr:first-child td.segment-sticky-left,
+#view-segment .segment-list-table tbody tr:first-child td.segment-sticky-right {
+  background: #eefdfc !important;
+}
+#view-segment .segment-list-table tbody tr:hover td.segment-sticky-left,
+#view-segment .segment-list-table tbody tr:hover td.segment-sticky-right {
+  background: #f8fbff !important;
+}
+#view-segment .segment-sort-mark {
+  margin-left: 8px !important;
+  color: #c0cad8 !important;
+  font-size: 13px !important;
+}
+#view-segment .segment-name-cell {
+  display: grid !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+#view-segment .segment-name-main {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+#view-segment .segment-row-status-dot {
+  display: inline-flex !important;
+  flex: 0 0 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 999px !important;
+  background: #16c79a !important;
+  box-shadow: inset 0 0 0 4px #16c79a, inset 0 0 0 6px #fff !important;
+}
+#view-segment .segment-name-link {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  color: #4096ff !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+}
+#view-segment .segment-name-edit {
+  color: #94a3b8 !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+#view-segment .segment-name-code {
+  padding-left: 24px !important;
+  overflow: hidden !important;
+  color: #8a9bb2 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 13px !important;
+  font-weight: 760 !important;
+}
+#view-segment .segment-id-cell {
+  color: #405066 !important;
+  font-size: 15px !important;
+  font-weight: 820 !important;
+}
+#view-segment .segment-count-cell {
+  display: grid !important;
+  gap: 8px !important;
+}
+#view-segment .segment-count-cell b {
+  color: #334155 !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+}
+#view-segment .segment-count-cell span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  color: #95a4b7 !important;
+  font-size: 12px !important;
+  font-weight: 760 !important;
+}
+#view-segment .segment-count-cell i {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 999px !important;
+  background: #cbd5e1 !important;
+}
+#view-segment .segment-update-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin-right: 8px !important;
+  color: #9aaac0 !important;
+  vertical-align: -3px !important;
+}
+#view-segment .segment-update-icon::before {
+  content: "↻";
+  font-size: 15px;
+  font-weight: 900;
+}
+#view-segment .segment-update-icon.manual::before {
+  content: "☝";
+}
+#view-segment .segment-action-row {
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+#view-segment .segment-action-row .asset-action-link {
+  padding: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+#view-segment .segment-table-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: #8fa2b8 !important;
+  cursor: pointer !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+}
+#view-segment .segment-table-action:hover {
+  background: #eef6ff !important;
+  color: #1677ff !important;
 }
 #view-segment .segment-nav-item {
   min-height: 42px !important;
