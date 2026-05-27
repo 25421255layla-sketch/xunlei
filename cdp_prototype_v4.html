@@ -15,11 +15,11 @@
       --muted: #667085;
       --line: #e5e9f2;
       --line-2: #eef1f6;
-      --blue: #635bff;
-      --blue-2: #3f43d8;
+      --blue: #533AFD;
+      --blue-2: #3F2BDB;
       --blue-soft: #eef1ff;
-      --brand: #635bff;
-      --brand-strong: #3f43d8;
+      --brand: #533AFD;
+      --brand-strong: #3F2BDB;
       --purple: #8b5cf6;
       --purple-2: #a855f7;
       --purple-soft: #f3edff;
@@ -33,8 +33,8 @@
       --violet-soft: #f0eaff;
       --teal: #0f8f9b;
       --teal-soft: #e5f5f6;
-      --accent-grad: linear-gradient(135deg, #635bff 0%, #8b5cf6 52%, #20c7b5 100%);
-      --accent-grad-soft: linear-gradient(135deg, rgba(99, 91, 255, 0.08), rgba(139, 92, 246, 0.05), rgba(32, 199, 181, 0.04));
+      --accent-grad: linear-gradient(135deg, #533AFD 0%, #8b5cf6 52%, #20c7b5 100%);
+      --accent-grad-soft: linear-gradient(135deg, rgba(83, 58, 253, 0.08), rgba(139, 92, 246, 0.05), rgba(32, 199, 181, 0.04));
       --ink-2: #263142;
       --ink-3: #667085;
       --surface: #ffffff;
@@ -118,7 +118,7 @@
         radial-gradient(circle at 30% 22%, rgba(255,255,255,0.58), transparent 23%),
         linear-gradient(135deg, #6d5dfc 0%, #8b5cf6 48%, #c084fc 100%);
       color: #fff;
-      box-shadow: 0 16px 30px rgba(99, 91, 255, 0.28);
+      box-shadow: 0 16px 30px rgba(83, 58, 253, 0.28);
       position: relative;
       overflow: hidden;
     }
@@ -164,8 +164,8 @@
     }
 
     .nav-item.active {
-      background: linear-gradient(90deg, rgba(99, 91, 255, 0.13), rgba(139, 92, 246, 0.07));
-      border-color: rgba(99, 91, 255, 0.16);
+      background: linear-gradient(90deg, rgba(83, 58, 253, 0.13), rgba(139, 92, 246, 0.07));
+      border-color: rgba(83, 58, 253, 0.16);
       color: var(--ink);
       box-shadow: none;
     }
@@ -187,7 +187,7 @@
     }
 
     .nav-item.active:hover {
-      background: linear-gradient(90deg, rgba(99, 91, 255, 0.15), rgba(139, 92, 246, 0.08));
+      background: linear-gradient(90deg, rgba(83, 58, 253, 0.15), rgba(139, 92, 246, 0.08));
       color: var(--ink);
     }
 
@@ -361,7 +361,7 @@
       border-color: transparent;
       color: #fff;
       box-shadow:
-        0 14px 30px rgba(99, 91, 255, 0.24),
+        0 14px 30px rgba(83, 58, 253, 0.24),
         0 2px 6px rgba(15, 21, 45, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.28);
     }
@@ -369,7 +369,7 @@
     .btn.primary:hover {
       color: #fff;
       box-shadow:
-        0 18px 36px rgba(99, 91, 255, 0.30),
+        0 18px 36px rgba(83, 58, 253, 0.30),
         0 4px 10px rgba(15, 21, 45, 0.14),
         inset 0 1px 0 rgba(255, 255, 255, 0.34);
     }
@@ -408,7 +408,7 @@
       width: min(43%, 540px);
       aspect-ratio: 568 / 256;
       opacity: 0.94;
-      filter: drop-shadow(0 32px 56px rgba(99, 91, 255, 0.18));
+      filter: drop-shadow(0 32px 56px rgba(83, 58, 253, 0.18));
       -webkit-mask: url("xunlei_logo_mask.png") center / contain no-repeat;
       mask: url("xunlei_logo_mask.png") center / contain no-repeat;
       pointer-events: none;
@@ -457,7 +457,7 @@
     .home-title .accent {
       display: block;
       color: transparent;
-      background: linear-gradient(100deg, #635bff, #7c3aed 48%, #0f8f9b);
+      background: linear-gradient(100deg, #533AFD, #7c3aed 48%, #0f8f9b);
       -webkit-background-clip: text;
       background-clip: text;
       font-size: 52px;
@@ -484,7 +484,7 @@
       border-radius: 8px;
       background:
         linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,252,255,0.96)),
-        radial-gradient(circle at 18% 0%, rgba(99, 91, 255, 0.10), transparent 34%);
+        radial-gradient(circle at 18% 0%, rgba(83, 58, 253, 0.10), transparent 34%);
       padding: 20px 18px;
       box-shadow:
         0 1px 1px rgba(12, 18, 32, 0.04),
@@ -497,7 +497,7 @@
       position: absolute;
       inset: 0 0 auto;
       height: 3px;
-      background: linear-gradient(90deg, rgba(99, 91, 255, 0.62), rgba(32, 199, 181, 0.48), transparent);
+      background: linear-gradient(90deg, rgba(83, 58, 253, 0.62), rgba(32, 199, 181, 0.48), transparent);
       opacity: 0.7;
     }
 
@@ -515,11 +515,15 @@
 
     .home-feature:hover {
       transform: translateY(-3px);
-      border-color: rgba(99, 91, 255, 0.20);
+      border-color: rgba(83, 58, 253, 0.20);
       box-shadow:
         0 2px 3px rgba(12, 18, 32, 0.04),
         0 24px 48px rgba(43, 46, 103, 0.11),
         inset 0 1px 0 rgba(255, 255, 255, 0.94);
+    }
+
+    .home-feature-action {
+      cursor: pointer;
     }
 
     .home-feature b {
@@ -696,7 +700,7 @@
 
     .search:focus, .field:focus, .select:focus, textarea:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.14);
+      box-shadow: 0 0 0 3px rgba(83, 58, 253, 0.14);
     }
 
     .tree-group {
@@ -953,7 +957,7 @@
       font-weight: 800;
       white-space: nowrap;
     }
-    .badge.blue { background: linear-gradient(135deg, rgba(99, 91, 255, 0.13), rgba(139, 92, 246, 0.10)); color: var(--blue); }
+    .badge.blue { background: linear-gradient(135deg, rgba(83, 58, 253, 0.13), rgba(139, 92, 246, 0.10)); color: var(--blue); }
     .badge.green { background: var(--green-soft); color: var(--green); }
     .badge.amber { background: var(--amber-soft); color: var(--amber); }
     .badge.red { background: var(--red-soft); color: var(--red); }
@@ -1056,7 +1060,7 @@
     .type-card.active {
       border-color: var(--blue);
       background: var(--accent-grad-soft);
-      box-shadow: inset 0 0 0 1px rgba(99, 91, 255, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(83, 58, 253, 0.12);
     }
 
     .type-card:hover {
@@ -1118,7 +1122,7 @@
 
     .chip.active {
       border-color: var(--blue);
-      background: linear-gradient(135deg, rgba(99, 91, 255, 0.12), rgba(139, 92, 246, 0.10));
+      background: linear-gradient(135deg, rgba(83, 58, 253, 0.12), rgba(139, 92, 246, 0.10));
       color: var(--blue);
     }
 
@@ -1185,7 +1189,7 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       background:
-        linear-gradient(135deg, rgba(99, 91, 255, 0.05), rgba(0, 210, 190, 0.04)),
+        linear-gradient(135deg, rgba(83, 58, 253, 0.05), rgba(0, 210, 190, 0.04)),
         var(--panel);
       padding: 16px;
       margin-bottom: 14px;
@@ -1338,9 +1342,9 @@
 
     .method-label.create-label {
       color: var(--blue);
-      background: linear-gradient(90deg, rgba(99, 91, 255, 0.10), rgba(20, 184, 166, 0.06));
-      border: 1px solid rgba(99, 91, 255, 0.18);
-      box-shadow: inset 3px 0 0 rgba(99, 91, 255, 0.75);
+      background: linear-gradient(90deg, rgba(83, 58, 253, 0.10), rgba(20, 184, 166, 0.06));
+      border: 1px solid rgba(83, 58, 253, 0.18);
+      box-shadow: inset 3px 0 0 rgba(83, 58, 253, 0.75);
     }
 
     .method-divider {
@@ -1362,10 +1366,10 @@
     }
 
     .method-tab.active {
-      background: rgba(99, 91, 255, 0.08);
+      background: rgba(83, 58, 253, 0.08);
       color: var(--blue);
-      border-color: rgba(99, 91, 255, 0.20);
-      box-shadow: 0 6px 14px rgba(99, 91, 255, 0.08);
+      border-color: rgba(83, 58, 253, 0.20);
+      box-shadow: 0 6px 14px rgba(83, 58, 253, 0.08);
     }
 
     .segment-mode { display: none; }
@@ -1907,7 +1911,7 @@
       overflow: hidden;
     }
 
-    .tag-section { --section-color: #635bff; --section-bg: #f8f7ff; }
+    .tag-section { --section-color: #533AFD; --section-bg: #f8f7ff; }
     .behavior-section { --section-color: #0f8f9b; --section-bg: #f4fbfc; }
     .metric-section { --section-color: #a96900; --section-bg: #fffaf0; }
     .rfm-section { --section-color: #8b5cf6; --section-bg: #faf7ff; }
@@ -2011,7 +2015,7 @@
 
     .filter-card.drag-over {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.16);
+      box-shadow: 0 0 0 3px rgba(83, 58, 253, 0.16);
     }
 
     .filter-card-head {
@@ -2194,10 +2198,10 @@
     }
 
     .multi-chip.active {
-      border-color: rgba(99, 91, 255, .32);
-      background: rgba(99, 91, 255, .1);
+      border-color: rgba(83, 58, 253, .32);
+      background: rgba(83, 58, 253, .1);
       color: var(--primary);
-      box-shadow: 0 6px 16px rgba(99, 91, 255, .12);
+      box-shadow: 0 6px 16px rgba(83, 58, 253, .12);
     }
 
     .window-control {
@@ -2442,7 +2446,7 @@
       border-color: var(--blue);
       background: var(--blue);
       color: #fff;
-      box-shadow: 0 8px 18px rgba(99, 91, 255, 0.18);
+      box-shadow: 0 8px 18px rgba(83, 58, 253, 0.18);
     }
 
     .logic-group {
@@ -2450,7 +2454,7 @@
       border: 1px dashed #d7def0;
       border-radius: 8px;
       background:
-        linear-gradient(180deg, rgba(99, 91, 255, 0.035), rgba(255, 255, 255, 0.88));
+        linear-gradient(180deg, rgba(83, 58, 253, 0.035), rgba(255, 255, 255, 0.88));
       padding: 12px 12px 10px 18px;
       margin-bottom: 10px;
     }
@@ -2492,7 +2496,7 @@
       min-height: 240px;
       border: 1px dashed #d7def0;
       border-radius: 8px;
-      background: linear-gradient(180deg, rgba(99, 91, 255, 0.025), rgba(255, 255, 255, 0.72));
+      background: linear-gradient(180deg, rgba(83, 58, 253, 0.025), rgba(255, 255, 255, 0.72));
     }
 
     .filter-model-body {
@@ -2595,7 +2599,7 @@
       bottom: 18px;
       width: 2px;
       border-radius: 999px;
-      background: linear-gradient(180deg, rgba(99, 91, 255, 0.42), rgba(15, 143, 155, 0.25));
+      background: linear-gradient(180deg, rgba(83, 58, 253, 0.42), rgba(15, 143, 155, 0.25));
     }
 
     .logic-group-head,
@@ -2617,7 +2621,7 @@
 
     .logic-subgroup {
       position: relative;
-      border: 1px solid rgba(99, 91, 255, 0.18);
+      border: 1px solid rgba(83, 58, 253, 0.18);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.72);
       padding: 10px;
@@ -2633,7 +2637,7 @@
       bottom: 14px;
       width: 3px;
       border-radius: 999px;
-      background: rgba(99, 91, 255, 0.36);
+      background: rgba(83, 58, 253, 0.36);
     }
 
     .logic-subgroup .filter-card {
@@ -2666,7 +2670,7 @@
       border-color: var(--blue);
       background: #f8faff;
       color: var(--blue);
-      box-shadow: inset 0 0 0 1px rgba(99, 91, 255, 0.10);
+      box-shadow: inset 0 0 0 1px rgba(83, 58, 253, 0.10);
     }
 
     .save-grid {
@@ -2815,8 +2819,8 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       background:
-        linear-gradient(90deg, rgba(99, 91, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(99, 91, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(83, 58, 253, 0.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(83, 58, 253, 0.08) 1px, transparent 1px),
         #fff;
       background-size: 25% 25%;
       overflow: hidden;
@@ -2840,16 +2844,16 @@
       bottom: var(--y);
       border: 0;
       border-radius: 999px;
-      background: radial-gradient(circle at 32% 30%, rgba(255,255,255,0.92), rgba(99,91,255,0.72) 42%, rgba(139,92,246,0.62));
+      background: radial-gradient(circle at 32% 30%, rgba(255,255,255,0.92), rgba(83,58,253,0.72) 42%, rgba(139,92,246,0.62));
       color: #fff;
-      box-shadow: 0 12px 28px rgba(99, 91, 255, 0.22);
+      box-shadow: 0 12px 28px rgba(83, 58, 253, 0.22);
       font-size: 11px;
       font-weight: 850;
     }
 
     .bubble:hover {
       transform: translateY(-2px) scale(1.04);
-      box-shadow: 0 18px 34px rgba(99, 91, 255, 0.30);
+      box-shadow: 0 18px 34px rgba(83, 58, 253, 0.30);
     }
 
     .group {
@@ -3183,10 +3187,10 @@
       color: #0a1020;
     }
     .data-nav-item.active {
-      background: linear-gradient(90deg, rgba(99, 91, 255, 0.12), rgba(32, 199, 181, 0.08));
-      border-color: rgba(99, 91, 255, 0.20);
+      background: linear-gradient(90deg, rgba(83, 58, 253, 0.12), rgba(32, 199, 181, 0.08));
+      border-color: rgba(83, 58, 253, 0.20);
       color: #1f1ab2;
-      box-shadow: 0 8px 20px rgba(99,91,255,.08);
+      box-shadow: 0 8px 20px rgba(83,58,253,.08);
     }
     .data-nav-item.is-muted { color: #667085; }
     .data-nav-item em {
@@ -3204,8 +3208,8 @@
       box-shadow: 0 0 0 4px rgba(201,211,230,.14);
     }
     .data-nav-item.active .data-nav-dot {
-      background: #635bff;
-      box-shadow: 0 0 0 4px rgba(99,91,255,.14);
+      background: #533AFD;
+      box-shadow: 0 0 0 4px rgba(83,58,253,.14);
     }
     .data-asset-main-panel { min-width: 0; overflow: hidden; }
     .data-asset-head { align-items: flex-start; }
@@ -3372,7 +3376,7 @@
     .spark-bars i {
       width: 6px;
       border-radius: 999px 999px 0 0;
-      background: linear-gradient(180deg, #20c7b5, #635bff);
+      background: linear-gradient(180deg, #20c7b5, #533AFD);
       opacity: .82;
     }
     .asset-drawer-mask {
@@ -3784,7 +3788,7 @@
     .spark-bars i { background: linear-gradient(180deg, var(--asset-green), #7c3aed); }
     .asset-drawer { width: min(780px, 94vw); }
     .asset-drawer-head { background: linear-gradient(180deg, #fff, #fbfcff); }
-    .asset-drawer-actions .btn.primary { background: linear-gradient(135deg, #12b886, #635bff); }
+    .asset-drawer-actions .btn.primary { background: linear-gradient(135deg, #12b886, #533AFD); }
     @media (max-width: 1320px) {
       .asset-dynamic-filters { grid-template-columns: minmax(200px, 1fr) repeat(2, minmax(120px, 1fr)); }
     }
@@ -3796,7 +3800,7 @@
       min-height: 38px;
       justify-content: center;
       border-radius: 10px;
-      box-shadow: 0 12px 24px rgba(99, 91, 255, 0.18);
+      box-shadow: 0 12px 24px rgba(83, 58, 253, 0.18);
     }
     .data-topbar { align-items: flex-start; }
     .asset-create-modal { width: min(940px, 100%); }
@@ -3822,8 +3826,8 @@
     }
     .asset-create-tab.active {
       color: #fff;
-      background: linear-gradient(135deg, #635bff, #20c7b5);
-      box-shadow: 0 10px 22px rgba(99, 91, 255, 0.18);
+      background: linear-gradient(135deg, #533AFD, #20c7b5);
+      box-shadow: 0 10px 22px rgba(83, 58, 253, 0.18);
     }
     .asset-create-form {
       display: grid;
@@ -4788,8 +4792,8 @@
       height: 20px;
       padding: 0 7px;
       border-radius: 999px;
-      background: rgba(99, 91, 255, 0.08);
-      color: #635bff;
+      background: rgba(83, 58, 253, 0.08);
+      color: #533AFD;
       font-weight: 850;
       flex-shrink: 0;
     }
@@ -4810,8 +4814,8 @@
       min-height: 30px;
       padding: 0 11px;
       border-radius: 999px;
-      background: rgba(99, 91, 255, 0.08);
-      color: #635bff;
+      background: rgba(83, 58, 253, 0.08);
+      color: #533AFD;
       font-size: 12.5px;
       font-weight: 850;
       white-space: nowrap;
@@ -5083,9 +5087,9 @@
 
     /* ========== v6 visual polish: Stripe-inspired lightweight rule builder ========== */
     :root {
-      --brand: #635bff;
+      --brand: #533AFD;
       --brand-strong: #4f46e5;
-      --blue: #635bff;
+      --blue: #533AFD;
       --blue-2: #4f46e5;
       --purple: #7c3aed;
       --line: #e7ecf5;
@@ -5099,7 +5103,7 @@
     }
 
     .rt-section-block {
-      border: 1px solid rgba(99, 91, 255, 0.12);
+      border: 1px solid rgba(83, 58, 253, 0.12);
       border-radius: 16px;
       background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
       box-shadow: 0 18px 46px rgba(50, 50, 93, 0.07), 0 2px 8px rgba(0, 0, 0, 0.035);
@@ -5129,19 +5133,19 @@
     .rt-section-head .rt-mini-btn {
       min-height: 34px;
       padding: 0 14px;
-      border: 1px solid rgba(99, 91, 255, 0.18);
+      border: 1px solid rgba(83, 58, 253, 0.18);
       border-radius: 999px;
       background: #fff;
       color: #4f46e5;
-      box-shadow: 0 8px 18px rgba(99, 91, 255, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+      box-shadow: 0 8px 18px rgba(83, 58, 253, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
     }
 
     .rt-section-head .rt-mini-btn:hover {
       transform: translateY(-1px);
-      border-color: rgba(99, 91, 255, 0.30);
+      border-color: rgba(83, 58, 253, 0.30);
       background: #f8f7ff;
       color: #4f46e5;
-      box-shadow: 0 12px 24px rgba(99, 91, 255, 0.13), 0 2px 4px rgba(16, 24, 40, 0.05);
+      box-shadow: 0 12px 24px rgba(83, 58, 253, 0.13), 0 2px 4px rgba(16, 24, 40, 0.05);
     }
 
     .rt-section-body {
@@ -5158,15 +5162,15 @@
     .rt-group-line::before,
     .rt-group-joiner-line::before {
       width: 2px;
-      background: linear-gradient(180deg, rgba(99, 91, 255, 0.18), rgba(0, 212, 255, 0.16));
+      background: linear-gradient(180deg, rgba(83, 58, 253, 0.18), rgba(0, 212, 255, 0.16));
     }
 
     .rt-bracket-badge {
-      border: 1px solid rgba(99, 91, 255, 0.18) !important;
+      border: 1px solid rgba(83, 58, 253, 0.18) !important;
       border-radius: 8px;
       background: #f4f3ff;
       color: #4f46e5;
-      box-shadow: 0 6px 14px rgba(99, 91, 255, 0.10);
+      box-shadow: 0 6px 14px rgba(83, 58, 253, 0.10);
     }
 
     .rt-bracket-badge.is-or {
@@ -5186,7 +5190,7 @@
     }
 
     .rt-group-card:hover {
-      border-color: rgba(99, 91, 255, 0.26);
+      border-color: rgba(83, 58, 253, 0.26);
       box-shadow: 0 18px 38px rgba(50, 50, 93, 0.08), 0 2px 4px rgba(0,0,0,0.04);
     }
 
@@ -5225,7 +5229,7 @@
     }
 
     .rt-group-card .rt-mini-btn:hover {
-      background: rgba(99, 91, 255, 0.07);
+      background: rgba(83, 58, 253, 0.07);
       color: #4f46e5;
       transform: none;
       box-shadow: none;
@@ -5248,7 +5252,7 @@
     }
 
     .rt-rule:hover {
-      background: rgba(99, 91, 255, 0.035);
+      background: rgba(83, 58, 253, 0.035);
     }
 
     .rt-rule-content {
@@ -5280,7 +5284,7 @@
     }
 
     .rt-rule-action:hover {
-      background: rgba(99, 91, 255, 0.07);
+      background: rgba(83, 58, 253, 0.07);
       color: #4f46e5;
     }
 
@@ -5317,13 +5321,13 @@
     .rt-rule-content select.rt-compact:hover,
     .rt-rule-content input.rt-compact-input:hover,
     .rt-rule-content .rt-time-button:hover {
-      border-color: rgba(99, 91, 255, 0.36);
+      border-color: rgba(83, 58, 253, 0.36);
       color: #263142;
-      box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.07);
+      box-shadow: 0 0 0 3px rgba(83, 58, 253, 0.07);
     }
 
     .rt-filter-link {
-      color: #635bff;
+      color: #533AFD;
       font-weight: 850;
       padding: 0 4px;
     }
@@ -5334,7 +5338,7 @@
     }
 
     .rt-filter-panel {
-      border: 1px solid rgba(99, 91, 255, 0.12);
+      border: 1px solid rgba(83, 58, 253, 0.12);
       border-radius: 14px;
       background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
@@ -5366,7 +5370,7 @@
       display: inline-flex;
       align-items: center;
       gap: 3px;
-      border: 1px solid rgba(99, 91, 255, 0.14);
+      border: 1px solid rgba(83, 58, 253, 0.14);
       border-radius: 999px;
       background: #f7f8ff;
       padding: 3px;
@@ -5387,9 +5391,9 @@
     }
 
     .rt-inline-relation-toggle button.active {
-      background: linear-gradient(135deg, #635bff, #7c3aed);
+      background: linear-gradient(135deg, #533AFD, #7c3aed);
       color: #fff;
-      box-shadow: 0 7px 14px rgba(99, 91, 255, 0.20);
+      box-shadow: 0 7px 14px rgba(83, 58, 253, 0.20);
     }
 
     .rt-attr-behavior-join {
@@ -5397,34 +5401,34 @@
     }
 
     .rt-relation-toggle {
-      border-color: rgba(99, 91, 255, 0.16);
+      border-color: rgba(83, 58, 253, 0.16);
       box-shadow: 0 8px 18px rgba(50, 50, 93, 0.06);
     }
 
     .rt-relation-toggle button.active {
-      background: linear-gradient(135deg, #635bff, #7c3aed);
-      box-shadow: 0 7px 14px rgba(99, 91, 255, 0.20);
+      background: linear-gradient(135deg, #533AFD, #7c3aed);
+      box-shadow: 0 7px 14px rgba(83, 58, 253, 0.20);
     }
 
     .rt-update-mode.active,
     .rt-time-confirm {
-      border-color: #635bff;
+      border-color: #533AFD;
       background: #f6f5ff;
       color: #4f46e5;
     }
 
     .rt-update-mode.active::after {
-      border-top-color: #635bff;
+      border-top-color: #533AFD;
     }
 
     .rt-layer-tab.active {
-      color: #635bff;
-      border-bottom-color: #635bff;
+      color: #533AFD;
+      border-bottom-color: #533AFD;
     }
 
     .rt-layer-tab.drag-over {
       background: #f8f7ff;
-      box-shadow: inset 0 -2px 0 #635bff;
+      box-shadow: inset 0 -2px 0 #533AFD;
     }
 
 
@@ -5432,12 +5436,12 @@
     .rt-create-top-actions{display:none!important;}
     .rt-create-grid{grid-template-columns:minmax(0,1fr) 44px 360px;gap:14px;align-items:start;}
     .rt-create-float-tools{position:sticky;top:92px;z-index:12;display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:48vh;}
-    .rt-float-tool{width:34px;height:34px;border:1px solid rgba(99,91,255,.16);border-radius:999px;background:rgba(255,255,255,.92);color:#4f46e5;box-shadow:0 10px 24px rgba(50,50,93,.10),0 1px 2px rgba(0,0,0,.04);display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1;}
-    .rt-float-tool:hover{transform:translateY(-1px);border-color:rgba(99,91,255,.34);background:#f8f7ff;box-shadow:0 16px 30px rgba(99,91,255,.18),0 2px 5px rgba(0,0,0,.04);}
+    .rt-float-tool{width:34px;height:34px;border:1px solid rgba(83,58,253,.16);border-radius:999px;background:rgba(255,255,255,.92);color:#4f46e5;box-shadow:0 10px 24px rgba(50,50,93,.10),0 1px 2px rgba(0,0,0,.04);display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1;}
+    .rt-float-tool:hover{transform:translateY(-1px);border-color:rgba(83,58,253,.34);background:#f8f7ff;box-shadow:0 16px 30px rgba(83,58,253,.18),0 2px 5px rgba(0,0,0,.04);}
     .rt-time-input{cursor:pointer;appearance:auto;-webkit-appearance:auto;}
     .rt-bottom-actions{align-items:center;}
     .rt-bottom-actions .btn{min-height:44px;border-radius:12px;padding:0 22px;font-size:15px;font-weight:900;}
-    .rt-bottom-actions .btn.primary,.rt-bottom-actions #createRuleLabel.btn.primary{background:linear-gradient(135deg,#635bff 0%,#7c3aed 62%,#20c7b5 100%)!important;border-color:transparent!important;color:#fff!important;box-shadow:0 16px 34px rgba(99,91,255,.30),0 3px 8px rgba(15,21,45,.12),inset 0 1px 0 rgba(255,255,255,.30)!important;}
+    .rt-bottom-actions .btn.primary,.rt-bottom-actions #createRuleLabel.btn.primary{background:linear-gradient(135deg,#533AFD 0%,#7c3aed 62%,#20c7b5 100%)!important;border-color:transparent!important;color:#fff!important;box-shadow:0 16px 34px rgba(83,58,253,.30),0 3px 8px rgba(15,21,45,.12),inset 0 1px 0 rgba(255,255,255,.30)!important;}
     .rt-bottom-actions #cancelRuleCreate{background:linear-gradient(180deg,#fff 0%,#f7f9fc 100%);border-color:#dbe3ef;color:#334155;box-shadow:0 8px 18px rgba(50,50,93,.08),0 1px 2px rgba(0,0,0,.04);}
     @media(max-width:1320px){.rt-create-grid{grid-template-columns:minmax(0,1fr);} .rt-create-float-tools{position:fixed;right:18px;top:auto;bottom:112px;padding-top:0;}}
 
@@ -5447,13 +5451,13 @@
     .tag-directory-panel .tree-row { cursor: pointer; }
     .tag-directory-panel .tree-row:hover { background:#f4f6ff; color:#4f46e5; }
     .tag-directory-panel .tree-row.active { background:#f2f0ff; color:#4f46e5; font-weight:850; }
-    .link-btn[data-action="edit-tag"]{color:#635bff;font-weight:900;padding:5px 8px;border-radius:8px;}
+    .link-btn[data-action="edit-tag"]{color:#533AFD;font-weight:900;padding:5px 8px;border-radius:8px;}
     .link-btn[data-action="edit-tag"]:hover{background:#f4f3ff;color:#4f46e5;text-decoration:none;}
     .rt-select-with-clear{display:grid;grid-template-columns:minmax(0,1fr) 38px;gap:8px;align-items:center;}
     .rt-clear-select{height:38px;border:1px solid #dfe6f2;border-radius:10px;background:#fff;color:#8b96aa;font-size:18px;font-weight:800;box-shadow:0 1px 2px rgba(16,24,40,.04);}
-    .rt-clear-select:hover{border-color:rgba(99,91,255,.35);color:#4f46e5;background:#f8f7ff;}
-    .rt-biz-domain-filter .select{border-color:rgba(99,91,255,.18);background:#fbfdff;}
-    .rt-biz-domain-filter .select:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);}
+    .rt-clear-select:hover{border-color:rgba(83,58,253,.35);color:#4f46e5;background:#f8f7ff;}
+    .rt-biz-domain-filter .select{border-color:rgba(83,58,253,.18);background:#fbfdff;}
+    .rt-biz-domain-filter .select:focus{border-color:#533AFD;box-shadow:0 0 0 3px rgba(83,58,253,.10);}
     #view-create .rule-basic-grid{grid-template-columns:1fr;gap:12px;}
     #view-create .rule-basic-grid .form-row{display:grid;grid-template-columns:116px minmax(0,1fr);align-items:center;gap:14px;margin-bottom:0;}
     #view-create .rule-basic-grid .form-row label{margin:0;text-align:left;white-space:nowrap;}
@@ -5469,7 +5473,7 @@
     .rt-inline-relation-toggle button[data-logic="and"].active,
     .rt-relation-toggle button[data-relation="and"].active{background:linear-gradient(135deg,#facc15,#f59e0b)!important;color:#713f12!important;box-shadow:0 7px 14px rgba(234,179,8,.20)!important;}
     .rt-inline-relation-toggle button[data-logic="or"].active,
-    .rt-relation-toggle button[data-relation="or"].active{background:linear-gradient(135deg,#635bff,#7c3aed)!important;color:#fff!important;box-shadow:0 7px 14px rgba(99,91,255,.22)!important;}
+    .rt-relation-toggle button[data-relation="or"].active{background:linear-gradient(135deg,#533AFD,#7c3aed)!important;color:#fff!important;box-shadow:0 7px 14px rgba(83,58,253,.22)!important;}
     .rt-inline-relation-toggle{border-color:rgba(148,163,184,.24);background:#fff;}
     .rt-filter-panel{border-color:rgba(59,130,246,.14)!important;}
 
@@ -5480,16 +5484,16 @@
     .asset-create-outline-btn {
       background:
         linear-gradient(#fff,#fff) padding-box,
-        linear-gradient(135deg,#635bff 0%,#7c3aed 58%,#20c7b5 100%) border-box !important;
+        linear-gradient(135deg,#533AFD 0%,#7c3aed 58%,#20c7b5 100%) border-box !important;
       border: 1.5px solid transparent !important;
-      color: #635bff !important;
-      box-shadow: 0 8px 18px rgba(99,91,255,.10) !important;
+      color: #533AFD !important;
+      box-shadow: 0 8px 18px rgba(83,58,253,.10) !important;
       font-weight: 900;
     }
     .asset-create-outline-btn:hover {
       transform: translateY(-1px);
       color: #4f46e5 !important;
-      box-shadow: 0 12px 24px rgba(99,91,255,.16) !important;
+      box-shadow: 0 12px 24px rgba(83,58,253,.16) !important;
     }
     .asset-dynamic-filters {
       grid-template-columns: minmax(280px, 1.25fr) repeat(4, minmax(150px, 180px)) auto !important;
@@ -5560,8 +5564,8 @@
       box-sizing: border-box;
     }
     .asset-search-input:focus {
-      border-color: #635bff;
-      box-shadow: 0 0 0 3px rgba(99,91,255,.10);
+      border-color: #533AFD;
+      box-shadow: 0 0 0 3px rgba(83,58,253,.10);
     }
     .asset-search-single label,
     .asset-filter-field.search label { display: none !important; }
@@ -5639,8 +5643,8 @@
       background-color: #fff !important;
     }
     .asset-search-input:focus {
-      border-color: #635bff !important;
-      box-shadow: 0 0 0 3px rgba(99,91,255,.10) !important;
+      border-color: #533AFD !important;
+      box-shadow: 0 0 0 3px rgba(83,58,253,.10) !important;
     }
     .asset-type-cell { display: inline-flex; flex-direction: column; gap: 2px; line-height: 1.15; }
     .asset-type-cell .type-cn { color: #1f2937; font-weight: 850; }
@@ -5716,8 +5720,8 @@
 }
 .tag-directory-panel .filters .field:focus,
 .tag-directory-panel .filters .select:focus {
-  border-color: #635bff !important;
-  box-shadow: 0 0 0 3px rgba(99,91,255,.10) !important;
+  border-color: #533AFD !important;
+  box-shadow: 0 0 0 3px rgba(83,58,253,.10) !important;
 }
 .tag-table-scroll {
   position: relative !important;
@@ -5934,16 +5938,16 @@
   font-weight: 950 !important;
   font-size: 15px !important;
   background: #fff !important;
-  color: #635bff !important;
+  color: #533AFD !important;
   border: 2px solid transparent !important;
-  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #533AFD 0%, #7c3aed 48%, #10c7c7 100%) !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
-  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  box-shadow: 0 12px 22px rgba(83, 58, 253, .10) !important;
 }
 .asset-create-inline-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+  box-shadow: 0 16px 28px rgba(83, 58, 253, .16) !important;
 }
 .tag-directory-panel .tree > input.search { display: none !important; }
 .tag-directory-panel .tag-filter-grid {
@@ -5995,16 +5999,16 @@
   font-weight: 950 !important;
   font-size: 15px !important;
   background: #fff !important;
-  color: #635bff !important;
+  color: #533AFD !important;
   border: 2px solid transparent !important;
-  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #533AFD 0%, #7c3aed 48%, #10c7c7 100%) !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
-  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  box-shadow: 0 12px 22px rgba(83, 58, 253, .10) !important;
 }
 .data-asset-nav-panel > .asset-create-nav-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+  box-shadow: 0 16px 28px rgba(83, 58, 253, .16) !important;
 }
 .asset-dynamic-filters {
   grid-template-columns: minmax(320px, 1.15fr) repeat(4, minmax(140px, 1fr)) !important;
@@ -6194,7 +6198,7 @@
   border: 0 !important;
   color: #fff !important;
   background: linear-gradient(135deg, #6d5dfc 0%, #7c3aed 45%, #12b7a6 100%) !important;
-  box-shadow: 0 10px 20px rgba(99, 91, 255, .18) !important;
+  box-shadow: 0 10px 20px rgba(83, 58, 253, .18) !important;
   font-weight: 950 !important;
 }
 #view-data .data-pending-subnav {
@@ -6208,12 +6212,12 @@
   color: #526071 !important;
 }
 #view-data .data-pending-subitem:hover {
-  background: linear-gradient(90deg, rgba(99, 91, 255, .08), rgba(18, 183, 166, .08)) !important;
+  background: linear-gradient(90deg, rgba(83, 58, 253, .08), rgba(18, 183, 166, .08)) !important;
   color: #5b50e8 !important;
 }
 #view-data .data-pending-subitem.active {
   border: 0 !important;
-  background: linear-gradient(90deg, rgba(99, 91, 255, .14), rgba(18, 183, 166, .14)) !important;
+  background: linear-gradient(90deg, rgba(83, 58, 253, .14), rgba(18, 183, 166, .14)) !important;
   color: #5b50e8 !important;
 }
 #view-data .data-pending-subitem.active em {
@@ -6324,8 +6328,8 @@
   outline: 0 !important;
 }
 #view-tags #tagSearch:focus {
-  border-color: #635bff !important;
-  box-shadow: 0 0 0 3px rgba(99, 91, 255, .10) !important;
+  border-color: #533AFD !important;
+  box-shadow: 0 0 0 3px rgba(83, 58, 253, .10) !important;
 }
 @media (max-width: 1180px) {
   #view-data .asset-dynamic-filters {
@@ -6396,18 +6400,18 @@
 <div class="home-kicker">CDP USER INTELLIGENCE</div>
 <h1 class="home-title"><span class="title-main">把用户标签、分群和洞察变成</span><span class="accent">可执行的增长系统</span></h1>
 <div class="home-actions">
-<button class="btn primary" data-view-jump="create">新建标签</button>
+<button class="btn" data-view-jump="tags">进入标签中心</button>
 <button class="btn" data-view-jump="segment">进入分群中心</button>
 <button class="btn" data-view-jump="board">查看画像洞察</button>
 </div>
 </div>
 </div>
 <div class="home-feature-grid">
-<div class="home-feature">
+<div class="home-feature home-feature-action" id="homeTagCreateCard" role="button" tabindex="0">
 <b>标签自助配置</b>
 <span>生命周期、RFM、规则、统计等标签从弹窗选择，业务配置规则，数分维护复杂 SQL。</span>
 </div>
-<div class="home-feature">
+<div class="home-feature home-feature-action" id="homeSegmentCreateCard" role="button" tabindex="0">
 <b>画布式分群</b>
 <span>分群统一收敛到人群圈选画布：选择用户标签和已有人群，组合出可应用的目标人群。</span>
 </div>
@@ -6686,195 +6690,206 @@
 </div>
 </section>
 <section class="view" id="view-create">
-<div class="topbar">
-<div>
-<h1>创建标签</h1>
-<div class="subline">业务用户走无代码路径，SQL 标签保留给数分维护。</div>
-</div>
-<div class="actions rt-create-top-actions">
-<button class="btn" id="saveDraftLabel" type="button">保存草稿</button>
-<button class="btn primary" id="publishLabel" type="button">提交上线</button>
-</div>
-</div>
-<div class="grid-2 rt-create-grid">
-<div class="panel form-panel">
-<h2 class="section-title">基础信息与标签规则</h2>
-<div class="form-grid rule-basic-grid">
-<div class="form-row">
-<label>标签显示名 <span class="required-star">*</span></label>
-<input class="field" id="tagDisplayName" placeholder="外显中文，例如：迅雷广告转化意向分层" value="迅雷广告转化意向分层"/>
-</div>
-<div class="form-row">
-<label>标签名称 <span class="required-star">*</span></label>
-<div class="rt-name-combo"><span>user_tag_</span><input class="field" id="tagNameSuffix" placeholder="请输入英文/数字/下划线" value="ad_convert_intent"/></div>
-</div>
-<div class="form-row rt-form-row-textarea">
-<label>标签描述</label>
-<textarea class="field" id="tagDescription" placeholder="选填：说明标签业务口径、适用场景和使用限制。" style="height:72px;padding-top:10px;resize:vertical">用于模拟广告曝光、点击、下载/云盘/播放等行为后的转化意向分层，后续可替换成真实迅雷业务规则。</textarea>
-</div>
-<div class="form-row rt-biz-domain-filter">
-<label>业务域筛选</label>
-<div class="rt-select-with-clear">
-<select class="select" id="tagBizDomain"><option value="">请选择业务域</option><option>公共</option><option>主端</option><option>会员</option><option>生态</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>触达</option><option>中台</option></select>
-<button class="rt-clear-select" id="clearTagBizDomain" title="清空业务域" type="button">×</button>
-</div>
-</div>
-<div class="form-row">
-<label>一级标签 <span class="required-star">*</span></label>
-<select class="select" id="tagCategory1"><option>行为画像</option><option>基础画像</option><option>广告转化</option><option>会员价值</option><option>价值分层</option><option>活跃状态</option><option>生态来源</option></select>
-</div>
-<div class="form-row">
-<label>二级标签</label>
-<div class="rt-select-with-clear">
-<select class="select" id="tagCategory2"><option value="">请选择二级标签</option><option>广告意向</option><option>下载行为</option><option>云盘行为</option><option>搜索行为</option><option>消费行为</option><option>会员行为</option></select>
-<button class="rt-clear-select" id="clearTagCategory2" title="清空二级标签" type="button">×</button>
-</div>
-</div>
-</div>
-<div id="standardRuleConfig">
-<h2 class="section-title" id="standardRuleTitle">规则配置</h2>
-<div id="typeSpecificConfig"></div>
-</div>
-<div class="rt-update-card" id="ruleUpdateCard">
-<h2 class="section-title">更新方式</h2>
-<div class="rt-update-layout">
-<div>
-<div aria-label="更新方式" class="rt-update-mode-switch">
-<button class="rt-update-mode active" data-update-mode="routine" type="button">例行</button>
-<button class="rt-update-mode" data-update-mode="manual" type="button">手动</button>
-</div>
-<div class="rt-update-frequency">
-<span>按</span>
-<select class="rt-update-cycle" disabled="" id="ruleUpdateCycle">
-<option value="day">天</option>
-</select>
-<span>计算</span>
-</div>
-</div>
-<div class="rt-update-time-row">
-<label>最早计算时间 <span class="rt-help-dot" title="系统会在该时间之后尝试自动计算。">?</span></label>
-<input class="field rt-time-input" id="ruleEarliestTime" title="点击选择最早计算时间" type="time" value="00:00"/>
-<p class="rt-update-help" id="ruleUpdateHelp">系统将在每日最早计算时间之后进行自动更新；若行为规则包含今日数据，则顺延到明日凌晨计算。</p>
-</div>
-</div>
-<div class="rt-bottom-actions">
-<button class="btn primary" id="createRuleLabel" type="button">创建</button>
-<button class="btn" id="cancelRuleCreate" type="button">取消</button>
-</div>
-</div>
-<div id="rfmRuleConfig" style="display:none">
-<h2 class="section-title">RFM 规则配置</h2>
-<div class="rfm-flow">
-<div class="rfm-step-card">
-<b>1. 选择数据来源</b>
-<select class="select" id="rfmDataSource">
-<option>会员支付订单明细</option>
-<option>下载权益交易明细</option>
-<option>云盘容量包订单</option>
-</select>
-</div>
-<div class="rfm-step-card">
-<b>2. 选择目标事件</b>
-<select class="select" id="rfmTargetEvent">
-<option>支付订单成功</option>
-<option>会员首购成功</option>
-<option>下载权益开通成功</option>
-</select>
-</div>
-<div class="rfm-step-card">
-<b>3. 标签计算范围</b>
-<select class="select" id="rfmScope">
-<option>全量客户</option>
-<option>符合筛选条件的客户</option>
-<option>当前会员/历史付费客户</option>
-</select>
-</div>
-</div>
-<div class="form-grid">
-<div class="form-row">
-<label>时间范围</label>
-<select class="select" id="rfmWindow">
-<option>近90天</option>
-<option>近180天</option>
-<option>近365天</option>
-<option>自定义自然时间</option>
-</select>
-</div>
-<div class="form-row">
-<label>更新方式</label>
-<select class="select" id="rfmUpdateMode">
-<option>定时更新 · 每日 03:00</option>
-<option>手动更新</option>
-<option>调度更新 · 按上游完成</option>
-</select>
-</div>
-</div>
-<div class="rfm-metric-grid">
-<div class="rfm-metric-card">
-<div class="badge blue">R Recency</div>
-<div class="form-row" style="margin-top:10px">
-<label>最近一次消费</label>
-<select class="select"><option>距今天数 · 越小越高</option><option>最近支付时间</option></select>
-</div>
-<select class="select"><option>数值区间划分</option><option>百分比区间划分</option><option>原始值</option></select>
-<div class="rfm-range">
-<input aria-label="R高低分界1" class="field" type="number" value="7"/>
-<input aria-label="R高低分界2" class="field" type="number" value="30"/>
-</div>
-</div>
-<div class="rfm-metric-card">
-<div class="badge teal">F Frequency</div>
-<div class="form-row" style="margin-top:10px">
-<label>消费频率</label>
-<select class="select"><option>支付订单总次数 · 越大越高</option><option>付费活跃天数</option></select>
-</div>
-<select class="select"><option>数值区间划分</option><option>百分比区间划分</option><option>原始值</option></select>
-<div class="rfm-range">
-<input aria-label="F高低分界1" class="field" type="number" value="2"/>
-<input aria-label="F高低分界2" class="field" type="number" value="5"/>
-</div>
-</div>
-<div class="rfm-metric-card">
-<div class="badge violet">M Monetary</div>
-<div class="form-row" style="margin-top:10px">
-<label>消费金额</label>
-<select class="select"><option>支付金额求和 · 越大越高</option><option>毛利贡献求和</option></select>
-</div>
-<select class="select"><option>数值区间划分</option><option>百分比区间划分</option><option>原始值</option></select>
-<div class="rfm-range">
-<input aria-label="M高低分界1" class="field" type="number" value="30"/>
-<input aria-label="M高低分界2" class="field" type="number" value="98"/>
-</div>
-</div>
-</div>
-<div class="section-title" style="margin-top:16px">标签值命名</div>
-<div class="rfm-value-table" id="rfmValueTable"></div>
-</div>
-</div>
-<div aria-label="创建页快捷操作" class="rt-create-float-tools">
-<button aria-label="回到页面顶部" class="rt-float-tool" id="quickBackTop" title="回到页面顶部" type="button">⬆️</button>
-<button aria-label="保存草稿" class="rt-float-tool" id="quickSaveDraft" title="保存草稿" type="button">🔘</button>
-</div>
-<aside class="panel preview-panel">
-<div id="standardPreview">
-<div class="panel-title">调试预估</div>
-<div class="panel-sub" id="estimateStatus">待计算：按 Hive T+1 逻辑计算昨日分区数据。</div>
-<div class="preview-stat">
-<div class="stat-box">
-<div class="stat-label">覆盖用户</div>
-<div class="stat-value" id="coverCount">待计算</div>
-</div>
-</div>
-<button class="btn primary" id="estimateBtn" style="width:100%;margin-bottom:12px">计算昨日</button>
-<div class="section-title">规则解释</div>
-<ul class="timeline">
-<li><span>分析对象</span><b>全端用户</b></li>
-<li><span>窗口</span><b>近7天</b></li>
-<li><span>判断</span><b>创建下载任务总时长 &gt;= 3</b></li>
-<li><span>排除</span><b>取回行为</b></li>
-</ul>
-<div class="section-title" style="margin-top:16px">DSL 预览</div>
-<div class="code" id="dslBox">{
+        <div class="topbar">
+          <div>
+            <h1>创建标签</h1>
+            <div class="subline">业务用户走无代码路径，SQL 标签保留给数分维护。</div>
+          </div>
+          <div class="actions rt-create-top-actions" aria-hidden="true">
+            <button class="btn" id="saveDraftLabel" tabindex="-1">保存草稿</button>
+            <button class="btn primary" id="publishLabel" tabindex="-1">提交上线</button>
+          </div>
+        </div>
+
+        <div class="grid-2 rt-create-grid">
+          <div class="panel form-panel">
+            <h2 class="section-title">基础信息与标签规则</h2>
+            <div class="form-grid rule-basic-grid">
+              <div class="form-row">
+                <label>标签显示名 <span class="required-star">*</span></label>
+                <input class="field" id="tagDisplayName" value="迅雷广告转化意向分层" placeholder="外显中文，例如：迅雷广告转化意向分层">
+              </div>
+              <div class="form-row">
+                <label>标签名称 <span class="required-star">*</span></label>
+                <div class="rt-name-combo"><span>user_tag_</span><input class="field" id="tagNameSuffix" value="ad_convert_intent" placeholder="请输入英文/数字/下划线"></div>
+              </div>
+              <div class="form-row rt-form-row-textarea">
+                <label>标签描述</label>
+                <textarea class="field" id="tagDescription" style="height:72px;padding-top:10px;resize:vertical" placeholder="选填：说明标签业务口径、适用场景和使用限制。">用于模拟广告曝光、点击、下载/云盘/播放等行为后的转化意向分层，后续可替换成真实迅雷业务规则。</textarea>
+              </div>
+              <div class="form-row rt-biz-domain-filter">
+                <label>业务域筛选</label>
+                <div class="rt-select-with-clear">
+                  <select class="select" id="tagBizDomain"><option value="">请选择业务域</option><option>广告</option><option>下载</option><option>云盘</option><option>播放</option><option>搜索</option><option>会员</option><option>触达</option><option>生态</option><option>公共</option><option>主端</option><option>中台</option><option>取回</option><option>转存</option><option>分享</option><option>活跃</option></select>
+                  <button class="rt-clear-select" id="clearTagBizDomain" type="button" title="清空业务域">×</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <label>一级标签 <span class="required-star">*</span></label>
+                <select class="select" id="tagCategory1"><option>行为画像</option><option>基础画像</option><option>广告转化</option><option>会员价值</option><option>价值分层</option><option>活跃状态</option><option>生态来源</option></select>
+              </div>
+              <div class="form-row">
+                <label>二级标签</label>
+                <div class="rt-select-with-clear">
+                  <select class="select" id="tagCategory2"><option value="">请选择二级标签</option><option>广告意向</option><option>下载行为</option><option>云盘行为</option><option>搜索行为</option><option>消费行为</option><option>会员行为</option></select>
+                  <button class="rt-clear-select" id="clearTagCategory2" type="button" title="清空二级标签">×</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="standardRuleConfig">
+              <h2 class="section-title" id="standardRuleTitle">规则配置</h2>
+              <div id="typeSpecificConfig"></div>
+            </div>
+
+
+
+            <div class="rt-update-card" id="ruleUpdateCard">
+              <h2 class="section-title">更新方式</h2>
+              <div class="rt-update-layout">
+                <div>
+                  <div class="rt-update-mode-switch" aria-label="更新方式">
+                    <button class="rt-update-mode active" data-update-mode="routine" type="button">例行</button>
+                    <button class="rt-update-mode" data-update-mode="manual" type="button">手动</button>
+                  </div>
+                  <div class="rt-update-frequency">
+                    <span>按</span>
+                    <select class="rt-update-cycle" id="ruleUpdateCycle" disabled>
+                      <option value="day">天</option>
+                    </select>
+                    <span>计算</span>
+                  </div>
+                </div>
+                <div class="rt-update-time-row">
+                  <label>最早计算时间 <span class="rt-help-dot" title="系统会在该时间之后尝试自动计算。">?</span></label>
+                  <input class="field rt-time-input" id="ruleEarliestTime" type="time" value="00:00" title="点击选择最早计算时间">
+                  <p class="rt-update-help" id="ruleUpdateHelp">系统将在每日最早计算时间之后进行自动更新；若行为规则包含今日数据，则顺延到明日凌晨计算。</p>
+                </div>
+              </div>
+              <div class="rt-bottom-actions">
+                <button class="btn primary" id="createRuleLabel" type="button">创建</button>
+                <button class="btn" id="cancelRuleCreate" type="button">取消</button>
+              </div>
+            </div>
+
+            <div id="rfmRuleConfig" style="display:none">
+              <h2 class="section-title">RFM 规则配置</h2>
+              <div class="rfm-flow">
+                <div class="rfm-step-card">
+                  <b>1. 选择数据来源</b>
+                  <select class="select" id="rfmDataSource">
+                    <option>会员支付订单明细</option>
+                    <option>下载权益交易明细</option>
+                    <option>云盘容量包订单</option>
+                  </select>
+                </div>
+                <div class="rfm-step-card">
+                  <b>2. 选择目标事件</b>
+                  <select class="select" id="rfmTargetEvent">
+                    <option>支付订单成功</option>
+                    <option>会员首购成功</option>
+                    <option>下载权益开通成功</option>
+                  </select>
+                </div>
+                <div class="rfm-step-card">
+                  <b>3. 标签计算范围</b>
+                  <select class="select" id="rfmScope">
+                    <option>全量客户</option>
+                    <option>符合筛选条件的客户</option>
+                    <option>当前会员/历史付费客户</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-row">
+                  <label>时间范围</label>
+                  <select class="select" id="rfmWindow">
+                    <option>近90天</option>
+                    <option>近180天</option>
+                    <option>近365天</option>
+                    <option>自定义自然时间</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label>更新方式</label>
+                  <select class="select" id="rfmUpdateMode">
+                    <option>定时更新 · 每日 03:00</option>
+                    <option>手动更新</option>
+                    <option>调度更新 · 按上游完成</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="rfm-metric-grid">
+                <div class="rfm-metric-card">
+                  <div class="badge blue">R Recency</div>
+                  <div class="form-row" style="margin-top:10px">
+                    <label>最近一次消费</label>
+                    <select class="select"><option>距今天数 · 越小越高</option><option>最近支付时间</option></select>
+                  </div>
+                  <select class="select"><option>数值区间划分</option><option>百分比区间划分</option><option>原始值</option></select>
+                  <div class="rfm-range">
+                    <input class="field" type="number" value="7" aria-label="R高低分界1">
+                    <input class="field" type="number" value="30" aria-label="R高低分界2">
+                  </div>
+                </div>
+                <div class="rfm-metric-card">
+                  <div class="badge teal">F Frequency</div>
+                  <div class="form-row" style="margin-top:10px">
+                    <label>消费频率</label>
+                    <select class="select"><option>支付订单总次数 · 越大越高</option><option>付费活跃天数</option></select>
+                  </div>
+                  <select class="select"><option>数值区间划分</option><option>百分比区间划分</option><option>原始值</option></select>
+                  <div class="rfm-range">
+                    <input class="field" type="number" value="2" aria-label="F高低分界1">
+                    <input class="field" type="number" value="5" aria-label="F高低分界2">
+                  </div>
+                </div>
+                <div class="rfm-metric-card">
+                  <div class="badge violet">M Monetary</div>
+                  <div class="form-row" style="margin-top:10px">
+                    <label>消费金额</label>
+                    <select class="select"><option>支付金额求和 · 越大越高</option><option>毛利贡献求和</option></select>
+                  </div>
+                  <select class="select"><option>数值区间划分</option><option>百分比区间划分</option><option>原始值</option></select>
+                  <div class="rfm-range">
+                    <input class="field" type="number" value="30" aria-label="M高低分界1">
+                    <input class="field" type="number" value="98" aria-label="M高低分界2">
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-title" style="margin-top:16px">标签值命名</div>
+              <div class="rfm-value-table" id="rfmValueTable"></div>
+            </div>
+          </div>
+
+          <div class="rt-create-float-tools" aria-label="创建页快捷操作">
+            <button class="rt-float-tool" id="quickBackTop" type="button" title="回到页面顶部" aria-label="回到页面顶部">⬆️</button>
+            <button class="rt-float-tool" id="quickSaveDraft" type="button" title="保存草稿" aria-label="保存草稿">🔘</button>
+          </div>
+
+          <aside class="panel preview-panel">
+            <div id="standardPreview">
+              <div class="panel-title">调试预估</div>
+              <div class="panel-sub" id="estimateStatus">待计算：按 Hive T+1 逻辑计算昨日分区数据。</div>
+              <div class="preview-stat">
+                <div class="stat-box">
+                  <div class="stat-label">覆盖用户</div>
+                  <div class="stat-value" id="coverCount">待计算</div>
+                </div>
+              </div>
+              <button class="btn primary" id="estimateBtn" style="width:100%;margin-bottom:12px">计算昨日</button>
+              <div class="section-title">规则解释</div>
+              <ul class="timeline">
+                <li><span>分析对象</span><b>全端用户</b></li>
+                <li><span>窗口</span><b>近7天</b></li>
+                <li><span>判断</span><b>创建下载任务总时长 >= 3</b></li>
+                <li><span>排除</span><b>取回行为</b></li>
+              </ul>
+              <div class="section-title" style="margin-top:16px">DSL 预览</div>
+              <div class="code" id="dslBox">{
   "tag_type": "behavior_occur",
   "subject": "user",
   "platform": "all",
@@ -6882,29 +6897,30 @@
   "rule": {
     "event": "download_create",
     "metric": "duration",
-    "op": "&gt;=",
+    "op": ">=",
     "value": 3
   },
   "exclude": ["cloud_retrieve"]
 }</div>
-</div>
-<div id="rfmPreview" style="display:none">
-<div class="panel-title">RFM 预估覆盖</div>
-<div class="panel-sub" id="rfmEstimateStatus">已按当前模型配置生成 8 类客户分层模拟结果。</div>
-<div class="preview-stat">
-<div class="stat-box"><div class="stat-label">参与计算客户</div><div class="stat-value" id="rfmTotalUsers">286.4万</div></div>
-<div class="stat-box"><div class="stat-label">交易金额</div><div class="stat-value">7,842万</div></div>
-<div class="stat-box"><div class="stat-label">人均金额</div><div class="stat-value">27.4元</div></div>
-<div class="stat-box"><div class="stat-label">高价值占比</div><div class="stat-value" style="color:var(--green)">18.6%</div></div>
-</div>
-<button class="btn primary" id="estimateRfmBtn" style="width:100%;margin-bottom:12px">预估 RFM 覆盖</button>
-<div class="section-title">标签值覆盖</div>
-<table>
-<thead><tr><th>客户分层</th><th>预估人数</th><th>占比</th></tr></thead>
-<tbody id="rfmEstimateRows"></tbody>
-</table>
-<div class="section-title" style="margin-top:16px">模型 DSL</div>
-<div class="code" id="rfmDslBox">{
+            </div>
+
+            <div id="rfmPreview" style="display:none">
+              <div class="panel-title">RFM 预估覆盖</div>
+              <div class="panel-sub" id="rfmEstimateStatus">已按当前模型配置生成 8 类客户分层模拟结果。</div>
+              <div class="preview-stat">
+                <div class="stat-box"><div class="stat-label">参与计算客户</div><div class="stat-value" id="rfmTotalUsers">286.4万</div></div>
+                <div class="stat-box"><div class="stat-label">交易金额</div><div class="stat-value">7,842万</div></div>
+                <div class="stat-box"><div class="stat-label">人均金额</div><div class="stat-value">27.4元</div></div>
+                <div class="stat-box"><div class="stat-label">高价值占比</div><div class="stat-value" style="color:var(--green)">18.6%</div></div>
+              </div>
+              <button class="btn primary" id="estimateRfmBtn" style="width:100%;margin-bottom:12px">预估 RFM 覆盖</button>
+              <div class="section-title">标签值覆盖</div>
+              <table>
+                <thead><tr><th>客户分层</th><th>预估人数</th><th>占比</th></tr></thead>
+                <tbody id="rfmEstimateRows"></tbody>
+              </table>
+              <div class="section-title" style="margin-top:16px">模型 DSL</div>
+              <div class="code" id="rfmDslBox">{
   "tag_type": "rfm",
   "dataset": "会员支付订单明细",
   "target_event": "支付订单成功",
@@ -6916,11 +6932,12 @@
     "M": "pay_amount_sum"
   }
 }</div>
-</div>
-</aside>
-</div>
-</section>
-<section class="view" id="view-segment">
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-segment">
 <div class="topbar data-topbar segment-topbar">
 <div>
 <h1>分群中心</h1>
@@ -9519,8 +9536,8 @@ HarmonyOS"></textarea>
       ["receive", "是否接收", "110px", true],
       ["labelEnabled", "标签筛选", "110px", true],
       ["attrs", "属性数", "95px", true],
-      ["createdConfirmer", "创建确认人", "120px", true],
-      ["lastUpdater", "最后更新人", "120px", true],
+      ["createdConfirmer", "创建人", "120px", true],
+      ["lastUpdater", "确认人", "120px", true],
       ["lastUpdatedAt", "最后更新时间", "150px", true],
       ["actions", "操作", "150px", false]
     ];
@@ -9529,8 +9546,9 @@ HarmonyOS"></textarea>
       row.public = index < 4 ? "是" : "否";
       row.platform = row.platform || (index % 3 === 0 ? "Web" : index % 3 === 1 ? "Android" : "PC");
       row.volumeSort = parseVolume(row.volume30d);
-      row.createdConfirmer = row.createdConfirmer || currentAssetOperator;
-      row.lastUpdater = row.lastUpdater || row.owner || "数据平台";
+      row.createdBy = row.createdBy || row.owner || "数据平台";
+      row.createdConfirmer = row.createdConfirmer || row.createdBy;
+      row.lastUpdater = row.lastUpdater || currentAssetOperator;
       row.lastUpdatedAt = row.lastUpdatedAt || row.updated || "2026-05-12";
     });
 
@@ -9547,8 +9565,8 @@ HarmonyOS"></textarea>
       ["dict", "字典", "150px", true],
       ["enum", "枚举", "90px", true],
       ["status", "可见状态", "120px", true],
-      ["createdConfirmer", "创建确认人", "120px", true],
-      ["lastUpdater", "最后更新人", "120px", true],
+      ["createdConfirmer", "创建人", "120px", true],
+      ["lastUpdater", "确认人", "120px", true],
       ["lastUpdatedAt", "最后更新时间", "150px", true],
       ["actions", "操作", "150px", false]
     ];
@@ -9559,8 +9577,9 @@ HarmonyOS"></textarea>
       row.public = index < 5 ? "是" : "否";
       row.enum = row.enum || (row.enumValues?.length ? "是" : "否");
       row.fillSort = Number(String(row.fillRate || "0").replace("%", "")) || 0;
-      row.createdConfirmer = row.createdConfirmer || currentAssetOperator;
-      row.lastUpdater = row.lastUpdater || row.owner || "数据平台";
+      row.createdBy = row.createdBy || row.owner || "数据平台";
+      row.createdConfirmer = row.createdConfirmer || row.createdBy;
+      row.lastUpdater = row.lastUpdater || currentAssetOperator;
       row.lastUpdatedAt = row.lastUpdatedAt || row.updated || "2026-05-12";
     });
 
@@ -9576,8 +9595,8 @@ HarmonyOS"></textarea>
       ["dict", "字典", "150px", true],
       ["enum", "枚举", "90px", true],
       ["status", "可见状态", "120px", true],
-      ["createdConfirmer", "创建确认人", "120px", true],
-      ["lastUpdater", "最后更新人", "120px", true],
+      ["createdConfirmer", "创建人", "120px", true],
+      ["lastUpdater", "确认人", "120px", true],
       ["lastUpdatedAt", "最后更新时间", "150px", true],
       ["actions", "操作", "150px", false]
     ];
@@ -9587,8 +9606,9 @@ HarmonyOS"></textarea>
       row.public = row.domain === "公共" ? "是" : "否";
       row.enum = row.enum || (row.enumValues?.length ? "是" : "否");
       row.coverageSort = parseVolume(row.coverage);
-      row.createdConfirmer = row.createdConfirmer || currentAssetOperator;
-      row.lastUpdater = row.lastUpdater || row.owner || "数据平台";
+      row.createdBy = row.createdBy || row.owner || "数据平台";
+      row.createdConfirmer = row.createdConfirmer || row.createdBy;
+      row.lastUpdater = row.lastUpdater || currentAssetOperator;
       row.lastUpdatedAt = row.lastUpdatedAt || row.updated || "2026-05-12";
     });
 
@@ -9927,7 +9947,7 @@ HarmonyOS"></textarea>
               volume30d: field.name.includes("retention") ? "待计算" : "有数据",
               lastIngest: "随来源表更新",
               owner: table.owner || "数据平台",
-              lastUpdater: table.owner || "数据平台",
+              lastUpdater: currentAssetOperator,
               lastUpdatedAt: "2026-05-12",
               desc: `${display}，来源于 ${table.display || table.name} 的字段 ${field.name}。`,
               sourceDb: String(table.name).split(".")[0] || "dw_xlyun",
@@ -9973,7 +9993,7 @@ HarmonyOS"></textarea>
               volume30d: "待枚举确认",
               lastIngest: "随来源表更新",
               owner: table.owner || "数据平台",
-              lastUpdater: table.owner || "数据平台",
+              lastUpdater: currentAssetOperator,
               lastUpdatedAt: "2026-05-12",
               desc: `${field.name} 是 ${table.display || table.name} 的元事件来源字段，需要读取字段取值枚举后生成具体动作元事件，不直接进入规则下拉。`,
               sourceDb: String(table.name).split(".")[0] || "dw_xlyun",
@@ -10051,7 +10071,7 @@ HarmonyOS"></textarea>
                 public: /platform|product|client_version|file_type|source|from|channel/.test(field.name) ? "是" : "否",
                 fillRate: "待计算",
                 owner: table.owner || "数据平台",
-                lastUpdater: table.owner || "数据平台",
+                lastUpdater: currentAssetOperator,
                 lastUpdatedAt: "2026-05-12",
                 events: [],
                 sourceDb: String(table.name).split(".")[0] || "dw_xlyun",
@@ -10093,7 +10113,7 @@ HarmonyOS"></textarea>
                 sensitive: WAREHOUSE_SENSITIVE_FIELDS.has(field.name) ? "敏感" : "普通",
                 public: WAREHOUSE_SENSITIVE_FIELDS.has(field.name) ? "否" : "是",
                 owner: table.owner || "数据平台",
-                lastUpdater: table.owner || "数据平台",
+                lastUpdater: currentAssetOperator,
                 lastUpdatedAt: "2026-05-12",
                 sourceDb: String(table.name).split(".")[0] || "dw_xlyun",
                 sourceTable: table.name,
@@ -10165,7 +10185,9 @@ HarmonyOS"></textarea>
         row.attrs = props.length;
       });
       [eventRows, eventProps, userProps].forEach(rows => rows.forEach(row => {
-        row.createdConfirmer = row.createdConfirmer || currentAssetOperator;
+        row.createdBy = row.createdBy || row.owner || "数据平台";
+        row.createdConfirmer = row.createdConfirmer || row.createdBy;
+        row.lastUpdater = row.lastUpdater || currentAssetOperator;
       }));
 
       assetDatasets.event.rows = eventRows;
@@ -10218,7 +10240,7 @@ HarmonyOS"></textarea>
           ["fieldCount", "字段数", "8%", true],
           ["update", "更新周期", "10%", true],
           ["status", "状态", "10%", true],
-          ["owner", "负责人", "100px", true],
+          ["owner", "创建人", "100px", true],
           ["actions", "操作", "12%", false]
         ],
         fieldColumns: [
@@ -10228,7 +10250,7 @@ HarmonyOS"></textarea>
           ["layer", "数仓层级", "95px", true],
           ["grain", "表颗粒度", "120px", true],
           ["confirmType", "确认类型", "120px", true],
-          ["owner", "负责人", "100px", true],
+          ["owner", "创建人", "100px", true],
           ["reason", "推荐依据", "310px", false],
           ["stage", "确认队列", "115px", true],
           ["actions", "操作", "150px", false]
@@ -10792,8 +10814,8 @@ HarmonyOS"></textarea>
       if (["status", "upload", "receive", "labelEnabled", "segmentEnabled", "filterEnabled", "enum"].includes(key)) return statusText(row[key]);
       if (key === "domain") return pill(row[key]);
       if (key === "propertyKind") return pill(row[key] || (["event_property", "user_property"].includes(dataAssetState.type) ? "公共属性" : "-"));
-      if (key === "createdConfirmer") return escapeHtml(row.createdConfirmer || row.createdBy || currentAssetOperator || "-");
-      if (key === "lastUpdater") return escapeHtml(row.lastUpdater || row.owner || "-");
+      if (key === "createdConfirmer") return escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator || "-");
+      if (key === "lastUpdater") return escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator || "-");
       if (key === "lastUpdatedAt") return escapeHtml(row.lastUpdatedAt || row.updated || row.lastIngest || "-");
       if (["stage", "recommendedType", "confirmType"].includes(key)) return pill(row[key]);
       if (key === "reason") return `<div class="asset-reason-cell">${escapeHtml(row.reason || "-")}</div>`;
@@ -11110,19 +11132,19 @@ HarmonyOS"></textarea>
       let sections = "";
       if (type === "event") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["事件名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["行为来源类型", escapeHtml(row.behaviorSource || row.sourceType || "汇总型")], ["时间字段", escapeHtml(row.timeField || "ds")], ["默认统计口径", escapeHtml(row.defaultMetric || "次数")], ["支持统计口径", escapeHtml((row.supportedMeasures || ["总次数", "分布"]).join(" / "))], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["上报状态", pill(row.upload)], ["显示状态", pill(row.status)], ["标签可用", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["最近入库", escapeHtml(row.lastIngest)], ["创建确认人", escapeHtml(row.createdConfirmer || currentAssetOperator)], ["负责人", escapeHtml(row.owner)]
+          ["事件名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["行为来源类型", escapeHtml(row.behaviorSource || row.sourceType || "汇总型")], ["时间字段", escapeHtml(row.timeField || "ds")], ["默认统计口径", escapeHtml(row.defaultMetric || "次数")], ["支持统计口径", escapeHtml((row.supportedMeasures || ["总次数", "分布"]).join(" / "))], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["上报状态", pill(row.upload)], ["显示状态", pill(row.status)], ["标签可用", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["最近入库", escapeHtml(row.lastIngest)], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>事件属性</h3>${renderEventPropertyTable(row)}</div>`;
         sections += `<div class="asset-detail-section"><h3>下游使用</h3>${detailKv([["标签", `<b>${row.downstream?.tags || 0}</b> 个`], ["分群", `<b>${row.downstream?.segments || 0}</b> 个`], ["看板", `<b>${row.downstream?.boards || 0}</b> 个`]])}</div>`;
       } else if (type === "event_property") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["所属业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["适用范围", escapeHtml(row.propertyScope || "当前元事件")], ["是否枚举", pill(row.enum)], ["筛选可用", pill(row.filterEnabled)], ["填充率", escapeHtml(row.fillRate)], ["示例值", `<code>${escapeHtml(row.sample)}</code>`], ["创建确认人", escapeHtml(row.createdConfirmer || currentAssetOperator)], ["负责人", escapeHtml(row.owner)]
+          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["所属业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["适用范围", escapeHtml(row.propertyScope || "当前元事件")], ["是否枚举", pill(row.enum)], ["筛选可用", pill(row.filterEnabled)], ["填充率", escapeHtml(row.fillRate)], ["示例值", `<code>${escapeHtml(row.sample)}</code>`], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>所属元事件</h3>${renderPropertyEventTable(row)}</div>`;
         sections += `<div class="asset-detail-section"><h3>枚举值 / 字典</h3>${renderEnumTable(row.enumValues)}</div>`;
       } else if (type === "user_property") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["属性口径", escapeHtml(row.propertyLogic || "当前状态")], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["快照分区", escapeHtml(row.partitionField || "ds")], ["业务可见", pill(row.businessVisible || "是")], ["标签可用", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["更新方式", escapeHtml(row.update)], ["覆盖人数", escapeHtml(row.coverage)], ["覆盖率", escapeHtml(row.coverageRate)], ["创建确认人", escapeHtml(row.createdConfirmer || currentAssetOperator)], ["负责人", escapeHtml(row.owner)]
+          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["属性口径", escapeHtml(row.propertyLogic || "当前状态")], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["快照分区", escapeHtml(row.partitionField || "ds")], ["业务可见", pill(row.businessVisible || "是")], ["标签可用", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["更新方式", escapeHtml(row.update)], ["覆盖人数", escapeHtml(row.coverage)], ["覆盖率", escapeHtml(row.coverageRate)], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>枚举值 / 字典</h3>${renderEnumTable(row.enumValues)}</div>`;
       } else if (type === "table") {
@@ -11135,7 +11157,7 @@ HarmonyOS"></textarea>
         sections += `<div class="asset-detail-section"><h3>字段清单${tableFields.length ? `（${tableFields.length} 个）` : ""}</h3>${visibleFields.length ? `<div class="warehouse-field-table">${visibleFields.map(f => `<div class="warehouse-field-row"><b>${escapeHtml(f.name)}</b><span class="warehouse-type-cell">${dataTypeCell(f.type)}</span><span>${escapeHtml(f.desc || "-")}</span></div>`).join("")}</div>${tableFields.length > visibleFields.length ? `<p>已展示前 ${visibleFields.length} 个字段，可通过搜索定位更多字段。</p>` : ""}` : `<div class="empty" style="min-height:96px">该表暂无字段明细</div>`}</div>`;
       } else if (type === "pending_asset") {
         sections += `<div class="asset-detail-section"><h3>来源信息</h3>${detailKv([
-          ["确认队列", pill(row.stage)], [row.queue === "field" ? "字段" : "表名", `<code>${escapeHtml(row.name)}</code>`], ["字段中文名 / 表中文名", escapeHtml(row.display || "-")], ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || row.name || "").split(".")[0] || "-")], ["来源表", `<code>${escapeHtml(row.sourceTable || row.name)}</code>`], ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"], ["字段类型", escapeHtml(row.sourceFieldType || "-")], ["数仓层级", escapeHtml(row.layer || "-")], ["表颗粒度 / 主体", `${escapeHtml(row.grain || "-")}${row.subjectId ? ` / ${escapeHtml(row.subjectId)}` : ""}`], ["更新周期", escapeHtml(row.update || "T+1")], ["负责人", escapeHtml(row.owner || "-")]
+          ["确认队列", pill(row.stage)], [row.queue === "field" ? "字段" : "表名", `<code>${escapeHtml(row.name)}</code>`], ["字段中文名 / 表中文名", escapeHtml(row.display || "-")], ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || row.name || "").split(".")[0] || "-")], ["来源表", `<code>${escapeHtml(row.sourceTable || row.name)}</code>`], ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"], ["字段类型", escapeHtml(row.sourceFieldType || "-")], ["数仓层级", escapeHtml(row.layer || "-")], ["表颗粒度 / 主体", `${escapeHtml(row.grain || "-")}${row.subjectId ? ` / ${escapeHtml(row.subjectId)}` : ""}`], ["更新周期", escapeHtml(row.update || "T+1")], ["创建人", escapeHtml(row.owner || "-")]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>系统推荐</h3>${detailKv([
           [row.queue === "field" ? "确认类型" : "系统判断", pill(row.confirmType || row.recommendedType || "待确认")], ["推荐依据", `<span>${escapeHtml(row.reason || "-")}</span>`], ["确认状态", statusText(row.status)], ["敏感等级", escapeHtml(row.sensitive || "普通")]
@@ -11464,7 +11486,6 @@ HarmonyOS"></textarea>
       renderAssetCreateTabs();
       renderAssetCreateFields();
       const fieldDisplay = pending.display || pending.sourceFieldDesc || pending.name;
-      setAssetVal("assetNewOwner", pending.owner || currentAssetOperator);
       setAssetVal("assetNewDomain", pending.domain || "公共");
       setAssetVal("assetNewName", pending.name || "");
       setAssetVal("assetNewDisplay", fieldDisplay || pending.name || "");
@@ -11754,7 +11775,6 @@ HarmonyOS"></textarea>
         setAssetVal("assetNewDb", db);
         if (!assetVal("assetNewDomain")) setAssetVal("assetNewDomain", inferDomainFromTable(table));
         else setAssetVal("assetNewDomain", inferDomainFromTable(table));
-        if (!assetVal("assetNewOwner")) setAssetVal("assetNewOwner", table.owner || currentAssetOperator);
         if (assetCreateType === "table") {
           setAssetVal("assetNewName", table.name || "");
           setAssetVal("assetNewDisplay", table.display || table.name || "");
@@ -12299,7 +12319,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "事件类型", eventTypeControl, false, true)}
           ${assetCreateField("base", "事件标签", assetCreateInput("assetNewEventTag", "多个标签用逗号分隔"), false, false)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "事件说明", `<textarea class="field" id="assetNewDesc" style="height:86px;padding-top:10px;resize:vertical" placeholder="说明该事件的触发时机和业务口径"></textarea>`, true, false)}
           <div class="asset-create-full asset-event-attr-section">
             <div class="asset-create-section-tab">事件属性</div>
@@ -12325,7 +12344,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
           ${assetCreateField("base", "更新方式", assetCreateSelect("assetNewUpdate", updateOptions), false, true)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "业务说明", `<textarea class="field" id="assetNewDesc" style="height:80px;padding-top:10px;resize:vertical" placeholder="说明这个属性的含义、枚举来源和使用限制"></textarea>`, true, false)}
         `;
       } else if (assetCreateType === "user_property") {
@@ -12337,7 +12355,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
           ${assetCreateField("base", "更新方式", assetCreateSelect("assetNewUpdate", updateOptions), false, true)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "业务说明", `<textarea class="field" id="assetNewDesc" style="height:80px;padding-top:10px;resize:vertical" placeholder="说明该用户属性的计算口径、更新逻辑和使用场景"></textarea>`, true, false)}
         `;
       } else if (assetCreateType === "dict") {
@@ -12348,7 +12365,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
           ${assetCreateField("base", "最近更新", assetCreateInput("assetNewUpdated", "2026-05-12"), false, false)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "枚举值", `<textarea class="field" id="assetNewEnumValues" style="height:86px;padding-top:10px;resize:vertical" placeholder="一行一个枚举，如 0=否"></textarea>`, true, false)}
           ${assetCreateField("base", "说明", `<textarea class="field" id="assetNewDesc" style="height:90px;padding-top:10px;resize:vertical" placeholder="说明字典用途和枚举口径"></textarea>`, true, false)}
         `;
@@ -12361,7 +12377,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "数仓层级", assetCreateInput("assetNewLayer", "如 DWS层"), false, false)}
           ${assetCreateField("base", "表颗粒度", assetCreateInput("assetNewGrain", "如 guid / user_id"), false, false)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "表说明", `<textarea class="field" id="assetNewDesc" style="height:90px;padding-top:10px;resize:vertical" placeholder="说明表用途、口径或文档链接"></textarea>`, true, false)}
         `;
       } else if (assetCreateType === "metric") {
@@ -12373,7 +12388,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "统计粒度", assetCreateSelect("assetNewMetricGrain", ["日", "周", "月", "小时", "用户", "设备", "资源"]), false, false)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
           ${assetCreateField("base", "最近更新", assetCreateInput("assetNewUpdated", "2026-05-12"), false, false)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "指标定义", `<textarea class="field" id="assetNewDesc" style="height:90px;padding-top:10px;resize:vertical" placeholder="说明指标计算口径、分子分母和统计周期"></textarea>`, true, false)}
         `;
       } else {
@@ -12384,7 +12398,6 @@ HarmonyOS"></textarea>
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
           ${assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true)}
           ${assetCreateField("base", "最近更新", assetCreateInput("assetNewUpdated", "2026-05-12"), false, false)}
-          ${assetCreateField("base", "确认人", assetCreateInput("assetNewOwner", "默认当前用户，可改为确认人"), false, false)}
           ${assetCreateField("base", "说明", `<textarea class="field" id="assetNewDesc" style="height:90px;padding-top:10px;resize:vertical" placeholder="说明资产用途和口径"></textarea>`, true, false)}
         `;
       }
@@ -12413,7 +12426,6 @@ HarmonyOS"></textarea>
       assetCreateType = assetCreateTypes.includes(dataAssetState.type) ? dataAssetState.type : "event";
       renderAssetCreateTabs();
       renderAssetCreateFields();
-      setAssetVal("assetNewOwner", currentAssetOperator);
       document.getElementById("assetCreateModal")?.classList.add("show");
     }
 
@@ -12440,7 +12452,6 @@ HarmonyOS"></textarea>
       setAssetVal("assetNewName", row.name);
       setAssetVal("assetNewDisplay", row.display || row.name);
       setAssetVal("assetNewDomain", row.domain || "公共");
-      setAssetVal("assetNewOwner", row.owner || currentAssetOperator);
       setAssetVal("assetNewDesc", row.desc || row.definition || "");
       setAssetVal("assetNewStatus", row.status || "可见");
       if (assetCreateType === "event") {
@@ -12513,7 +12524,7 @@ HarmonyOS"></textarea>
       }
       const now = Date.now();
       const domain = assetVal("assetNewDomain") || "公共";
-      const owner = assetVal("assetNewOwner") || "待分配";
+      const owner = currentAssetOperator;
       const desc = assetVal("assetNewDesc") || "待补充业务口径。";
       const assetToday = "2026-05-18";
       const existing = assetEditMode && assetEditId ? def.rows.find(r => r.id === assetEditId) : null;
@@ -12542,7 +12553,9 @@ HarmonyOS"></textarea>
         row = { ...(existing || {}), id: existing?.id || `custom_${assetCreateType}_${now}`, name, display, domain, status:assetVal("assetNewStatus") || "可见", updated:assetVal("assetNewUpdated") || "2026-05-12", owner, desc, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       }
       if (["event", "event_property", "user_property"].includes(assetCreateType)) {
-        row.createdConfirmer = row.createdConfirmer || currentAssetOperator;
+        row.createdBy = row.createdBy || currentAssetOperator;
+        row.createdConfirmer = row.createdConfirmer || row.createdBy;
+        row.lastUpdater = row.lastUpdater || currentAssetOperator;
       }
       rebuildAssetSearchIndex(row);
       if (existing) {
@@ -13366,6 +13379,26 @@ HarmonyOS"></textarea>
       tagTypeModal.classList.add("show");
     }
     document.getElementById("openCreateTag").addEventListener("click", openTagModal);
+    const homeTagCreateCard = document.getElementById("homeTagCreateCard");
+    if (homeTagCreateCard) {
+      homeTagCreateCard.addEventListener("click", openTagModal);
+      homeTagCreateCard.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openTagModal();
+        }
+      });
+    }
+    const homeSegmentCreateCard = document.getElementById("homeSegmentCreateCard");
+    if (homeSegmentCreateCard) {
+      homeSegmentCreateCard.addEventListener("click", () => openSegmentRuleCreatePage({ reset: true }));
+      homeSegmentCreateCard.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openSegmentRuleCreatePage({ reset: true });
+        }
+      });
+    }
     document.getElementById("closeModal").addEventListener("click", () => tagTypeModal.classList.remove("show"));
     tagTypeModal.addEventListener("click", event => {
       if (event.target === tagTypeModal) tagTypeModal.classList.remove("show");
@@ -15525,7 +15558,7 @@ where dt = '\${bizdate}'</textarea></div>
             const dy = p.y - q.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 112) {
-              ctx.strokeStyle = `rgba(99, 91, 255, ${0.10 * (1 - dist / 112)})`;
+              ctx.strokeStyle = `rgba(83, 58, 253, ${0.10 * (1 - dist / 112)})`;
               ctx.lineWidth = 1;
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
@@ -15598,16 +15631,17 @@ where dt = '\${bizdate}'</textarea></div>
       return values.map(value => `<option value="${escapeHtml(value)}" ${value === selected ? "selected" : ""}>${escapeHtml(value)}</option>`).join("");
     }
     function xlRuleAssetOptions(type, selected) {
-      return xlAssetOptionHTML(xlAssetRows(type), selected, []);
+      const fallback = type === "event" ? xlEvents : type === "user_property" ? xlAttrFields : [];
+      return xlAssetOptionHTML(xlAssetRows(type), selected, fallback);
     }
     function xlEventPropertyRowsFor(eventDisplay) {
       const event = String(eventDisplay || "").trim();
       const rows = xlAssetRows("event_property");
       const matched = rows.filter(row => Array.isArray(row.events) && row.events.some(item => String(item) === event));
-      return matched;
+      return matched.length ? matched : rows;
     }
     function xlRuleEventPropertyOptions(eventDisplay, selected) {
-      return xlAssetOptionHTML(xlEventPropertyRowsFor(eventDisplay), selected, []);
+      return xlAssetOptionHTML(xlEventPropertyRowsFor(eventDisplay), selected, xlEventFilters);
     }
     function xlFindEventProperty(eventDisplay, fieldDisplay) {
       const rows = xlEventPropertyRowsFor(eventDisplay);
@@ -15619,10 +15653,10 @@ where dt = '\${bizdate}'</textarea></div>
     }
     function xlOpsForDataType(type, scope = "attribute") {
       const dt = normDataType(type);
-      if (["INTEGER", "FLOAT"].includes(dt)) return ["≥", ">", "=", "≤", "<", "不等于", "为空", "不为空"];
+      if (["NUMBER", "INTEGER", "BIGINT", "DOUBLE"].includes(dt)) return ["≥", ">", "=", "≤", "<", "不等于", "为空", "不为空"];
       if (dt === "BOOLEAN") return ["等于", "不等于", "为空", "不为空"];
-      if (dt === "TIME") return ["等于", "早于", "晚于", "介于", "最近N天", "为空", "不为空"];
-      if (["OBJECT", "OBJECT_ARRAY", "LIST"].includes(dt)) return ["包含", "不包含", "为空", "不为空"];
+      if (["DATE", "TIME", "DATETIME", "TIMESTAMP"].includes(dt)) return ["等于", "早于", "晚于", "介于", "最近N天", "为空", "不为空"];
+      if (dt === "ENUM") return ["等于", "不等于", "属于", "不属于", "为空", "不为空"];
       return scope === "filter" ? ["等于", "不等于", "包含", "不包含", "为空", "不为空"] : xlAttrOps;
     }
     function xlAttrOpsForField(field) {
@@ -15635,9 +15669,9 @@ where dt = '\${bizdate}'</textarea></div>
       const values = Array.isArray(row?.enumValues) ? row.enumValues : [];
       if (values.length) return String(values[0][1] || values[0][0] || fallback || "");
       const dt = xlAssetDataType(row);
-      if (["INTEGER", "FLOAT"].includes(dt)) return "1";
+      if (["NUMBER", "INTEGER", "BIGINT", "DOUBLE"].includes(dt)) return "1";
       if (dt === "BOOLEAN") return "是";
-      if (dt === "TIME") return "2026-05-10";
+      if (["DATE", "TIME", "DATETIME", "TIMESTAMP"].includes(dt)) return "2026-05-10";
       return fallback || "";
     }
     function xlResolveAttrAsset(field) {
@@ -15669,94 +15703,8 @@ where dt = '\${bizdate}'</textarea></div>
     const xlEvents = ["广告展示", "Web 元素点击", "创建下载任务", "云盘存资源", "云盘取回", "播放行为", "搜索/访问网页", "会员支付/续费", "资源位曝光"];
     const xlEventFilters = ["广告位ID", "素材ID", "下载来源", "资源类型", "文件类型", "平台类型", "会员类型", "渠道来源", "资源位名称"];
     const xlEventValues = ["03746547", "首页 Banner", "站外调起", "本地下载", "视频", "压缩包", "Android", "PC", "标投", "超级会员"];
+    const xlAggs = ["总次数", "活跃天数", "去重资源数", "总时长", "支付金额"];
     const xlNumOps = ["≥", ">", "=", "≤", "<"];
-    const xlMeasureAggLabels = { count: "总次数", distribution: "分布", duration: "时长", amount: "金额", capacity: "容量" };
-    const xlMeasureUnits = { count: "次", distribution: "天", duration: "秒", amount: "元", capacity: "MB" };
-    function xlIsNumericDataType(type) {
-      const dt = normDataType(type);
-      return ["INTEGER", "FLOAT", "NUMBER", "BIGINT", "DOUBLE", "DECIMAL"].includes(dt) || /NUMBER|BIGINT|DOUBLE|DECIMAL|FLOAT|INT/i.test(String(type || ""));
-    }
-    function xlMeasureKey(type, aggregate, property = "") {
-      return `${type}|${aggregate}|${property || ""}`;
-    }
-    function xlParseMeasureKey(key) {
-      const [type = "event_count", aggregate = "count", property = ""] = String(key || "event_count|count|").split("|");
-      return { type, aggregate, property };
-    }
-    function xlEventSupportedMeasures(eventDisplay) {
-      const asset = xlResolveEventAsset(eventDisplay) || {};
-      const set = new Set(asset.supportedMeasures || ["总次数", "分布"]);
-      if (asset.durationField) set.add("时长");
-      if (asset.amountField) set.add("金额");
-      if (asset.capacityField) set.add("容量");
-      return set;
-    }
-    function xlMeasureOptionsForEvent(eventDisplay, selectedKey = "") {
-      const supported = xlEventSupportedMeasures(eventDisplay);
-      const all = [
-        { value: xlMeasureKey("event_count", "count"), label: "总次数", unit: "次" },
-        { value: xlMeasureKey("event_distribution", "distribution"), label: "分布", unit: "天" },
-        { value: xlMeasureKey("event_duration", "duration"), label: "时长", unit: "秒" },
-        { value: xlMeasureKey("event_amount", "amount"), label: "金额", unit: "元" },
-        { value: xlMeasureKey("event_capacity", "capacity"), label: "容量", unit: "MB" }
-      ];
-      return all.filter(item => supported.has(item.label));
-    }
-    function xlMeasureSelectedKey(row) {
-      const key = row?.measureKey || xlMeasureKey("event_count", "count");
-      const parsed = xlParseMeasureKey(key);
-      const label = parsed.type === "event_distribution" || parsed.aggregate === "distribution" ? "分布"
-        : parsed.type === "event_duration" || parsed.aggregate === "duration" ? "时长"
-        : parsed.type === "event_amount" || parsed.aggregate === "amount" ? "金额"
-        : parsed.type === "event_capacity" || parsed.aggregate === "capacity" ? "容量"
-        : "总次数";
-      const options = xlMeasureOptionsForEvent(row?.event || "");
-      const option = options.find(item => item.label === label) || options[0] || { value: xlMeasureKey("event_count", "count") };
-      return option.value;
-    }
-    function xlMeasureLabelFromKey(key) {
-      const parsed = xlParseMeasureKey(key);
-      if (parsed.type === "event_distribution" || parsed.aggregate === "distribution") return "分布";
-      if (parsed.type === "event_duration" || parsed.aggregate === "duration") return "时长";
-      if (parsed.type === "event_amount" || parsed.aggregate === "amount") return "金额";
-      if (parsed.type === "event_capacity" || parsed.aggregate === "capacity") return "容量";
-      return "总次数";
-    }
-    function xlMeasureUnitFromKey(key, eventDisplay = "") {
-      const label = xlMeasureLabelFromKey(key);
-      return label === "分布" ? "天" : label === "时长" ? "秒" : label === "金额" ? "元" : label === "容量" ? "MB" : "次";
-    }
-    function xlMeasureOptionsHTML(eventDisplay, selectedKey) {
-      const normalized = xlMeasureSelectedKey({ measureKey: selectedKey, event: eventDisplay });
-      return xlMeasureOptionsForEvent(eventDisplay, normalized).map(item => `<option value="${escapeHtml(item.value)}" ${item.value === normalized ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("");
-    }
-    function xlMeasureBackendHint(row) {
-      const parsed = xlParseMeasureKey(xlMeasureSelectedKey(row));
-      const eventAsset = xlResolveEventAsset(row.event) || {};
-      const sourceType = String(eventAsset?.sourceType || eventAsset?.eventSourceType || eventAsset?.behaviorSourceType || eventAsset?.source_type || "");
-      const countField = eventAsset?.countField || "";
-      const sourceField = countField || eventAsset?.sourceField || eventAsset?.sourceColumn || eventAsset?.name || "来源字段";
-      if (parsed.type === "event_distribution" || parsed.aggregate === "distribution") {
-        return /汇总|summary/i.test(sourceType) || /_pv_|_cnt|_current/i.test(String(sourceField))
-          ? `分布统计时间窗口内发生该行为的天数；汇总型元事件按 COUNT(DISTINCT ds WHERE ${sourceField} > 0) 计算。`
-          : "分布统计时间窗口内发生该行为的天数；明细型元事件按 COUNT(DISTINCT event_date) 计算。";
-      }
-      if (parsed.type === "event_duration" || parsed.aggregate === "duration") {
-        return eventAsset.durationField ? `时长统计该元事件的行为时长；后台按 SUM(${eventAsset.durationField}) 计算。` : "当前元事件未绑定时长字段，需先在元数据中心补充 duration 字段。";
-      }
-      if (parsed.type === "event_amount" || parsed.aggregate === "amount") {
-        return eventAsset.amountField ? `金额统计该元事件的金额口径；后台按 SUM(${eventAsset.amountField}) 计算。` : "当前元事件未绑定金额字段，需先在元数据中心补充 amount 字段。";
-      }
-      if (parsed.type === "event_capacity" || parsed.aggregate === "capacity") {
-        return eventAsset.capacityField ? `容量统计该元事件的容量/流量口径；后台按 SUM(${eventAsset.capacityField}) 计算。` : "当前元事件未绑定容量字段，需先在元数据中心补充 size/bytes/quota 字段。";
-      }
-      if (!countField && /汇总|summary/i.test(sourceType)) return "当前汇总型元事件未绑定次数字段，需先在元数据中心补充 count/pv 字段后再计算总次数。";
-      if (/汇总|summary/i.test(sourceType) || /_pv_|_cnt|_current/i.test(String(sourceField))) {
-        return `总次数统计元事件本身；汇总型元事件后台按 SUM(${sourceField}) 计算。`;
-      }
-      return "总次数统计元事件本身；明细型元事件后台按 COUNT(*) 计算。";
-    }
-
     const xlQuickTimes = [
       { label: "今日", start: "2026-05-11", end: "2026-05-11", mode: "dynamic", days: 1 },
       { label: "昨日", start: "2026-05-10", end: "2026-05-10", mode: "dynamic", days: 1 },
@@ -15777,48 +15725,19 @@ where dt = '\${bizdate}'</textarea></div>
     function xlOptions(options, selected) { return renderOptions(options, selected); }
     function xlLayerFallbackName(layer, index) { return (layer.name && layer.name.trim()) || `分层${index + 1}`; }
 
-    function xlFirstAssetDisplay(type, fallback = "") {
-      const row = xlAssetRows(type)[0];
-      return row ? xlAssetDisplay(row) : fallback;
-    }
-    function xlPickAssetDisplay(type, pattern, fallback = "") {
-      const rows = xlAssetRows(type);
-      const found = rows.find(row => pattern.test(`${xlAssetDisplay(row)} ${row.name || ""} ${row.sourceField || ""} ${row.desc || ""}`));
-      return found ? xlAssetDisplay(found) : (xlFirstAssetDisplay(type, fallback));
-    }
-    function xlDefaultAttrValue(field, fallback = "") {
-      return xlDefaultValueForAsset(xlResolveAttrAsset(field), fallback);
-    }
-    function xlDefaultFilterForEvent(eventDisplay) {
-      const row = xlEventPropertyRowsFor(eventDisplay)[0];
-      return row ? makeFilter(xlAssetDisplay(row), xlOpsForDataType(xlAssetDataType(row), "filter")[0] || "等于", xlDefaultValueForAsset(row, "")) : makeFilter("", "等于", "");
-    }
-
-    function makeAttrRow(field = null, op = null, value = null) {
-      const chosen = field || xlFirstAssetDisplay("user_property", "");
-      const chosenOp = op || (xlAttrOpsForField(chosen)[0] || "等于");
-      const chosenValue = value !== null && value !== undefined ? value : xlDefaultAttrValue(chosen, "");
-      return { id: xlId("attr"), field: chosen, op: chosenOp, value: chosenValue };
+    function makeAttrRow(field = "平台类型", op = "包含", value = "Android") {
+      return { id: xlId("attr"), field, op, value };
     }
     function makeAttrGroup(logic = "and", rows = [makeAttrRow()]) {
       return { id: xlId("ag"), logic, rows };
     }
-    function makeBehaviorRow(event = null, value = "1") {
-      const chosen = event || xlFirstAssetDisplay("event", "");
-      const row = { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event: chosen, measureKey: xlMeasureKey("event_count", "count"), measureType: "event_count", aggregate: "count", measureProperty: "", agg: "总次数", op: "≥", value, unit: "次", filterLogic: "and", filters: [] };
-      const selectedKey = xlMeasureSelectedKey(row);
-      const parsed = xlParseMeasureKey(selectedKey);
-      row.measureKey = selectedKey;
-      row.measureType = parsed.type;
-      row.aggregate = parsed.aggregate;
-      row.agg = xlMeasureLabelFromKey(selectedKey);
-      row.unit = xlMeasureUnitFromKey(selectedKey, row.event);
-      return row;
+    function makeBehaviorRow(event = "广告展示", value = "1") {
+      return { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event, agg: "总次数", op: "≥", value, unit: "次", filters: [] };
     }
     function makeBehaviorGroup(logic = "and", rows = [makeBehaviorRow()]) {
       return { id: xlId("bg"), logic, rows };
     }
-    function makeFilter(field = "", op = "等于", value = "") {
+    function makeFilter(field = "广告位ID", op = "等于", value = "03746547") {
       return { id: xlId("filter"), field, op, value };
     }
 
@@ -15846,25 +15765,20 @@ where dt = '\${bizdate}'</textarea></div>
 
     function initXunleiRuleState(force = false) {
       if (!force && window.xunleiRuleState?.layers?.length) return;
-      const attrPlatform = xlPickAssetDisplay("user_property", /平台|platform|终端/, xlFirstAssetDisplay("user_property", ""));
-      const attrChannel = xlPickAssetDisplay("user_property", /渠道|channel/, attrPlatform);
-      const attrVip = xlPickAssetDisplay("user_property", /会员|vip/, attrPlatform);
-      const eventBrowse = xlPickAssetDisplay("event", /浏览|browser|访问/, xlFirstAssetDisplay("event", ""));
-      const eventDownload = xlPickAssetDisplay("event", /下载|download|创建下载/, eventBrowse);
       const l1 = {
         id: xlId("layer"),
         name: "高意向",
-        remark: "示例：基于元数据中心已确认的用户属性和元事件组合生成，后续可替换成真实业务口径。",
+        remark: "示例：昨日看过广告且发生点击，或来自标投渠道并创建过下载任务的广告高意向用户。后续可替换成真实口径。",
         relation: "and",
         attrGroups: [
-          makeAttrGroup("and", [makeAttrRow(attrPlatform)]),
-          makeAttrGroup("or", [makeAttrRow(attrChannel), makeAttrRow(attrVip)])
+          makeAttrGroup("and", [makeAttrRow("平台类型", "包含", "Android")]),
+          makeAttrGroup("or", [makeAttrRow("首次渠道名称", "包含", "标投"), makeAttrRow("个推ID", "等于", "03746547")])
         ],
         attrGroupRelations: ["or"],
         behaviorGroups: [
           makeBehaviorGroup("and", [
-            Object.assign(makeBehaviorRow(eventBrowse, "1"), { filters: [] }),
-            Object.assign(makeBehaviorRow(eventDownload, "1"), { filters: [] })
+            Object.assign(makeBehaviorRow("广告展示", "1"), { filters: [makeFilter("广告位ID", "等于", "03746547")] }),
+            Object.assign(makeBehaviorRow("Web 元素点击", "1"), { filters: [makeFilter("素材ID", "包含", "首页 Banner")] })
           ])
         ],
         behaviorGroupRelations: []
@@ -15872,16 +15786,16 @@ where dt = '\${bizdate}'</textarea></div>
       const l2 = {
         id: xlId("layer"),
         name: "低意向",
-        remark: "示例：使用同一批已确认元数据资产配置低意向分层，拖拽分层顺序决定优先级。",
+        remark: "示例：近 30 天有广告展示但未发生点击或下载转化，作为广告低意向枚举值。后续可替换成真实口径。",
         relation: "and",
         attrGroups: [
-          makeAttrGroup("and", [makeAttrRow(attrVip), makeAttrRow(attrChannel)])
+          makeAttrGroup("and", [makeAttrRow("会员类型", "等于", "非会员"), makeAttrRow("首次渠道名称", "不等于", "标投")])
         ],
         attrGroupRelations: [],
         behaviorGroups: [
           makeBehaviorGroup("and", [
-            Object.assign(makeBehaviorRow(eventBrowse, "1"), { timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30 }),
-            Object.assign(makeBehaviorRow(eventDownload, "1"), { action: "未做过", timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30 })
+            Object.assign(makeBehaviorRow("广告展示", "1"), { timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30, filters: [makeFilter("广告位ID", "等于", "03746547")] }),
+            Object.assign(makeBehaviorRow("Web 元素点击", "1"), { action: "未做过", timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30 })
           ])
         ],
         behaviorGroupRelations: []
@@ -15958,20 +15872,9 @@ where dt = '\${bizdate}'</textarea></div>
 
     function renderXlBehaviorFilters(row) {
       if (!row.filters?.length) return "";
-      const filterLogic = row.filterLogic === "or" ? "or" : "and";
       return `
         <div class="rt-filter-panel">
-          <div class="rt-filter-panel-head">
-            <b>「${escapeHtml(row.event)}」的事件属性筛选</b>
-            <div class="rt-filter-panel-tools">
-              <span class="rt-filter-logic-label">筛选关系</span>
-              <span class="rt-inline-relation-toggle rt-filter-logic-toggle" role="group" aria-label="事件属性筛选关系">
-                <button class="${filterLogic === "and" ? "active" : ""}" data-action="set-filter-logic" data-row-id="${row.id}" data-logic="and" type="button">且</button>
-                <button class="${filterLogic === "or" ? "active" : ""}" data-action="set-filter-logic" data-row-id="${row.id}" data-logic="or" type="button">或</button>
-              </span>
-              <span class="rt-filter-panel-collapse" data-action="clear-filters" data-row-id="${row.id}">清空筛选</span>
-            </div>
-          </div>
+          <div class="rt-filter-panel-head"><b>「${escapeHtml(row.event)}」的事件属性筛选</b><span class="rt-filter-panel-collapse" data-action="clear-filters" data-row-id="${row.id}">清空筛选</span></div>
           ${row.filters.map(filter => `
             <div class="rt-filter-row" data-filter-id="${filter.id}">
               <span class="rt-type-badge filter">筛选</span>
@@ -15997,12 +15900,11 @@ where dt = '\${bizdate}'</textarea></div>
               <button class="rt-filter-link" data-action="add-filter" data-row-id="${row.id}" type="button">+ 添加筛选</button>
             </div>
             <div class="rt-behavior-line rt-behavior-judge-line">
-              <select class="rt-compact rt-behavior-measure-select" title="总次数统计元事件本身；分布统计发生天数；时长/金额/容量按元事件绑定的度量字段求和" data-row-update="measure" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}">${xlMeasureOptionsHTML(row.event, xlMeasureSelectedKey(row))}</select>
+              <select class="rt-compact" data-row-update="agg" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}">${xlOptions(xlAggs, row.agg)}</select>
               <select class="rt-compact" data-row-update="op" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}">${xlOptions(xlNumOps, row.op)}</select>
               <input class="rt-compact-input rt-number" type="number" min="0" data-row-update="value" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}" value="${escapeHtml(row.value)}">
-              <span class="rt-suffix-text">${escapeHtml(xlMeasureUnitFromKey(xlMeasureSelectedKey(row), row.event))}</span>
+              <span class="rt-suffix-text">${row.agg === "活跃天数" ? "天" : row.agg === "总时长" ? "分钟" : row.agg === "支付金额" ? "元" : "次"}</span>
             </div>
-            <div class="rt-behavior-calc-note">${escapeHtml(xlMeasureBackendHint(row))}</div>
           </div>
           <div class="rt-rule-actions">
             <button class="rt-rule-action" data-action="copy-row" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}" type="button">复制</button>
@@ -16070,7 +15972,6 @@ where dt = '\${bizdate}'</textarea></div>
               <button class="rt-mini-btn" data-action="add-group" data-section="${section}" type="button">添加组</button>
             </div>
           </div>
-          ${!isAttr ? `<div class="rt-mapping-note"><b>映射说明：</b>“做过/未做过”后选择元数据中心的元事件；“+ 添加筛选”只展示当前元事件关联的事件属性；第一版统计口径支持“总次数 / 分布 / 时长 / 金额 / 容量”；元事件只外显动词动作，统计口径由来源字段决定；uv / user_cnt / rate 类字段作为指标参考，不进入行为统计口径，retention 优先作为用户属性。</div>` : ""}
           <div class="rt-section-body">
             ${groupHTML}
           </div>
@@ -16142,8 +16043,8 @@ where dt = '\${bizdate}'</textarea></div>
                 <input class="field" data-layer-update="name" value="${escapeHtml(layer.name)}" placeholder="例如：高意向">
               </div>
               <div class="form-row">
-                <label>优先级（自动生成）</label>
-                <div class="rt-priority-display"><span class="rt-priority-badge">第 ${idx + 1} 优先匹配</span><span style="color:var(--ink-3);font-weight:600">拖拽上方分层 Tab 后自动更新，无需填写</span></div>
+                <label>优先级</label>
+                <input class="field" value="第 ${idx + 1} 优先匹配" disabled>
               </div>
               <div class="form-row full">
                 <label>分层备注</label>
@@ -16329,7 +16230,7 @@ where dt = '\${bizdate}'</textarea></div>
         if (action === "add-group") {
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
           const relations = xlGetSectionRelations(layer, section);
-          groups.push(section === "attr" ? makeAttrGroup("and", [makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], ""))]) : makeBehaviorGroup("and", [makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1")]));
+          groups.push(section === "attr" ? makeAttrGroup("and", [makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], "标投"))]) : makeBehaviorGroup("and", [makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1")]));
           if (groups.length > 1) relations.push("and");
           xlEnsureLayerGroupRelations(layer);
           renderCreateConfig("rule");
@@ -16370,17 +16271,11 @@ where dt = '\${bizdate}'</textarea></div>
           renderCreateConfig("rule");
           return;
         }
-        if (action === "set-filter-logic") {
-          const found = findXlBehaviorRow(rowId);
-          if (found.row) found.row.filterLogic = target.dataset.logic === "or" ? "or" : "and";
-          renderCreateConfig("rule");
-          return;
-        }
         if (action === "add-row") {
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
           const group = groupId ? groups.find(g => g.id === groupId) : groups[0];
           if (!group) return;
-          group.rows.push(section === "attr" ? makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], "")) : makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1"));
+          group.rows.push(section === "attr" ? makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], "标投")) : makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1"));
           renderCreateConfig("rule");
           return;
         }
@@ -16406,14 +16301,7 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "add-filter") {
           const found = findXlBehaviorRow(rowId);
-          if (found.row) {
-            const firstProp = xlEventPropertyRowsFor(found.row.event)[0];
-            if (!firstProp) {
-              showToast("当前元事件暂无已关联事件属性");
-              return;
-            }
-            found.row.filters.push(makeFilter(xlAssetDisplay(firstProp), "等于", xlDefaultValueForAsset(firstProp, "")));
-          }
+          if (found.row) { const firstProp = xlEventPropertyRowsFor(found.row.event)[0]; found.row.filters.push(makeFilter(firstProp ? xlAssetDisplay(firstProp) : "广告位ID", "等于", xlDefaultValueForAsset(firstProp, "03746547"))); }
           renderCreateConfig("rule");
           return;
         }
@@ -16489,27 +16377,8 @@ where dt = '\${bizdate}'</textarea></div>
           if (key === "event") {
             const allowed = xlEventPropertyRowsFor(row.event).map(xlAssetDisplay);
             row.filters = (row.filters || []).filter(f => allowed.includes(f.field));
-            const measureOptions = xlMeasureOptionsForEvent(row.event);
-            const selected = measureOptions.find(item => item.value === xlMeasureSelectedKey(row)) || measureOptions[0];
-            if (selected) {
-              const parsed = xlParseMeasureKey(selected.value);
-              row.measureKey = selected.value;
-              row.measureType = parsed.type;
-              row.aggregate = parsed.aggregate;
-              row.measureProperty = "";
-              row.agg = xlMeasureLabelFromKey(selected.value);
-              row.unit = xlMeasureUnitFromKey(selected.value, row.event);
-            }
           }
-          if (key === "measure") {
-            const parsed = xlParseMeasureKey(target.value);
-            row.measureKey = target.value;
-            row.measureType = parsed.type;
-            row.aggregate = parsed.aggregate;
-            row.measureProperty = "";
-            row.agg = xlMeasureLabelFromKey(target.value);
-            row.unit = xlMeasureUnitFromKey(target.value, row.event);
-          }
+          if (key === "agg") row.unit = target.value === "活跃天数" ? "天" : target.value === "总时长" ? "分钟" : target.value === "支付金额" ? "元" : "次";
         }
         updateCreatePreview("rule");
         if (target.dataset.rowUpdate === "field" || target.dataset.rowUpdate === "event") renderCreateConfig("rule");
@@ -16562,7 +16431,7 @@ where dt = '\${bizdate}'</textarea></div>
           user_attribute_group_relations: xlGetSectionRelations(layer, "attr").map(r => r === "and" ? "AND" : "OR"),
           user_attributes: layer.attrGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => ({ ...xlAssetTrace(xlResolveAttrAsset(r.field)), field: r.field, op: r.op, value: r.value })) })),
           user_event_group_relations: xlGetSectionRelations(layer, "behavior").map(r => r === "and" ? "AND" : "OR"),
-          user_events: layer.behaviorGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => { const selectedMeasureKey = xlMeasureSelectedKey(r); const parsedMeasure = xlParseMeasureKey(selectedMeasureKey); return ({ time: { label: r.timeLabel, mode: r.timeMode, start: r.start, end: r.end, days: r.days }, action: r.action, ...xlAssetTrace(xlResolveEventAsset(r.event)), event: r.event, filter_logic: r.filterLogic === "or" ? "OR" : "AND", filters: r.filters.map(f => ({ ...xlAssetTrace(xlResolveFilterAsset(r.event, f.field)), field: f.field, op: f.op, value: f.value })), measure: { measure_type: parsedMeasure.type, property_name: parsedMeasure.property || null, aggregate: parsedMeasure.aggregate, label: xlMeasureLabelFromKey(selectedMeasureKey) }, aggregate: xlMeasureLabelFromKey(selectedMeasureKey), op: r.op, value: r.value, unit: xlMeasureUnitFromKey(selectedMeasureKey, r.event) || "" }); }) }))
+          user_events: layer.behaviorGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => ({ time: { label: r.timeLabel, mode: r.timeMode, start: r.start, end: r.end, days: r.days }, action: r.action, ...xlAssetTrace(xlResolveEventAsset(r.event)), event: r.event, filters: r.filters.map(f => ({ ...xlAssetTrace(xlResolveFilterAsset(r.event, f.field)), field: f.field, op: f.op, value: f.value })), aggregate: r.agg, op: r.op, value: r.value, unit: r.unit || "次" })) }))
         }))
       };
     }
@@ -16599,11 +16468,10 @@ where dt = '\${bizdate}'</textarea></div>
 
     function validateXlRuleBasicInfo() {
       const missing = [];
-      updateTagNameSuffixValidation(true);
       if (!document.getElementById("tagDisplayName")?.value.trim()) missing.push("标签显示名");
       const suffix = document.getElementById("tagNameSuffix")?.value.trim();
       if (!suffix) missing.push("标签名称");
-      if (suffix && !/^[a-z0-9_]+$/.test(suffix)) missing.push("标签名称只能包含小写英文、数字、下划线");
+      if (suffix && !/^[a-zA-Z0-9_]+$/.test(suffix)) missing.push("标签名称只能包含英文、数字、下划线");
       if (!document.getElementById("tagCategory1")?.value) missing.push("一级标签");
       const emptyLayer = window.xunleiRuleState?.layers?.find((layer, idx) => !xlLayerFallbackName(layer, idx).trim());
       if (emptyLayer) missing.push("分层名");
@@ -16611,9 +16479,9 @@ where dt = '\${bizdate}'</textarea></div>
     }
 
     function getXlTodayString(){const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`;}
-    function xlMakeCreatedTag(status="草稿"){const cfg=xlGetUpdateConfig();const c1=document.getElementById("tagCategory1")?.value||"行为画像";const c2=document.getElementById("tagCategory2")?.value||"";const domain=normalizeMetadataDomain(document.getElementById("tagBizDomain")?.value||"公共");const cover=document.getElementById("coverCount")?.textContent||"待计算";const teamKeyMap={"公共":"all","未分配":"all","主端":"main","会员":"member","生态":"eco","中台":"center","广告":"main","下载":"main","云盘":"main","播放":"main","搜索":"main","触达":"main","取回":"main","转存":"main","分享":"main","活跃":"main"};const colorMap={"公共":"gray","未分配":"gray","主端":"blue","会员":"amber","生态":"teal","中台":"gray","广告":"blue","下载":"blue","云盘":"blue","播放":"teal","搜索":"teal","触达":"amber","取回":"blue","转存":"blue","分享":"teal","活跃":"teal"};return {name:document.getElementById("tagDisplayName")?.value.trim()||"未命名规则标签",tagSuffix:document.getElementById("tagNameSuffix")?.value.trim()||"rule_tag",description:document.getElementById("tagDescription")?.value.trim()||"",team:domain,teamKey:teamKeyMap[domain]||"all",category:c1,category2:c2,type:"规则标签",valueType:"枚举型",cover,coverValue:parseFloat(String(cover).replace(/[^0-9.]/g,""))||0,rate:"待计算",rateValue:0,updated:getXlTodayString(),update:cfg.update_mode==="routine"?`每日 ${cfg.earliest_time}`:"手动",calls:0,method:"规则标签创建",status,color:colorMap[domain]||"gray",createdAt:Date.now(),createdBy:currentAssetOperator};}
-    function xlUpsertCreatedTag(status="草稿"){const tag=xlMakeCreatedTag(status);const keyName=window.currentEditingTagName||tag.name;const i=curatedTags.findIndex(x=>x.name===keyName);if(i>=0)curatedTags.splice(i,1);curatedTags.unshift(tag);window.currentEditingTagName=tag.name;tagSortState.key="createdAt";tagSortState.dir="desc";tagPageState.page=1;document.querySelectorAll("#view-tags th.sortable").forEach(x=>x.classList.remove("asc","desc"));document.querySelectorAll(".team-tabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.team==="all"));currentTagTeam="all";refreshTagSideCounts(); return tag;}
-    function xlSaveRuleDraftFromQuickButton(){initXunleiRuleState();const missing=validateXlRuleBasicInfo();if(missing.length){showToast(`请先补充：${missing.join("、")}`);return false;}const tag=xlUpsertCreatedTag("草稿");switchView("tags",{trackHistory:false});resetTagListFiltersForAction();activateTagSideFilter("草稿");refreshTagSideCounts();renderTags("all");showToast(`规则标签草稿已保存：${tag.name}`);return true;}
+    function xlMakeCreatedTag(status="草稿"){const cfg=xlGetUpdateConfig();const c1=document.getElementById("tagCategory1")?.value||"行为画像";const c2=document.getElementById("tagCategory2")?.value||"";const domain=document.getElementById("tagBizDomain")?.value||"未分配";const cover=document.getElementById("coverCount")?.textContent||"待计算";const teamKeyMap={"公共":"all","未分配":"all","主端":"main","会员":"member","生态":"eco","中台":"center","广告":"main","下载":"main","云盘":"main","播放":"main","搜索":"main","触达":"main","取回":"main","转存":"main","分享":"main","活跃":"main"};const colorMap={"公共":"gray","未分配":"gray","主端":"blue","会员":"amber","生态":"teal","中台":"gray","广告":"blue","下载":"blue","云盘":"blue","播放":"teal","搜索":"teal","触达":"amber","取回":"blue","转存":"blue","分享":"teal","活跃":"teal"};return {name:document.getElementById("tagDisplayName")?.value.trim()||"未命名规则标签",tagSuffix:document.getElementById("tagNameSuffix")?.value.trim()||"rule_tag",description:document.getElementById("tagDescription")?.value.trim()||"",team:domain,teamKey:teamKeyMap[domain]||"all",category:c1,category2:c2,type:"规则标签",valueType:"枚举型",cover,coverValue:parseFloat(String(cover).replace(/[^0-9.]/g,""))||0,rate:"待计算",rateValue:0,updated:getXlTodayString(),update:cfg.update_mode==="routine"?`每日 ${cfg.earliest_time}`:"手动",calls:0,method:"无代码规则",status,color:colorMap[domain]||"gray",createdAt:Date.now(),createdBy:currentAssetOperator};}
+    function xlUpsertCreatedTag(status="草稿"){const tag=xlMakeCreatedTag(status);const keyName=window.currentEditingTagName||tag.name;const i=curatedTags.findIndex(x=>x.name===keyName);if(i>=0)curatedTags.splice(i,1);curatedTags.unshift(tag);window.currentEditingTagName=tag.name;tagSortState.key="createdAt";tagSortState.dir="desc";document.querySelectorAll("#view-tags th.sortable").forEach(x=>x.classList.remove("asc","desc"));document.querySelectorAll(".team-tabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.team==="all"));currentTagTeam="all";return tag;}
+    function xlSaveRuleDraftFromQuickButton(){initXunleiRuleState();const missing=validateXlRuleBasicInfo();if(missing.length){showToast(`请先补充：${missing.join("、")}`);return false;}showToast("规则标签草稿已保存");return true;}
 
     function xlGetUpdateConfig() {
       const activeBtn = document.querySelector(".rt-update-mode.active");
@@ -16661,28 +16529,6 @@ where dt = '\${bizdate}'</textarea></div>
       });
     }
 
-    function updateTagNameSuffixValidation(showWhenEmpty = false) {
-      const input = document.getElementById("tagNameSuffix");
-      if (!input) return true;
-      const combo = input.closest(".rt-name-combo");
-      let err = document.getElementById("tagNameSuffixError");
-      if (!err) {
-        err = document.createElement("div");
-        err.id = "tagNameSuffixError";
-        err.className = "tag-name-error";
-        combo?.insertAdjacentElement("afterend", err);
-      }
-      const value = input.value.trim();
-      let message = "";
-      if (!value && showWhenEmpty) message = "标签名称后缀必填";
-      else if (value && !/^[a-z0-9_]+$/.test(value)) message = "仅支持小写英文、数字、下划线";
-      combo?.classList.toggle("invalid", Boolean(message));
-      input.setAttribute("aria-invalid", message ? "true" : "false");
-      err.textContent = message;
-      err.style.display = message ? "block" : "none";
-      return !message;
-    }
-
     function rewireRuleTagSubmitButtons() {
       ["saveDraftLabel", "publishLabel", "estimateBtn"].forEach(id => {
         const oldBtn = document.getElementById(id);
@@ -16709,29 +16555,17 @@ where dt = '\${bizdate}'</textarea></div>
         initXunleiRuleState();
         const missing = validateXlRuleBasicInfo();
         if (missing.length) { showToast(`请先补充：${missing.join("、")}`); return; }
-        const tag = xlUpsertCreatedTag("草稿");
-        switchView("tags", { trackHistory: false });
-        resetTagListFiltersForAction();
-        activateTagSideFilter("草稿");
-        refreshTagSideCounts();
-        renderTags("all");
-        showToast(`规则标签草稿已保存：${tag.name}`);
+        showToast("规则标签草稿已保存");
       });
       document.getElementById("publishLabel")?.addEventListener("click", () => {
         initXunleiRuleState();
         const missing = validateXlRuleBasicInfo();
         if (missing.length) { showToast(`请先补充：${missing.join("、")}`); return; }
-        const tag = xlUpsertCreatedTag("待上线");
-        switchView("tags", { trackHistory: false });
-        resetTagListFiltersForAction();
-        activateTagSideFilter("我创建的");
-        refreshTagSideCounts();
-        renderTags("all");
-        showToast(`已提交规则标签上线审批：${tag.name}`);
+        showToast("已提交规则标签上线审批");
       });
       ["tagDisplayName", "tagNameSuffix", "tagDescription", "tagBizDomain", "tagCategory1", "tagCategory2"].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.addEventListener(id === "tagDisplayName" || id === "tagNameSuffix" || id === "tagDescription" ? "input" : "change", () => { if (id === "tagNameSuffix") updateTagNameSuffixValidation(false); updateCreatePreview("rule"); });
+        if (el) el.addEventListener(id === "tagDisplayName" || id === "tagNameSuffix" || id === "tagDescription" ? "input" : "change", () => updateCreatePreview("rule"));
       });
     }
 
@@ -16740,7 +16574,6 @@ where dt = '\${bizdate}'</textarea></div>
     document.getElementById("clearTagBizDomain")?.addEventListener("click",()=>{const s=document.getElementById("tagBizDomain"); if(s){s.value=""; updateCreatePreview("rule"); showToast("已清空业务域");}});
     document.getElementById("quickBackTop")?.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
     document.getElementById("quickSaveDraft")?.addEventListener("click",()=>xlSaveRuleDraftFromQuickButton());
-    updateTagNameSuffixValidation(false);
     document.getElementById("ruleEarliestTime")?.addEventListener("click",e=>{if(e.currentTarget.showPicker) e.currentTarget.showPicker();});
     rewireRuleTagSubmitButtons();
     initXlUpdateControls();
@@ -17032,7 +16865,7 @@ where dt = '\${bizdate}'</textarea></div>
 .xl-search-multi.has-value .rt-rule-search-trigger {
   color: #4f46e5;
   background: #f8f7ff;
-  border-color: rgba(99,91,255,.28);
+  border-color: rgba(83,58,253,.28);
 }
 .xl-compact-source .rt-rule-search-trigger { min-width: 240px; }
 .asset-create-form .rt-rule-search-select { width: 100%; }
@@ -17070,8 +16903,8 @@ where dt = '\${bizdate}'</textarea></div>
 }
 .tag-directory-panel .filters .field:focus,
 .tag-directory-panel .filters .select:focus {
-  border-color: #635bff !important;
-  box-shadow: 0 0 0 3px rgba(99,91,255,.10) !important;
+  border-color: #533AFD !important;
+  box-shadow: 0 0 0 3px rgba(83,58,253,.10) !important;
 }
 .tag-table-scroll {
   position: relative !important;
@@ -17288,16 +17121,16 @@ where dt = '\${bizdate}'</textarea></div>
   font-weight: 950 !important;
   font-size: 15px !important;
   background: #fff !important;
-  color: #635bff !important;
+  color: #533AFD !important;
   border: 2px solid transparent !important;
-  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #533AFD 0%, #7c3aed 48%, #10c7c7 100%) !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
-  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  box-shadow: 0 12px 22px rgba(83, 58, 253, .10) !important;
 }
 .asset-create-inline-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+  box-shadow: 0 16px 28px rgba(83, 58, 253, .16) !important;
 }
 .tag-directory-panel .tree > input.search { display: none !important; }
 .tag-directory-panel .tag-filter-grid {
@@ -18539,17 +18372,17 @@ where dt = '\${bizdate}'</textarea></div>
   border: 2px solid transparent !important;
   border-radius: 14px !important;
   background: #fff !important;
-  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #533AFD 0%, #7c3aed 48%, #10c7c7 100%) !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
-  color: #635bff !important;
-  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  color: #533AFD !important;
+  box-shadow: 0 12px 22px rgba(83, 58, 253, .10) !important;
   font-size: 15px !important;
   font-weight: 950 !important;
 }
 #view-tags #openCreateTag:hover {
   transform: translateY(-1px) !important;
-  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+  box-shadow: 0 16px 28px rgba(83, 58, 253, .16) !important;
 }
 #view-tags .tag-directory-panel .tree-group {
   margin: 0 0 12px !important;
@@ -18750,8 +18583,8 @@ where dt = '\${bizdate}'</textarea></div>
 }
 #view-segment .segment-list-filters .field:focus,
 #view-segment .segment-list-filters .select:focus {
-  border-color: #635bff !important;
-  box-shadow: 0 0 0 3px rgba(99, 91, 255, .10) !important;
+  border-color: #533AFD !important;
+  box-shadow: 0 0 0 3px rgba(83, 58, 253, .10) !important;
 }
 #view-segment .segment-search-single .field {
   padding-left: 36px !important;
@@ -19042,18 +18875,18 @@ where dt = '\${bizdate}'</textarea></div>
   border: 2px solid transparent !important;
   border-radius: 14px !important;
   background: #fff !important;
-  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #635bff 0%, #7c3aed 48%, #10c7c7 100%) !important;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(135deg, #533AFD 0%, #7c3aed 48%, #10c7c7 100%) !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
-  color: #635bff !important;
-  box-shadow: 0 12px 22px rgba(99, 91, 255, .10) !important;
+  color: #533AFD !important;
+  box-shadow: 0 12px 22px rgba(83, 58, 253, .10) !important;
   font-size: 15px !important;
   font-weight: 950 !important;
   pointer-events: auto !important;
 }
 #view-segment #openSegmentCreateModal:hover {
   transform: translateY(-1px) !important;
-  box-shadow: 0 16px 28px rgba(99, 91, 255, .16) !important;
+  box-shadow: 0 16px 28px rgba(83, 58, 253, .16) !important;
 }
 #view-segment .segment-main-panel > .segment-mode:not(#segmentModeList) {
   padding: 16px !important;
@@ -19423,6 +19256,266 @@ where dt = '\${bizdate}'</textarea></div>
     --asset-nav-width: 204px;
   }
 }
+
+/* v4 B-end button cleanup: keep purple identity, remove heavy gradients */
+:root {
+  --brand: #6658FF;
+  --brand-strong: #3F2BDB;
+  --brand-hover: #533AFD;
+  --brand-soft: #f2f1ff;
+  --brand-border: #dad7ff;
+}
+#view-data .btn,
+#view-tags .btn,
+#view-segment .btn,
+#assetCreateModal .btn,
+#assetEnumModal .btn,
+#assetExistingAttrModal .btn,
+#pendingAdjustModal .btn,
+#ruleUpdateCard .btn,
+.asset-drawer-actions .btn {
+  border-color: #d8dde8 !important;
+  background: #fff !important;
+  background-image: none !important;
+  color: #344054 !important;
+  box-shadow: none !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 0 12px !important;
+  border-radius: 7px !important;
+  font-size: 13px !important;
+  font-weight: 780 !important;
+}
+#view-data .btn:hover,
+#view-tags .btn:hover,
+#view-segment .btn:hover,
+#assetCreateModal .btn:hover,
+#assetEnumModal .btn:hover,
+#assetExistingAttrModal .btn:hover,
+#pendingAdjustModal .btn:hover,
+#ruleUpdateCard .btn:hover,
+.asset-drawer-actions .btn:hover {
+  border-color: #c4cbd8 !important;
+  background: #f8faff !important;
+  color: #1f2937 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+#view-data .btn.primary,
+#view-tags .btn.primary,
+#view-segment .btn.primary,
+#assetCreateModal .btn.primary,
+#assetEnumModal .btn.primary,
+#assetExistingAttrModal .btn.primary,
+#pendingAdjustModal .btn.primary,
+#ruleUpdateCard .btn.primary,
+.asset-drawer-actions .btn.primary {
+  border-color: var(--brand) !important;
+  background: var(--brand) !important;
+  background-image: none !important;
+  color: #fff !important;
+  box-shadow: 0 4px 10px rgba(83, 58, 253, .16) !important;
+}
+#view-data .btn.primary:hover,
+#view-tags .btn.primary:hover,
+#view-segment .btn.primary:hover,
+#assetCreateModal .btn.primary:hover,
+#assetEnumModal .btn.primary:hover,
+#assetExistingAttrModal .btn.primary:hover,
+#pendingAdjustModal .btn.primary:hover,
+#ruleUpdateCard .btn.primary:hover,
+.asset-drawer-actions .btn.primary:hover {
+  border-color: var(--brand-hover) !important;
+  background: var(--brand-hover) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(83, 58, 253, .18) !important;
+}
+#view-data #manualAssetBtn,
+#view-tags #openCreateTag,
+#view-segment #openSegmentCreateModal {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  flex: 0 0 36px !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  margin: 0 0 14px 0 !important;
+  border: 1px solid var(--brand) !important;
+  border-radius: 8px !important;
+  background: var(--brand) !important;
+  background-image: none !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(83, 58, 253, .16) !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+}
+#view-data #manualAssetBtn:hover,
+#view-tags #openCreateTag:hover,
+#view-segment #openSegmentCreateModal:hover {
+  border-color: var(--brand-hover) !important;
+  background: var(--brand-hover) !important;
+  transform: none !important;
+  box-shadow: 0 8px 16px rgba(83, 58, 253, .18) !important;
+}
+#view-segment .segment-sql-sticky-footer .btn,
+#view-segment .segment-create-actions .btn,
+#view-segment .segment-builder-actions .btn {
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 0 16px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+}
+.asset-drawer-actions .btn.primary[data-asset-action="pending_accept_table"],
+.asset-drawer-actions .btn.primary[data-asset-action="pending_confirm_field"] {
+  border-color: #1677ff !important;
+  background: #1677ff !important;
+  color: #fff !important;
+  box-shadow: 0 4px 10px rgba(22, 119, 255, .16) !important;
+}
+.asset-drawer-actions .btn.primary[data-asset-action="pending_accept_table"]:hover,
+.asset-drawer-actions .btn.primary[data-asset-action="pending_confirm_field"]:hover {
+  border-color: #3c8cff !important;
+  background: #3c8cff !important;
+  box-shadow: 0 6px 14px rgba(22, 119, 255, .18) !important;
+}
+#view-data .asset-action-link.primary-link[data-asset-action="pending_accept_table"],
+#view-data .asset-action-link.primary-link[data-asset-action="pending_confirm_field"] {
+  color: #1677ff !important;
+}
+#view-data .asset-action-link.primary-link[data-asset-action="pending_accept_table"]:hover,
+#view-data .asset-action-link.primary-link[data-asset-action="pending_confirm_field"]:hover {
+  color: #0f63d8 !important;
+}
+#view-data .btn.danger,
+#view-tags .btn.danger,
+#view-segment .btn.danger,
+#assetCreateModal .btn.danger,
+#assetEnumModal .btn.danger,
+#assetExistingAttrModal .btn.danger,
+#pendingAdjustModal .btn.danger,
+#ruleUpdateCard .btn.danger,
+.asset-drawer-actions .btn.danger {
+  border-color: #d8dde8 !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: none !important;
+}
+#view-data .btn.danger:hover,
+#view-tags .btn.danger:hover,
+#view-segment .btn.danger:hover,
+#assetCreateModal .btn.danger:hover,
+#assetEnumModal .btn.danger:hover,
+#assetExistingAttrModal .btn.danger:hover,
+#pendingAdjustModal .btn.danger:hover,
+#ruleUpdateCard .btn.danger:hover,
+.asset-drawer-actions .btn.danger:hover {
+  border-color: #c4cbd8 !important;
+  background: #f8faff !important;
+  color: #1f2937 !important;
+}
+#view-data .asset-action-link.danger-link,
+#view-tags .tag-action-link.danger-link,
+#view-tags .asset-action-link.danger-link,
+#view-segment .asset-action-link.danger-link,
+#view-tags .rt-rule-action.danger,
+#view-tags .rt-group-action.danger,
+#view-tags .rt-mini-btn.danger,
+#view-segment .rt-rule-action.danger,
+#view-segment .rt-group-action.danger,
+#view-segment .rt-mini-btn.danger,
+#view-segment .behavior-row-action.danger {
+  color: #667085 !important;
+  border-color: #d8dde8 !important;
+  background: transparent !important;
+}
+#view-data .asset-action-link.danger-link:hover,
+#view-tags .tag-action-link.danger-link:hover,
+#view-tags .asset-action-link.danger-link:hover,
+#view-segment .asset-action-link.danger-link:hover,
+#view-tags .rt-rule-action.danger:hover,
+#view-tags .rt-group-action.danger:hover,
+#view-tags .rt-mini-btn.danger:hover,
+#view-segment .rt-rule-action.danger:hover,
+#view-segment .rt-group-action.danger:hover,
+#view-segment .rt-mini-btn.danger:hover,
+#view-segment .behavior-row-action.danger:hover {
+  color: #344054 !important;
+  border-color: #c4cbd8 !important;
+  background: #f8faff !important;
+}
+#view-data .disabled-link,
+#view-tags .disabled-link,
+#view-segment .disabled-link {
+  color: #a8b2c3 !important;
+}
+
+/* v4 operation link permission colors: copy stays blue; edit/delete use gray states */
+#view-data .asset-action-link[data-asset-action="copy"],
+#view-tags .tag-action-link[data-action="copy-tag"],
+#view-segment .asset-action-link[data-segment-action="copy"] {
+  color: #1677ff !important;
+}
+#view-data .asset-action-link[data-asset-action="copy"]:hover,
+#view-tags .tag-action-link[data-action="copy-tag"]:hover,
+#view-segment .asset-action-link[data-segment-action="copy"]:hover {
+  color: #0f63d8 !important;
+}
+#view-data .asset-action-link[data-asset-action="edit"]:not(.disabled-link),
+#view-data .asset-action-link[data-asset-action="delete"]:not(.disabled-link),
+#view-tags .tag-action-link[data-action="edit-tag"]:not(.disabled-link),
+#view-tags .tag-action-link[data-action="delete-tag"]:not(.disabled-link),
+#view-segment .asset-action-link[data-segment-action="edit"]:not(.disabled-link),
+#view-segment .asset-action-link[data-segment-action="delete"]:not(.disabled-link) {
+  color: #344054 !important;
+}
+#view-data .asset-action-link[data-asset-action="edit"]:not(.disabled-link):hover,
+#view-data .asset-action-link[data-asset-action="delete"]:not(.disabled-link):hover,
+#view-tags .tag-action-link[data-action="edit-tag"]:not(.disabled-link):hover,
+#view-tags .tag-action-link[data-action="delete-tag"]:not(.disabled-link):hover,
+#view-segment .asset-action-link[data-segment-action="edit"]:not(.disabled-link):hover,
+#view-segment .asset-action-link[data-segment-action="delete"]:not(.disabled-link):hover {
+  color: #1f2937 !important;
+  background: #f8faff !important;
+  text-decoration: none !important;
+}
+#view-data .asset-action-link[data-asset-action="edit"].disabled-link,
+#view-data .asset-action-link[data-asset-action="delete"].disabled-link,
+#view-tags .tag-action-link[data-action="edit-tag"].disabled-link,
+#view-tags .tag-action-link[data-action="delete-tag"].disabled-link,
+#view-segment .asset-action-link[data-segment-action="edit"].disabled-link,
+#view-segment .asset-action-link[data-segment-action="delete"].disabled-link {
+  color: #a8b2c3 !important;
+  background: transparent !important;
+  cursor: not-allowed !important;
+  text-decoration: none !important;
+}
+#view-data .asset-action-link[data-asset-action="edit"].disabled-link:hover,
+#view-data .asset-action-link[data-asset-action="delete"].disabled-link:hover,
+#view-tags .tag-action-link[data-action="edit-tag"].disabled-link:hover,
+#view-tags .tag-action-link[data-action="delete-tag"].disabled-link:hover,
+#view-segment .asset-action-link[data-segment-action="edit"].disabled-link:hover,
+#view-segment .asset-action-link[data-segment-action="delete"].disabled-link:hover {
+  color: #a8b2c3 !important;
+  background: transparent !important;
+}
+
+/* v4 tag-center filters: align selected searchable dropdown fill with metadata center */
+#view-tags .tag-filter-field .xl-search-multi.has-value .rt-rule-search-trigger,
+#view-tags .tag-filter-field .rt-rule-search-trigger {
+  background: #fff !important;
+  border-color: #dbe4f0 !important;
+  color: #1f2a44 !important;
+}
+#view-tags .tag-filter-field .rt-rule-search-select.is-open .rt-rule-search-trigger,
+#view-tags .tag-filter-field .rt-rule-search-trigger:focus {
+  border-color: #7864ff !important;
+  box-shadow: 0 0 0 3px rgba(120, 100, 255, .12) !important;
+}
+
+
 
   </style>
 <script>
