@@ -4820,6 +4820,12 @@
       font-weight: 850;
       white-space: nowrap;
     }
+    .rt-priority-note {
+      color: var(--ink-3);
+      font-size: 12.5px;
+      font-weight: 650;
+      line-height: 1.4;
+    }
     @media (max-width: 1320px) {
       .rt-behavior-calc-note { margin-left: 0; }
     }
@@ -4899,6 +4905,59 @@
     }
     .rt-group-card-head { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; }
     .rt-group-card-title { color:var(--muted); font-size:12px; font-weight:850; }
+    .rt-group-lite.single-condition .rt-group-line::before { display: none; }
+    .rt-section-group-stack {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      align-items: stretch;
+    }
+    .rt-section-group-stack.has-section-relation {
+      grid-template-columns: 38px minmax(0, 1fr);
+    }
+    .rt-section-group-list {
+      display: grid;
+      gap: 10px;
+      min-width: 0;
+    }
+    .rt-section-group-list .rt-group-lite { margin-bottom: 0; }
+    .rt-section-relation-rail {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+    }
+    .rt-section-relation-rail::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      border-radius: 999px;
+      background: #d5eee6;
+    }
+    .rt-section-relation-badge {
+      position: sticky;
+      top: 50%;
+      z-index: 1;
+      min-width: 28px;
+      min-height: 24px;
+      border: 1px solid rgba(234,179,8,.34);
+      border-radius: 8px;
+      background: #fff7d6;
+      color: #a16207;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(234,179,8,.10);
+    }
+    .rt-section-relation-badge.is-or {
+      border-color: rgba(124,58,237,.22);
+      background: #f4f3ff;
+      color: #7c3aed;
+      box-shadow: 0 6px 14px rgba(124,58,237,.09);
+    }
     .rt-rule-content select.rt-compact, .rt-rule-content input.rt-compact-input,
     .rt-filter-row select.rt-compact, .rt-filter-row input.rt-compact-input {
       height: 32px;
@@ -4923,6 +4982,12 @@
       white-space: nowrap;
     }
     .rt-rule-content .rt-time-button:hover { border-color:#10b981; color:#128a63; }
+    .rt-agg-dimension {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
     .rt-rule-content input.rt-number { width: 72px; min-width: 72px; text-align: center; }
     .rt-empty-rules {
       border: 1px dashed var(--line);
@@ -4956,6 +5021,49 @@
     .rt-relation-toggle button.active { background:#10b981; color:#fff; }
     .rt-filter-row { flex-wrap: wrap; padding: 6px 8px; background: #fff; border: 1px solid var(--line-2); border-radius: 6px; }
     .rt-filter-panel { margin-left: 0; }
+    .rt-filter-panel.has-filter-logic {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 10px;
+      align-items: stretch;
+    }
+    .rt-filter-panel-main { min-width: 0; }
+    .rt-filter-logic-rail {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+    }
+    .rt-filter-logic-rail::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      border-radius: 999px;
+      background: #d5eee6;
+    }
+    .rt-filter-logic-badge {
+      position: relative;
+      z-index: 1;
+      min-width: 28px;
+      min-height: 24px;
+      border: 1px solid rgba(234,179,8,.34);
+      border-radius: 8px;
+      background: #fff7d6;
+      color: #a16207;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(234,179,8,.10);
+    }
+    .rt-filter-logic-badge.is-or {
+      border-color: rgba(124,58,237,.22);
+      background: #f4f3ff;
+      color: #7c3aed;
+      box-shadow: 0 6px 14px rgba(124,58,237,.09);
+    }
     .rt-time-modal { width: min(960px, calc(100vw - 64px)); }
     .rt-time-picker-layout { display:grid; grid-template-columns: 220px minmax(0, 1fr); gap:16px; }
     .rt-time-quick-list { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; }
@@ -6694,10 +6802,6 @@
           <div>
             <h1>创建标签</h1>
             <div class="subline">业务用户走无代码路径，SQL 标签保留给数分维护。</div>
-          </div>
-          <div class="actions rt-create-top-actions" aria-hidden="true">
-            <button class="btn" id="saveDraftLabel" tabindex="-1">保存草稿</button>
-            <button class="btn primary" id="publishLabel" tabindex="-1">提交上线</button>
           </div>
         </div>
 
@@ -15487,11 +15591,11 @@ where dt = '\${bizdate}'</textarea></div>
       }, 650);
     });
 
-    document.getElementById("saveDraftLabel").addEventListener("click", () => {
+    document.getElementById("saveDraftLabel")?.addEventListener("click", () => {
       showToast("草稿已保存");
       returnToPreviousView("tags");
     });
-    document.getElementById("publishLabel").addEventListener("click", () => {
+    document.getElementById("publishLabel")?.addEventListener("click", () => {
       showToast("已提交上线审批");
       returnToPreviousView("tags");
     });
@@ -15703,8 +15807,14 @@ where dt = '\${bizdate}'</textarea></div>
     const xlEvents = ["广告展示", "Web 元素点击", "创建下载任务", "云盘存资源", "云盘取回", "播放行为", "搜索/访问网页", "会员支付/续费", "资源位曝光"];
     const xlEventFilters = ["广告位ID", "素材ID", "下载来源", "资源类型", "文件类型", "平台类型", "会员类型", "渠道来源", "资源位名称"];
     const xlEventValues = ["03746547", "首页 Banner", "站外调起", "本地下载", "视频", "压缩包", "Android", "PC", "标投", "超级会员"];
-    const xlAggs = ["总次数", "活跃天数", "去重资源数", "总时长", "支付金额"];
+    const xlAggs = ["总次数", "分布"];
     const xlNumOps = ["≥", ">", "=", "≤", "<"];
+    function xlNormalizeAgg(agg) {
+      return agg === "分布" ? "分布" : "总次数";
+    }
+    function xlAggUnit(agg) {
+      return xlNormalizeAgg(agg) === "分布" ? "天" : "次";
+    }
     const xlQuickTimes = [
       { label: "今日", start: "2026-05-11", end: "2026-05-11", mode: "dynamic", days: 1 },
       { label: "昨日", start: "2026-05-10", end: "2026-05-10", mode: "dynamic", days: 1 },
@@ -15732,7 +15842,7 @@ where dt = '\${bizdate}'</textarea></div>
       return { id: xlId("ag"), logic, rows };
     }
     function makeBehaviorRow(event = "广告展示", value = "1") {
-      return { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event, agg: "总次数", op: "≥", value, unit: "次", filters: [] };
+      return { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event, agg: "总次数", op: "≥", value, unit: "次", filterLogic: "and", filters: [] };
     }
     function makeBehaviorGroup(logic = "and", rows = [makeBehaviorRow()]) {
       return { id: xlId("bg"), logic, rows };
@@ -15741,26 +15851,26 @@ where dt = '\${bizdate}'</textarea></div>
       return { id: xlId("filter"), field, op, value };
     }
 
+    function xlLogic(value) {
+      return value === "or" ? "or" : "and";
+    }
     function xlEnsureLayerGroupRelations(layer) {
       if (!layer) return layer;
-      if (!Array.isArray(layer.attrGroupRelations)) layer.attrGroupRelations = [];
-      if (!Array.isArray(layer.behaviorGroupRelations)) layer.behaviorGroupRelations = [];
-      const normalize = (relations, groups) => {
-        const targetLen = Math.max(0, (groups?.length || 0) - 1);
-        while (relations.length < targetLen) relations.push("and");
-        if (relations.length > targetLen) relations.splice(targetLen);
-        for (let i = 0; i < relations.length; i += 1) {
-          if (relations[i] !== "or") relations[i] = "and";
-        }
-      };
-      normalize(layer.attrGroupRelations, layer.attrGroups);
-      normalize(layer.behaviorGroupRelations, layer.behaviorGroups);
+      const legacyAttr = Array.isArray(layer.attrGroupRelations) ? (layer.attrGroupRelations.find(r => r === "or") || layer.attrGroupRelations[0]) : layer.attrGroupRelations;
+      const legacyBehavior = Array.isArray(layer.behaviorGroupRelations) ? (layer.behaviorGroupRelations.find(r => r === "or") || layer.behaviorGroupRelations[0]) : layer.behaviorGroupRelations;
+      layer.attrGroupRelation = xlLogic(layer.attrGroupRelation || legacyAttr);
+      layer.behaviorGroupRelation = xlLogic(layer.behaviorGroupRelation || legacyBehavior);
       return layer;
     }
 
-    function xlGetSectionRelations(layer, section) {
+    function xlGetSectionRelation(layer, section) {
       xlEnsureLayerGroupRelations(layer);
-      return section === "attr" ? layer.attrGroupRelations : layer.behaviorGroupRelations;
+      return section === "attr" ? layer.attrGroupRelation : layer.behaviorGroupRelation;
+    }
+    function xlSetSectionRelation(layer, section, logic) {
+      xlEnsureLayerGroupRelations(layer);
+      if (section === "attr") layer.attrGroupRelation = xlLogic(logic);
+      else layer.behaviorGroupRelation = xlLogic(logic);
     }
 
     function initXunleiRuleState(force = false) {
@@ -15774,14 +15884,14 @@ where dt = '\${bizdate}'</textarea></div>
           makeAttrGroup("and", [makeAttrRow("平台类型", "包含", "Android")]),
           makeAttrGroup("or", [makeAttrRow("首次渠道名称", "包含", "标投"), makeAttrRow("个推ID", "等于", "03746547")])
         ],
-        attrGroupRelations: ["or"],
+        attrGroupRelation: "or",
         behaviorGroups: [
           makeBehaviorGroup("and", [
             Object.assign(makeBehaviorRow("广告展示", "1"), { filters: [makeFilter("广告位ID", "等于", "03746547")] }),
             Object.assign(makeBehaviorRow("Web 元素点击", "1"), { filters: [makeFilter("素材ID", "包含", "首页 Banner")] })
           ])
         ],
-        behaviorGroupRelations: []
+        behaviorGroupRelation: "and"
       };
       const l2 = {
         id: xlId("layer"),
@@ -15791,14 +15901,14 @@ where dt = '\${bizdate}'</textarea></div>
         attrGroups: [
           makeAttrGroup("and", [makeAttrRow("会员类型", "等于", "非会员"), makeAttrRow("首次渠道名称", "不等于", "标投")])
         ],
-        attrGroupRelations: [],
+        attrGroupRelation: "and",
         behaviorGroups: [
           makeBehaviorGroup("and", [
             Object.assign(makeBehaviorRow("广告展示", "1"), { timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30, filters: [makeFilter("广告位ID", "等于", "03746547")] }),
             Object.assign(makeBehaviorRow("Web 元素点击", "1"), { action: "未做过", timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30 })
           ])
         ],
-        behaviorGroupRelations: []
+        behaviorGroupRelation: "and"
       };
       window.xunleiRuleState = { layers: [l1, l2], activeLayerId: l1.id, timeDraft: null };
       window.xunleiRuleState.layers.forEach(xlEnsureLayerGroupRelations);
@@ -15872,23 +15982,38 @@ where dt = '\${bizdate}'</textarea></div>
 
     function renderXlBehaviorFilters(row) {
       if (!row.filters?.length) return "";
+      const showFilterLogic = row.filters.length > 1;
+      const filterLogic = row.filterLogic === "or" ? "or" : "and";
       return `
-        <div class="rt-filter-panel">
-          <div class="rt-filter-panel-head"><b>「${escapeHtml(row.event)}」的事件属性筛选</b><span class="rt-filter-panel-collapse" data-action="clear-filters" data-row-id="${row.id}">清空筛选</span></div>
-          ${row.filters.map(filter => `
-            <div class="rt-filter-row" data-filter-id="${filter.id}">
-              <span class="rt-type-badge filter">筛选</span>
-              <select class="rt-compact" data-filter-update="field" data-row-id="${row.id}" data-filter-id="${filter.id}">${xlRuleEventPropertyOptions(row.event, filter.field)}</select>
-              <select class="rt-compact" data-filter-update="op" data-row-id="${row.id}" data-filter-id="${filter.id}">${xlOptions(xlFilterOpsForField(row.event, filter.field), filter.op)}</select>
-              <input class="rt-compact-input" data-filter-update="value" data-row-id="${row.id}" data-filter-id="${filter.id}" value="${escapeHtml(filter.value)}" placeholder="筛选值">
-              <button class="rt-rule-action danger" data-action="delete-filter" data-row-id="${row.id}" data-filter-id="${filter.id}" type="button">删除筛选</button>
+        <div class="rt-filter-panel ${showFilterLogic ? "has-filter-logic" : ""}">
+          ${showFilterLogic ? `
+            <div class="rt-filter-logic-rail">
+              <button class="rt-filter-logic-badge ${filterLogic === "or" ? "is-or" : ""}" data-action="toggle-filter-logic" data-row-id="${row.id}" title="点击切换筛选关系" type="button">${filterLogic === "or" ? "或" : "且"}</button>
             </div>
-          `).join("")}
+          ` : ""}
+          <div class="rt-filter-panel-main">
+            <div class="rt-filter-panel-head">
+              <b>「${escapeHtml(row.event)}」的事件属性筛选</b>
+              <span class="rt-filter-panel-collapse" data-action="clear-filters" data-row-id="${row.id}">清空筛选</span>
+            </div>
+            ${row.filters.map(filter => `
+              <div class="rt-filter-row" data-filter-id="${filter.id}">
+                <span class="rt-type-badge filter">筛选</span>
+                <select class="rt-compact" data-filter-update="field" data-row-id="${row.id}" data-filter-id="${filter.id}">${xlRuleEventPropertyOptions(row.event, filter.field)}</select>
+                <select class="rt-compact" data-filter-update="op" data-row-id="${row.id}" data-filter-id="${filter.id}">${xlOptions(xlFilterOpsForField(row.event, filter.field), filter.op)}</select>
+                <input class="rt-compact-input" data-filter-update="value" data-row-id="${row.id}" data-filter-id="${filter.id}" value="${escapeHtml(filter.value)}" placeholder="筛选值">
+                <button class="rt-rule-action danger" data-action="delete-filter" data-row-id="${row.id}" data-filter-id="${filter.id}" type="button">删除筛选</button>
+              </div>
+            `).join("")}
+          </div>
         </div>
       `;
     }
 
     function renderXlBehaviorRow(row, section, group) {
+      const agg = xlNormalizeAgg(row.agg);
+      if (row.agg !== agg) row.agg = agg;
+      row.unit = xlAggUnit(agg);
       return `
         <div class="rt-rule" data-row-id="${row.id}">
           <div class="rt-rule-content rt-behavior-content">
@@ -15900,10 +16025,11 @@ where dt = '\${bizdate}'</textarea></div>
               <button class="rt-filter-link" data-action="add-filter" data-row-id="${row.id}" type="button">+ 添加筛选</button>
             </div>
             <div class="rt-behavior-line rt-behavior-judge-line">
-              <select class="rt-compact" data-row-update="agg" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}">${xlOptions(xlAggs, row.agg)}</select>
+              <select class="rt-compact" data-row-update="agg" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}">${xlOptions(xlAggs, agg)}</select>
+              ${agg === "分布" ? '<span class="rt-agg-dimension">天数</span>' : ""}
               <select class="rt-compact" data-row-update="op" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}">${xlOptions(xlNumOps, row.op)}</select>
               <input class="rt-compact-input rt-number" type="number" min="0" data-row-update="value" data-section="${section}" data-group-id="${group.id}" data-row-id="${row.id}" value="${escapeHtml(row.value)}">
-              <span class="rt-suffix-text">${row.agg === "活跃天数" ? "天" : row.agg === "总时长" ? "分钟" : row.agg === "支付金额" ? "元" : "次"}</span>
+              <span class="rt-suffix-text">${xlAggUnit(agg)}</span>
             </div>
           </div>
           <div class="rt-rule-actions">
@@ -15915,35 +16041,34 @@ where dt = '\${bizdate}'</textarea></div>
       `;
     }
 
-    function renderXlGroupRelation(section, relationIndex) {
+    function renderXlSectionGroupStack(section, groups, groupHTML) {
       const layer = getXlActiveLayer();
-      const relations = xlGetSectionRelations(layer, section);
-      const logic = relations[relationIndex] || "and";
+      const showSectionRelation = groups.length > 1;
+      const logic = xlGetSectionRelation(layer, section);
       return `
-        <div class="rt-group-joiner">
-          <div class="rt-group-joiner-line" aria-hidden="true"></div>
-          <div class="rt-group-joiner-card">
-            <span>括号组 ${relationIndex + 1} 与括号组 ${relationIndex + 2} 的组间关系</span>
-            <span class="rt-inline-relation-toggle" role="group" aria-label="组间关系">
-              <button class="${logic === "and" ? "active" : ""}" data-action="set-section-group-logic" data-section="${section}" data-relation-index="${relationIndex}" data-logic="and" type="button">且</button>
-              <button class="${logic === "or" ? "active" : ""}" data-action="set-section-group-logic" data-section="${section}" data-relation-index="${relationIndex}" data-logic="or" type="button">或</button>
-            </span>
-          </div>
+        <div class="rt-section-group-stack ${showSectionRelation ? "has-section-relation" : "single-section-group"}">
+          ${showSectionRelation ? `
+            <div class="rt-section-relation-rail">
+              <button class="rt-section-relation-badge ${logic === "or" ? "is-or" : ""}" data-action="toggle-section-relation" data-section="${section}" title="点击切换括号组关系" type="button">${logic === "or" ? "或" : "且"}</button>
+            </div>
+          ` : ""}
+          <div class="rt-section-group-list">${groupHTML}</div>
         </div>
       `;
     }
 
     function renderXlRuleGroup(group, section, index) {
       const isAttr = section === "attr";
+      const showInnerLogic = group.rows.length > 1;
       const rowsHTML = group.rows.length ? group.rows.map(row => isAttr ? renderXlAttrRow(row, section, group) : renderXlBehaviorRow(row, section, group)).join("") : `<div class="rt-empty-rules">当前括号组暂无条件，点击“新增”放入一条条件。</div>`;
       return `
-        <div class="rt-group-lite" data-group-id="${group.id}">
+        <div class="rt-group-lite ${showInnerLogic ? "" : "single-condition"}" data-group-id="${group.id}">
           <div class="rt-group-line">
-            <button class="rt-bracket-badge ${group.logic === "or" ? "is-or" : ""}" data-action="toggle-group-logic" data-section="${section}" data-group-id="${group.id}" type="button">${group.logic === "or" ? "或" : "且"}</button>
+            ${showInnerLogic ? `<button class="rt-bracket-badge ${group.logic === "or" ? "is-or" : ""}" data-action="toggle-group-logic" data-section="${section}" data-group-id="${group.id}" type="button">${group.logic === "or" ? "或" : "且"}</button>` : ""}
           </div>
           <div class="rt-group-card">
             <div class="rt-group-card-head">
-              <span class="rt-group-card-title">${isAttr ? "属性" : "行为"}括号组 ${index + 1} · 组内关系：${group.logic === "or" ? "或" : "且"}</span>
+              <span class="rt-group-card-title">${isAttr ? "属性" : "行为"}括号组 ${index + 1}${showInnerLogic ? ` · 组内关系：${group.logic === "or" ? "或" : "且"}` : ""}</span>
               <div class="rt-section-actions">
                 <button class="rt-mini-btn" data-action="add-row" data-section="${section}" data-group-id="${group.id}" type="button">新增</button>
                 <button class="rt-mini-btn danger" data-action="delete-group" data-section="${section}" data-group-id="${group.id}" type="button">删除组</button>
@@ -15960,7 +16085,7 @@ where dt = '\${bizdate}'</textarea></div>
       const isAttr = section === "attr";
       const groups = isAttr ? layer.attrGroups : layer.behaviorGroups;
       xlEnsureLayerGroupRelations(layer);
-      const groupHTML = groups.length ? groups.map((g, i) => `${i > 0 ? renderXlGroupRelation(section, i - 1) : ""}${renderXlRuleGroup(g, section, i)}`).join("") : `<div class="rt-empty-rules">暂无${isAttr ? "属性" : "行为"}条件，点击“添加组”开始配置。</div>`;
+      const groupHTML = groups.length ? renderXlSectionGroupStack(section, groups, groups.map((g, i) => renderXlRuleGroup(g, section, i)).join("")) : `<div class="rt-empty-rules">暂无${isAttr ? "属性" : "行为"}条件，点击“添加组”开始配置。</div>`;
       return `
         <div class="rt-section-block">
           <div class="rt-section-head">
@@ -16044,7 +16169,10 @@ where dt = '\${bizdate}'</textarea></div>
               </div>
               <div class="form-row">
                 <label>优先级</label>
-                <input class="field" value="第 ${idx + 1} 优先匹配" disabled>
+                <div class="rt-priority-display" aria-live="polite">
+                  <span class="rt-priority-badge">第 ${idx + 1} 优先匹配</span>
+                  <span class="rt-priority-note">拖拽上方分层 Tab 后自动更新</span>
+                </div>
               </div>
               <div class="form-row full">
                 <label>分层备注</label>
@@ -16206,7 +16334,7 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "add-layer") {
           const newIndex = state.layers.length + 1;
-          const newLayer = { id: xlId("layer"), name: `分层${newIndex}`, remark: "", relation: "and", attrGroups: [makeAttrGroup()], attrGroupRelations: [], behaviorGroups: [makeBehaviorGroup()], behaviorGroupRelations: [] };
+          const newLayer = { id: xlId("layer"), name: `分层${newIndex}`, remark: "", relation: "and", attrGroups: [makeAttrGroup()], attrGroupRelation: "and", behaviorGroups: [makeBehaviorGroup()], behaviorGroupRelation: "and" };
           state.layers.push(newLayer);
           state.activeLayerId = newLayer.id;
           renderCreateConfig("rule");
@@ -16229,9 +16357,7 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "add-group") {
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
-          const relations = xlGetSectionRelations(layer, section);
           groups.push(section === "attr" ? makeAttrGroup("and", [makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], "标投"))]) : makeBehaviorGroup("and", [makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1")]));
-          if (groups.length > 1) relations.push("and");
           xlEnsureLayerGroupRelations(layer);
           renderCreateConfig("rule");
           showToast("已添加括号组");
@@ -16239,29 +16365,16 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "delete-group") {
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
-          const relations = xlGetSectionRelations(layer, section);
           if (groups.length <= 1) { showToast("至少保留一个括号组"); return; }
           const idx = groups.findIndex(g => g.id === groupId);
-          if (idx >= 0) {
-            groups.splice(idx, 1);
-            if (idx > 0) relations.splice(idx - 1, 1);
-            else relations.splice(0, 1);
-          }
+          if (idx >= 0) groups.splice(idx, 1);
           xlEnsureLayerGroupRelations(layer);
           renderCreateConfig("rule");
           return;
         }
-        if (action === "set-section-group-logic") {
-          const relations = xlGetSectionRelations(layer, section);
-          const relationIndex = Number(target.dataset.relationIndex || 0);
-          relations[relationIndex] = target.dataset.logic === "or" ? "or" : "and";
-          renderCreateConfig("rule");
-          return;
-        }
-        if (action === "toggle-section-group-logic") {
-          const relations = xlGetSectionRelations(layer, section);
-          const relationIndex = Number(target.dataset.relationIndex || 0);
-          relations[relationIndex] = relations[relationIndex] === "or" ? "and" : "or";
+        if (action === "toggle-section-relation") {
+          const current = xlGetSectionRelation(layer, section);
+          xlSetSectionRelation(layer, section, current === "or" ? "and" : "or");
           renderCreateConfig("rule");
           return;
         }
@@ -16314,6 +16427,18 @@ where dt = '\${bizdate}'</textarea></div>
         if (action === "clear-filters") {
           const found = findXlBehaviorRow(rowId);
           if (found.row) found.row.filters = [];
+          renderCreateConfig("rule");
+          return;
+        }
+        if (action === "set-filter-logic") {
+          const found = findXlBehaviorRow(rowId);
+          if (found.row) found.row.filterLogic = target.dataset.logic === "or" ? "or" : "and";
+          renderCreateConfig("rule");
+          return;
+        }
+        if (action === "toggle-filter-logic") {
+          const found = findXlBehaviorRow(rowId);
+          if (found.row) found.row.filterLogic = found.row.filterLogic === "or" ? "and" : "or";
           renderCreateConfig("rule");
           return;
         }
@@ -16378,7 +16503,10 @@ where dt = '\${bizdate}'</textarea></div>
             const allowed = xlEventPropertyRowsFor(row.event).map(xlAssetDisplay);
             row.filters = (row.filters || []).filter(f => allowed.includes(f.field));
           }
-          if (key === "agg") row.unit = target.value === "活跃天数" ? "天" : target.value === "总时长" ? "分钟" : target.value === "支付金额" ? "元" : "次";
+          if (key === "agg") {
+            row.agg = xlNormalizeAgg(row.agg);
+            row.unit = xlAggUnit(row.agg);
+          }
         }
         updateCreatePreview("rule");
         if (target.dataset.rowUpdate === "field" || target.dataset.rowUpdate === "event") renderCreateConfig("rule");
@@ -16428,10 +16556,10 @@ where dt = '\${bizdate}'</textarea></div>
           layer_name: xlLayerFallbackName(layer, index),
           remark: layer.remark,
           attr_behavior_relation: layer.relation === "and" ? "AND" : "OR",
-          user_attribute_group_relations: xlGetSectionRelations(layer, "attr").map(r => r === "and" ? "AND" : "OR"),
+          user_attribute_group_relation: layer.attrGroups.length > 1 ? (xlGetSectionRelation(layer, "attr") === "and" ? "AND" : "OR") : null,
           user_attributes: layer.attrGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => ({ ...xlAssetTrace(xlResolveAttrAsset(r.field)), field: r.field, op: r.op, value: r.value })) })),
-          user_event_group_relations: xlGetSectionRelations(layer, "behavior").map(r => r === "and" ? "AND" : "OR"),
-          user_events: layer.behaviorGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => ({ time: { label: r.timeLabel, mode: r.timeMode, start: r.start, end: r.end, days: r.days }, action: r.action, ...xlAssetTrace(xlResolveEventAsset(r.event)), event: r.event, filters: r.filters.map(f => ({ ...xlAssetTrace(xlResolveFilterAsset(r.event, f.field)), field: f.field, op: f.op, value: f.value })), aggregate: r.agg, op: r.op, value: r.value, unit: r.unit || "次" })) }))
+          user_event_group_relation: layer.behaviorGroups.length > 1 ? (xlGetSectionRelation(layer, "behavior") === "and" ? "AND" : "OR") : null,
+          user_events: layer.behaviorGroups.map(group => ({ inner_logic: group.logic === "and" ? "AND" : "OR", conditions: group.rows.map(r => ({ time: { label: r.timeLabel, mode: r.timeMode, start: r.start, end: r.end, days: r.days }, action: r.action, ...xlAssetTrace(xlResolveEventAsset(r.event)), event: r.event, ...(r.filters.length > 1 ? { filter_logic: r.filterLogic === "or" ? "OR" : "AND" } : {}), filters: r.filters.map(f => ({ ...xlAssetTrace(xlResolveFilterAsset(r.event, f.field)), field: f.field, op: f.op, value: f.value })), aggregate: r.agg, op: r.op, value: r.value, unit: r.unit || "次" })) }))
         }))
       };
     }
@@ -16457,8 +16585,8 @@ where dt = '\${bizdate}'</textarea></div>
           ["分层数量", `${window.xunleiRuleState.layers.length} 个`],
           ["当前分层", `${activeIndex + 1}. ${xlLayerFallbackName(active, activeIndex)}`],
           ["属性/行为关系", active.relation === "and" ? "且" : "或"],
-          ["属性组间关系", xlGetSectionRelations(active, "attr").length ? xlGetSectionRelations(active, "attr").map(r => r === "and" ? "且" : "或").join(" / ") : "无"],
-          ["行为组间关系", xlGetSectionRelations(active, "behavior").length ? xlGetSectionRelations(active, "behavior").map(r => r === "and" ? "且" : "或").join(" / ") : "无"],
+          ["属性组间关系", active.attrGroups.length > 1 ? (xlGetSectionRelation(active, "attr") === "and" ? "且" : "或") : "无"],
+          ["行为组间关系", active.behaviorGroups.length > 1 ? (xlGetSectionRelation(active, "behavior") === "and" ? "且" : "或") : "无"],
           ["更新方式", xlGetUpdateConfig().update_mode === "routine" ? `例行 · 每日 ${xlGetUpdateConfig().earliest_time}` : "手动"],
           ["规则组成", `属性 ${attrRows} 条 / 行为 ${behRows} 条 / 筛选 ${filters} 条`]
         ].map(line => `<li><span>${line[0]}</span><b>${line[1]}</b></li>`).join("");
@@ -18122,10 +18250,7 @@ where dt = '\${bizdate}'</textarea></div>
   }
 }
 
-/* v4 UX fixes: tag center cleanup and visible create actions */
-.rt-create-top-actions {
-  display: flex !important;
-}
+/* v4 UX fixes: tag center cleanup */
 .tag-directory-panel .panel-head {
   justify-content: flex-start !important;
 }
@@ -19517,7 +19642,45 @@ where dt = '\${bizdate}'</textarea></div>
 
 
 
-  </style>
+  
+
+/* v4 create page primary actions: match metadata manual asset buttons */
+#ruleUpdateCard .rt-bottom-actions #createRuleLabel.btn.primary,
+#view-create #estimateBtn.btn.primary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 36px !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 0 12px !important;
+  border: 1px solid var(--brand) !important;
+  border-radius: 8px !important;
+  background: var(--brand) !important;
+  background-image: none !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(83, 58, 253, .16) !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  transform: none !important;
+}
+#ruleUpdateCard .rt-bottom-actions #createRuleLabel.btn.primary:hover,
+#view-create #estimateBtn.btn.primary:hover {
+  border-color: var(--brand-hover) !important;
+  background: var(--brand-hover) !important;
+  background-image: none !important;
+  color: #fff !important;
+  box-shadow: 0 8px 16px rgba(83, 58, 253, .18) !important;
+  transform: none !important;
+}
+#ruleUpdateCard .rt-bottom-actions #createRuleLabel.btn.primary {
+  min-width: 92px !important;
+}
+#view-create #estimateBtn.btn.primary {
+  width: 100% !important;
+}
+
+</style>
 <script>
   (function () {
     const DESIGN_WIDTH = 1080;
