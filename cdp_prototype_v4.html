@@ -3362,7 +3362,7 @@
     }
     .asset-action-link:hover { color: #7c3aed; text-decoration: underline; }
 
-    .field.input-error { border-color:#ef4444!important; box-shadow:0 0 0 3px rgba(239,68,68,.10)!important; }
+    .field.input-error, .select.input-error { border-color:#ef4444!important; box-shadow:0 0 0 3px rgba(239,68,68,.10)!important; }
     .asset-form-tip { margin-top:6px; color:#7b8495; font-size:12px; line-height:1.4; }
     .spark-bars {
       display: inline-flex;
@@ -6705,6 +6705,7 @@
 <span>属性名</span>
 <span>显示名</span>
 <span>数据类型</span>
+<span>来源主体</span>
 <span>属性说明</span>
 </div>
 <div id="assetExistingAttrRows"></div>
@@ -7997,6 +7998,7 @@ HarmonyOS"></textarea>
     }
 
     const currentAssetOperator = "雷婷婷";
+    const currentAssetRole = "业务运营";
     const metadataDomainOptions = ["公共", "主端", "会员", "生态", "广告", "下载", "云盘", "播放", "搜索", "触达", "中台"];
     const metadataDomainSet = new Set(metadataDomainOptions);
     function normalizeMetadataDomain(domain) {
@@ -9658,12 +9660,14 @@ HarmonyOS"></textarea>
 
     assetDatasets.event_property.filters = [
       { id: "status", label: "显示状态", all: "全部" },
+      { id: "associationStatus", label: "关联状态", all: "全部", options: ["已关联元事件", "未关联元事件"] },
       { id: "type", label: "数据类型", all: "全部" }
     ];
     assetDatasets.event_property.columns = [
       ["name", "属性", "300px", true],
       ["propertyKind", "属性类型", "125px", true],
       ["type", "数据类型", "130px", true],
+      ["events", "关联元事件", "170px", true],
       ["dict", "字典", "150px", true],
       ["enum", "枚举", "90px", true],
       ["status", "显示状态", "120px", true],
@@ -10300,14 +10304,14 @@ HarmonyOS"></textarea>
       assetDatasets.dict.rows = dictRows;
       if (metricRows.length) assetDatasets.metric.rows = metricRows;
       if (assetDatasets.event_property.rows[0]) {
-        assetDatasets.event_property.rows[0].propertyKind = "自定义资产";
+        assetDatasets.event_property.rows[0].propertyKind = "自定义属性";
         assetDatasets.event_property.rows[0].createdBy = currentAssetOperator;
         assetDatasets.event_property.rows[0].editable = true;
         assetDatasets.event_property.rows[0].lastUpdater = currentAssetOperator;
         assetDatasets.event_property.rows[0].lastUpdatedAt = "2026-05-18";
       }
       if (assetDatasets.user_property.rows[0]) {
-        assetDatasets.user_property.rows[0].propertyKind = "自定义资产";
+        assetDatasets.user_property.rows[0].propertyKind = "自定义属性";
         assetDatasets.user_property.rows[0].createdBy = currentAssetOperator;
         assetDatasets.user_property.rows[0].editable = true;
         assetDatasets.user_property.rows[0].lastUpdater = currentAssetOperator;
@@ -10740,6 +10744,12 @@ HarmonyOS"></textarea>
       return [...new Set(values)];
     }
 
+    function eventPropertyAssociationStatus(row = {}) {
+      const rawEvents = Array.isArray(row.events) ? row.events : (row.events ? [row.events] : []);
+      const linkedEvents = rawEvents.map(item => String(item || "").trim()).filter(item => item && item !== "-" && item !== "待关联" && item !== "待关联元事件");
+      return linkedEvents.length ? "已关联元事件" : "未关联元事件";
+    }
+
     function fixedAssetFilterOptions(type, filterId) {
       const dataTypes = DATA_TYPE_OPTIONS.map(item => item.value);
       const visibleStatuses = ["可见", "不可见"];
@@ -10755,7 +10765,8 @@ HarmonyOS"></textarea>
         update: updateModes,
         upload: ["有数据", "无数据"],
         labelEnabled: yesNo,
-        filterEnabled: yesNo
+        filterEnabled: yesNo,
+        associationStatus: ["已关联元事件", "未关联元事件"]
       };
       if (type === "pending_asset") {
         if (dataAssetState.pendingTab === "table") {
@@ -10859,8 +10870,8 @@ HarmonyOS"></textarea>
         const editable = canEditAsset(row);
         return `<span class="asset-action-row">
           <button class="asset-action-link primary-link" data-asset-action="copy" data-asset-id="${row.id}" title="复制为我的资产">复制</button>
-          <button class="asset-action-link ${editable ? "" : "disabled-link"}" data-asset-action="edit" data-asset-id="${row.id}" title="${editable ? "编辑资产" : "只能编辑自己新建的资产"}">编辑</button>
-          <button class="asset-action-link danger-link ${editable ? "" : "disabled-link"}" data-asset-action="delete" data-asset-id="${row.id}" title="${editable ? "删除资产" : "只能删除自己新建的资产"}">删除</button>
+          <button class="asset-action-link ${editable ? "" : "disabled-link"}" data-asset-action="edit" data-asset-id="${row.id}" title="${editable ? "编辑资产" : "仅创建人或超级管理员可编辑"}">编辑</button>
+          <button class="asset-action-link danger-link ${editable ? "" : "disabled-link"}" data-asset-action="delete" data-asset-id="${row.id}" title="${editable ? "删除资产" : "仅创建人或超级管理员可删除"}">删除</button>
         </span>`;
       }
       if (key === "display" && dataAssetState.type === "pending_asset" && dataAssetState.pendingTab === "field") {
@@ -10929,7 +10940,11 @@ HarmonyOS"></textarea>
       if (key === "volume30d") return `${renderSpark(row.trend)}<b>${escapeHtml(row.volume30d || "-")}</b>`;
       if (key === "attrs") return `<button class="asset-action-link primary-link" data-asset-action="detail" data-asset-id="${row.id}">${escapeHtml(row.attrs ?? "-")} 个</button>`;
       if (key === "fieldCount") return `<button class="asset-action-link primary-link" data-asset-action="detail" data-asset-id="${row.id}">${escapeHtml(row.fieldCount ?? 0)} 个</button>`;
-      if (key === "events") return Array.isArray(row.events) ? `${row.events.slice(0, 2).map(escapeHtml).join("、")}${row.events.length > 2 ? ` 等 ${row.events.length} 个` : ""}` : escapeHtml(row.events || "-");
+      if (key === "events") {
+        const events = (Array.isArray(row.events) ? row.events : (row.events ? [row.events] : [])).map(item => String(item || "").trim()).filter(item => item && item !== "-" && item !== "待关联" && item !== "待关联元事件");
+        if (!events.length) return '<span class="asset-plain-status">未关联</span>';
+        return `${events.slice(0, 2).map(escapeHtml).join("、")}${events.length > 2 ? ` 等 ${events.length} 个` : ""}`;
+      }
       if (key === "dict") return row.dict && row.dict !== "无" ? `<button class="asset-action-link primary-link" data-asset-action="detail" data-asset-id="${row.id}">${escapeHtml(row.dict)}</button>` : `<span class="asset-plain-status">无</span>`;
       if (key === "enumCount") return `<b>${escapeHtml(row.enumCount ?? "-")}</b> 个`;
       if (key === "boards") return `<b>${escapeHtml(row.boards ?? "-")}</b> 个`;
@@ -10956,6 +10971,7 @@ HarmonyOS"></textarea>
     function assetFilterMatches(row, key, value) {
       if (value === "all") return true;
       if (Array.isArray(value)) return value.some(item => assetFilterMatches(row, key, item));
+      if (key === "associationStatus") return eventPropertyAssociationStatus(row) === normalizeAssetFilterValue(key, value);
       const rowValue = row[key];
       if (Array.isArray(rowValue)) return rowValue.some(item => normalizeAssetFilterValue(key, item) === normalizeAssetFilterValue(key, value));
       return normalizeAssetFilterValue(key, rowValue) === normalizeAssetFilterValue(key, value);
@@ -11242,13 +11258,13 @@ HarmonyOS"></textarea>
         sections += `<div class="asset-detail-section"><h3>下游使用</h3>${detailKv([["标签", `<b>${row.downstream?.tags || 0}</b> 个`], ["分群", `<b>${row.downstream?.segments || 0}</b> 个`], ["看板", `<b>${row.downstream?.boards || 0}</b> 个`]])}</div>`;
       } else if (type === "event_property") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["所属业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["适用范围", escapeHtml(row.propertyScope || "当前元事件")], ["是否枚举", pill(row.enum)], ["筛选可用", pill(row.filterEnabled)], ["填充率", escapeHtml(row.fillRate)], ["示例值", `<code>${escapeHtml(row.sample)}</code>`], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
+          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["所属业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["适用范围", escapeHtml(row.propertyScope || "当前元事件")], ["是否枚举", pill(row.enum)], ["筛选可用", pill(row.filterEnabled)], ["示例值", `<code>${escapeHtml(row.sample)}</code>`], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>所属元事件</h3>${renderPropertyEventTable(row)}</div>`;
         sections += `<div class="asset-detail-section"><h3>枚举值 / 字典</h3>${renderEnumTable(row.enumValues)}</div>`;
       } else if (type === "user_property") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["属性口径", escapeHtml(row.propertyLogic || "当前状态")], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["快照分区", escapeHtml(row.partitionField || "ds")], ["业务可见", pill(row.businessVisible || "是")], ["是否标签", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["更新方式", escapeHtml(row.update)], ["覆盖人数", escapeHtml(row.coverage)], ["覆盖率", escapeHtml(row.coverageRate)], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
+          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["属性口径", escapeHtml(row.propertyLogic || "当前状态")], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["快照分区", escapeHtml(row.partitionField || "ds")], ["业务可见", pill(row.businessVisible || "是")], ["是否标签", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["更新方式", escapeHtml(row.update)], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>枚举值 / 字典</h3>${renderEnumTable(row.enumValues)}</div>`;
       } else if (type === "table") {
@@ -11277,7 +11293,7 @@ HarmonyOS"></textarea>
           ? `<button class="btn primary" data-asset-action="pending_accept_table" data-asset-id="${row.id}" type="button">接入并推荐字段</button><button class="btn" data-asset-action="pending_keep_lineage" data-asset-id="${row.id}" type="button">仅保留血缘</button>`
           : `<button class="btn primary" data-asset-action="pending_confirm_field" data-asset-id="${row.id}" type="button">确认并生成资产</button><button class="btn" data-asset-action="pending_change_type" data-asset-id="${row.id}" type="button">修改类型</button><button class="btn danger" data-asset-action="pending_ignore_field" data-asset-id="${row.id}" type="button">忽略</button>`;
       } else {
-        actions.innerHTML = `<button class="btn" data-asset-action="copy" data-asset-id="${row.id}" type="button">复制</button><button class="btn primary" data-asset-action="edit" data-asset-id="${row.id}" type="button" ${editable ? "" : "disabled"} title="${editable ? "编辑资产" : "只能编辑自己新建的资产"}">编辑</button><button class="btn danger" data-asset-action="delete" data-asset-id="${row.id}" type="button" ${editable ? "" : "disabled"} title="${editable ? "删除资产" : "只能删除自己新建的资产"}">删除</button>`;
+        actions.innerHTML = `<button class="btn" data-asset-action="copy" data-asset-id="${row.id}" type="button">复制</button><button class="btn primary" data-asset-action="edit" data-asset-id="${row.id}" type="button" ${editable ? "" : "disabled"} title="${editable ? "编辑资产" : "仅创建人或超级管理员可编辑"}">编辑</button><button class="btn danger" data-asset-action="delete" data-asset-id="${row.id}" type="button" ${editable ? "" : "disabled"} title="${editable ? "删除资产" : "仅创建人或超级管理员可删除"}">删除</button>`;
       }
       mask.classList.add("show");
     }
@@ -11315,7 +11331,7 @@ HarmonyOS"></textarea>
       const def = dataAssetCurrentDef();
       if (!row || !def) return;
       if (!canEditAsset(row)) {
-        showToast("只能删除自己新建的资产；你可以复制后再编辑");
+        showToast("仅创建人或超级管理员可删除；你可以复制后再编辑");
         return;
       }
       const label = row.display || row.name || "该资产";
@@ -11728,8 +11744,12 @@ HarmonyOS"></textarea>
     let assetEditMode = false;
     let assetEditId = null;
 
+    function isAssetSuperAdmin() {
+      return String(currentAssetRole || "").includes("超级管理员");
+    }
+
     function canEditAsset(row) {
-      return Boolean(row && (row.editable === true || row.createdBy === currentAssetOperator));
+      return Boolean(row && (isAssetSuperAdmin() || row.createdBy === currentAssetOperator));
     }
 
     function assetCreateField(kind, label, html, full = false, required = false) {
@@ -11746,6 +11766,81 @@ HarmonyOS"></textarea>
         const value = String(v);
         return `<option value="${escapeHtml(value)}" ${value === selectedValue ? "selected" : ""}>${escapeHtml(value)}</option>`;
       }).join("")}</select>`;
+    }
+
+    const ASSET_BASE_SUBJECT_KEYS = ["guid", "uid", "device_id", "puid", "oaid", "idfa", "imei", "cpeerid"];
+
+    function normalizeAssetSubjectKey(value = "") {
+      const raw = String(value || "").trim().toLowerCase().replace(/-/g, "_");
+      if (!raw || raw === "-" || raw === "多主体") return "";
+      if (["uid", "user_id", "userid", "user"].includes(raw)) return "uid";
+      if (["guid", "device_guid"].includes(raw)) return "guid";
+      if (["device_id", "deviceid"].includes(raw)) return "device_id";
+      if (["puid", "proxy_user_id"].includes(raw)) return "puid";
+      if (["oaid", "idfa", "imei", "cpeerid"].includes(raw)) return raw;
+      return raw;
+    }
+
+    function uniqueAssetSubjectKeys(keys = []) {
+      const seen = new Set();
+      return keys.map(normalizeAssetSubjectKey).filter(key => key && !seen.has(key) && seen.add(key));
+    }
+
+    function assetSubjectLabel(key = "") {
+      const norm = normalizeAssetSubjectKey(key);
+      const labels = { guid: "guid", uid: "uid", device_id: "device_id", puid: "puid", oaid: "oaid", idfa: "idfa", imei: "imei", cpeerid: "cpeerid" };
+      return labels[norm] || norm;
+    }
+
+    function assetSubjectLabels(keys = []) {
+      return uniqueAssetSubjectKeys(keys).map(assetSubjectLabel).join(" / ") || "未标注";
+    }
+
+    function subjectKeysFromText(value = "") {
+      const raw = String(value || "").toLowerCase().replace(/-/g, "_");
+      const keys = [];
+      if (/guid/.test(raw)) keys.push("guid");
+      if (/user[_\s]?id|userid|(^|[^a-z0-9])uid([^a-z0-9]|$)/.test(raw)) keys.push("uid");
+      if (/device[_\s]?id|deviceid/.test(raw)) keys.push("device_id");
+      if (/puid|proxy[_\s]?user[_\s]?id/.test(raw)) keys.push("puid");
+      if (/oaid/.test(raw)) keys.push("oaid");
+      if (/idfa/.test(raw)) keys.push("idfa");
+      if (/imei/.test(raw)) keys.push("imei");
+      if (/cpeerid/.test(raw)) keys.push("cpeerid");
+      return uniqueAssetSubjectKeys(keys);
+    }
+
+    function subjectKeysForTable(table) {
+      if (!table) return [];
+      const fields = (warehouseFieldMap[table.name] || []).map(field => field.name).join(" ");
+      return subjectKeysFromText([table.subjectId, table.grain, table.name, table.display, fields].filter(Boolean).join(" "));
+    }
+
+    function allAssetSubjectKeys() {
+      const keys = [...ASSET_BASE_SUBJECT_KEYS];
+      currentWarehouseTables().forEach(table => keys.push(...subjectKeysForTable(table)));
+      return uniqueAssetSubjectKeys(keys);
+    }
+
+    function subjectKeysForAssetRow(row = {}) {
+      const keys = [];
+      if (Array.isArray(row.subjectKeys)) keys.push(...row.subjectKeys);
+      keys.push(...subjectKeysFromText([row.subjectId, row.subject, row.grain].filter(Boolean).join(" ")));
+      const tables = Array.isArray(row.sourceTables) ? row.sourceTables : [row.sourceTable].filter(Boolean);
+      tables.forEach(tableName => {
+        const table = currentWarehouseTables().find(item => item.name === tableName);
+        keys.push(...subjectKeysForTable(table));
+      });
+      return uniqueAssetSubjectKeys(keys);
+    }
+
+    function assetSubjectSelect(id, selected = "") {
+      const selectedKey = normalizeAssetSubjectKey(selected);
+      const options = ['<option value="">请选择主体</option>'].concat(allAssetSubjectKeys().map(key => {
+        const label = assetSubjectLabel(key);
+        return `<option value="${escapeHtml(key)}" ${key === selectedKey ? "selected" : ""}>${escapeHtml(label)}</option>`;
+      }));
+      return `<select class="select" id="${id}">${options.join("")}</select>`;
     }
 
     function renderAssetCreateTabs() {
@@ -11837,14 +11932,33 @@ HarmonyOS"></textarea>
       return `<select class="select" id="${id}" ${tableName ? "" : "disabled"}>${options.join("")}</select>`;
     }
 
-    function buildAssetSourceFields({ fieldLabel = "来源字段", fieldRequired = true } = {}) {
+    function buildAssetSourceFields({ fieldLabel = "来源字段", fieldRequired = true, includeField = true } = {}) {
       const dbOptions = sourceDbList().map(db => `<option value="${escapeHtml(db)}">${escapeHtml(db)}</option>`).join("");
       return `
-        <div class="asset-create-source-note"><strong>数据来源</strong>：可从数仓数据字典中选择库 / 表 / 字段，保存后资产会记录来源血缘。</div>
+        <div class="asset-create-source-note"><strong>数据来源</strong>：选择库 / 表${includeField ? " / 字段" : ""}和主体后，资产会记录可执行的物理映射。</div>
         ${assetCreateField("source", "来源库", `<select class="select" id="assetNewDb">${dbOptions}</select>`, false, true)}
         ${assetCreateField("source", "来源表", assetSourceTableSelect("assetNewTable"), false, true)}
-        ${assetCreateField("source", fieldLabel, assetSourceFieldSelect("assetNewColumn", "", "", assetCreateType), false, fieldRequired)}
+        ${includeField ? assetCreateField("source", fieldLabel, assetSourceFieldSelect("assetNewColumn", "", "", assetCreateType), false, fieldRequired) : ""}
       `;
+    }
+
+    function buildAssetSubjectField(required = true) {
+      return assetCreateField("source", "主体选择", assetSubjectSelect("assetNewSubjectId"), false, required);
+    }
+
+    function updateAssetSubjectOptions(selectedSubject = "") {
+      const fieldWrap = document.getElementById("assetNewSubjectId")?.closest(".asset-create-field");
+      if (!fieldWrap) return;
+      const tableKeys = subjectKeysForTable(selectedWarehouseTable());
+      const selectedKey = normalizeAssetSubjectKey(selectedSubject || document.getElementById("assetNewSubjectId")?.value || tableKeys[0] || "");
+      const label = fieldWrap.querySelector("label")?.innerHTML || '主体选择<span class="req">*</span>';
+      fieldWrap.innerHTML = `<label>${label}</label>${assetSubjectSelect("assetNewSubjectId", selectedKey)}`;
+      document.getElementById("assetNewSubjectId")?.addEventListener("change", () => {
+        if (document.getElementById("assetExistingAttrModal")?.classList.contains("show")) {
+          existingAttrPage = 1;
+          renderExistingAttrOptions();
+        }
+      });
     }
 
     function selectedWarehouseTable() {
@@ -11924,9 +12038,20 @@ HarmonyOS"></textarea>
       const fieldSelect = document.getElementById("assetNewColumn");
       tableSelect?.addEventListener("change", () => {
         updateSourceFieldOptions("");
+        updateAssetSubjectOptions("");
         autofillAssetFromSource();
+        if (document.getElementById("assetExistingAttrModal")?.classList.contains("show")) {
+          existingAttrPage = 1;
+          renderExistingAttrOptions();
+        }
       });
       fieldSelect?.addEventListener("change", autofillAssetFromSource);
+      document.getElementById("assetNewSubjectId")?.addEventListener("change", () => {
+        if (document.getElementById("assetExistingAttrModal")?.classList.contains("show")) {
+          existingAttrPage = 1;
+          renderExistingAttrOptions();
+        }
+      });
     }
 
     function eventAttrDictOptions(selected = "") {
@@ -11962,16 +12087,18 @@ HarmonyOS"></textarea>
       const enumCount = enumValues.filter(item => Array.isArray(item) && (item[0] || item[1])).length;
       const marker = row.existing ? "复用" : "NEW";
       const markerClass = row.existing ? " asset-event-attr-linked" : "";
-      const enumTitle = enumCount ? `维护枚举值（已维护 ${enumCount} 项）` : "维护枚举值";
+      const readonlyAttr = row.existing ? " readonly" : "";
+      const disabledAttr = row.existing ? " disabled" : "";
+      const enumTitle = row.existing ? "关联已有属性的枚举在事件属性资产中维护" : (enumCount ? `维护枚举值（已维护 ${enumCount} 项）` : "维护枚举值");
       return `
-        <div class="asset-event-attr-row" data-event-attr-row data-source-mode="${escapeHtml(row.sourceMode || (row.existing ? "warehouse_field" : "event_payload"))}" data-enum-values="${escapeHtml(JSON.stringify(enumValues))}">
+        <div class="asset-event-attr-row" data-event-attr-row data-source-mode="${escapeHtml(row.sourceMode || (row.existing ? "warehouse_field" : "event_payload"))}" data-source-table="${escapeHtml(row.sourceTable || "")}" data-source-field="${escapeHtml(row.sourceField || "")}" data-subject-id="${escapeHtml(row.subjectId || "")}" data-enum-values="${escapeHtml(JSON.stringify(enumValues))}">
           <div class="asset-event-attr-new${markerClass}">${marker}</div>
-          <input class="field asset-event-attr-name" autocomplete="off" placeholder="属性名" value="${escapeHtml(row.name || "")}">
-          <input class="field asset-event-attr-display" autocomplete="off" placeholder="请输入" value="${escapeHtml(row.display || "")}">
-          <select class="select asset-event-attr-type">${eventAttrTypeOptions(row.type || "")}</select>
-          <input class="field asset-event-attr-desc" autocomplete="off" placeholder="属性说明" value="${escapeHtml(row.desc || "")}">
-          <select class="select xl-source-picker asset-event-attr-dict">${eventAttrDictOptions(row.dict || "")}</select>
-          <button class="asset-event-attr-icon asset-event-attr-enum${enumCount ? " has-values" : ""}" type="button" data-event-attr-action="enum" title="${escapeHtml(enumTitle)}" aria-label="${escapeHtml(enumTitle)}" onclick="window.xlOpenEventAttrEnumEditor?.(this.closest('[data-event-attr-row]')); return false;">+</button>
+          <input class="field asset-event-attr-name" autocomplete="off" placeholder="属性名" value="${escapeHtml(row.name || "")}"${readonlyAttr}>
+          <input class="field asset-event-attr-display" autocomplete="off" placeholder="请输入" value="${escapeHtml(row.display || "")}"${readonlyAttr}>
+          <select class="select asset-event-attr-type"${disabledAttr}>${eventAttrTypeOptions(row.type || "")}</select>
+          <input class="field asset-event-attr-desc" autocomplete="off" placeholder="属性说明" value="${escapeHtml(row.desc || "")}"${readonlyAttr}>
+          <select class="select xl-source-picker asset-event-attr-dict"${disabledAttr}>${eventAttrDictOptions(row.dict || "")}</select>
+          <button class="asset-event-attr-icon asset-event-attr-enum${enumCount ? " has-values" : ""}" type="button" data-event-attr-action="enum" title="${escapeHtml(enumTitle)}" aria-label="${escapeHtml(enumTitle)}"${disabledAttr} onclick="window.xlOpenEventAttrEnumEditor?.(this.closest('[data-event-attr-row]')); return false;">+</button>
           <button class="asset-event-attr-icon asset-event-attr-delete" type="button" data-event-attr-action="delete" title="删除">删除</button>
         </div>
       `;
@@ -12191,14 +12318,25 @@ HarmonyOS"></textarea>
       syncEventAttrTextarea();
     }
 
+    function currentEventSubjectKey() {
+      return normalizeAssetSubjectKey(assetVal("assetNewSubjectId"));
+    }
+
+    function canLinkExistingAttrToCurrentEvent(row = {}) {
+      const currentSubject = currentEventSubjectKey();
+      if (!currentSubject) return false;
+      return subjectKeysForAssetRow(row).includes(currentSubject);
+    }
+
     function existingAttrSearchText(row = {}) {
-      return [row.name, row.display, row.domain, row.type, row.desc, row.owner].filter(Boolean).join(" ").toLowerCase();
+      return [row.name, row.display, row.domain, row.type, row.desc, row.owner, row.sourceTable, row.sourceField, assetSubjectLabels(subjectKeysForAssetRow(row))].filter(Boolean).join(" ").toLowerCase();
     }
 
     function existingAttrFilteredRows() {
       const query = normalizeAttrKey(document.getElementById("assetExistingAttrSearch")?.value || "");
       return (assetDatasets.event_property?.rows || []).filter(row => {
         if (!existingAttrId(row)) return false;
+        if (assetCreateType === "event" && !canLinkExistingAttrToCurrentEvent(row)) return false;
         return !query || existingAttrSearchText(row).includes(query);
       });
     }
@@ -12208,6 +12346,7 @@ HarmonyOS"></textarea>
       const isUsed = isExistingAttrUsed(row, usedKeys);
       const checked = pendingExistingAttrIds.has(id) && !isUsed;
       const desc = row.desc || "-";
+      const subjects = assetSubjectLabels(subjectKeysForAssetRow(row));
       return `
         <div class="asset-existing-attr-row${isUsed ? " is-disabled" : ""}" data-existing-attr-id="${escapeHtml(id)}">
           <span class="asset-existing-attr-check-cell">
@@ -12219,6 +12358,7 @@ HarmonyOS"></textarea>
           </span>
           <span>${escapeHtml(row.display || row.name || "-")}</span>
           <span>${dataTypeCell(row.type || "STRING")}</span>
+          <span title="${escapeHtml(row.sourceTable || "-")}">${escapeHtml(subjects)}</span>
           <span title="${escapeHtml(desc)}">${escapeHtml(desc)}</span>
         </div>
       `;
@@ -12285,6 +12425,14 @@ HarmonyOS"></textarea>
         showToast("暂无可关联的事件属性");
         return;
       }
+      if (assetCreateType === "event" && (!assetVal("assetNewTable") || !currentEventSubjectKey())) {
+        showToast("请先选择来源表和主体，再关联已有事件属性");
+        return;
+      }
+      const sub = modal.querySelector(".panel-sub");
+      if (sub && assetCreateType === "event") {
+        sub.textContent = `仅展示与当前元事件主体「${assetSubjectLabel(currentEventSubjectKey())}」一致的事件属性；不支持跨主体换算。`;
+      }
       pendingExistingAttrIds = new Set();
       existingAttrPage = 1;
       existingAttrPageSize = Number(document.getElementById("assetExistingAttrPageSize")?.value || 20);
@@ -12310,7 +12458,10 @@ HarmonyOS"></textarea>
         desc: row.desc || "",
         dict: row.dict && row.dict !== "无" ? row.dict : "",
         enumValues: Array.isArray(row.enumValues) ? row.enumValues : [],
-        sourceMode: row.sourceMode || (row.sourceTable || row.sourceField ? "warehouse_field" : "event_payload")
+        sourceMode: row.sourceMode || (row.sourceTable || row.sourceField ? "warehouse_field" : "event_payload"),
+        sourceTable: row.sourceTable || "",
+        sourceField: row.sourceField || row.name || "",
+        subjectId: currentEventSubjectKey() || row.subjectId || ""
       };
     }
 
@@ -12375,7 +12526,10 @@ HarmonyOS"></textarea>
             desc: row.querySelector(".asset-event-attr-desc")?.value.trim() || "",
             dict: row.querySelector(".asset-event-attr-dict")?.value || "",
             enumValues: parseEventAttrEnumValues(row),
-            sourceMode: row.dataset.sourceMode || "event_payload"
+            sourceMode: row.dataset.sourceMode || "event_payload",
+            sourceTable: row.dataset.sourceTable || assetVal("assetNewTable"),
+            sourceField: row.dataset.sourceField || name,
+            subjectId: row.dataset.subjectId || currentEventSubjectKey()
           };
         }).filter(Boolean);
       }
@@ -12395,17 +12549,6 @@ HarmonyOS"></textarea>
       if (linkBtn && linkBtn.dataset.eventAttrBound !== "1") {
         linkBtn.dataset.eventAttrBound = "1";
         linkBtn.addEventListener("click", openExistingAttrLinkModal);
-      }
-      const addBtn = document.getElementById("assetAddNewAttr");
-      if (addBtn && addBtn.dataset.eventAttrBound !== "1") {
-        addBtn.dataset.eventAttrBound = "1";
-        addBtn.addEventListener("click", () => {
-          box.querySelector(".asset-event-attr-empty")?.remove();
-          box.insertAdjacentHTML("beforeend", eventAttrRowHtml());
-          bindAssetEventAttrControls();
-          syncEventAttrTextarea();
-          setTimeout(() => window.xlEnhanceSearchSelectsV24?.(document.getElementById("assetCreateModal") || document), 0);
-        });
       }
       box.querySelectorAll("[data-event-attr-action='delete']").forEach(btn => {
         if (btn.dataset.eventAttrBound === "1") return;
@@ -12453,7 +12596,10 @@ HarmonyOS"></textarea>
         setAssetVal("assetNewDb", db);
         setAssetVal("assetNewTable", tableName);
         updateSourceFieldOptions(row.sourceField || row.sourceColumn || "");
+        updateAssetSubjectOptions(row.subjectId || row.subject || "");
         setAssetVal("assetNewColumn", row.sourceField || row.sourceColumn || "");
+      } else {
+        updateAssetSubjectOptions(row.subjectId || row.subject || "");
       }
     }
 
@@ -12462,6 +12608,8 @@ HarmonyOS"></textarea>
       const field = selectedWarehouseField();
       const sourceTable = assetVal("assetNewTable");
       const sourceField = assetVal("assetNewColumn");
+      const subjectId = normalizeAssetSubjectKey(assetVal("assetNewSubjectId"));
+      const subjectKeys = subjectId ? [subjectId] : subjectKeysForTable(table);
       const hasWarehouseSource = Boolean(sourceTable || sourceField);
       const fallbackMode = assetCreateType === "event" ? "custom_event" : "unmapped";
       return {
@@ -12471,7 +12619,9 @@ HarmonyOS"></textarea>
         sourceTableDisplay: table?.display || "",
         sourceField,
         sourceFieldType: field?.type ? normDataType(field.type) : "",
-        sourceFieldDesc: field?.desc || ""
+        sourceFieldDesc: field?.desc || "",
+        subjectId,
+        subjectKeys
       };
     }
 
@@ -12492,7 +12642,8 @@ HarmonyOS"></textarea>
         : `<select class="select" id="assetNewBehaviorSource" disabled aria-disabled="true"><option value="自定义事件" selected>自定义事件</option></select>`;
       if (assetCreateType === "event") {
         wrap.innerHTML = `
-          ${pendingConfirmId ? buildAssetSourceFields({ fieldLabel: "行为字段", fieldRequired: true }) : ""}
+          ${buildAssetSourceFields({ includeField: false })}
+          ${buildAssetSubjectField(true)}
           ${assetCreateField("base", "事件名", assetCreateInput("assetNewName", "如 download_create，仅支持英文/数字/下划线"), false, true)}
           ${assetCreateField("base", "事件显示名", assetCreateInput("assetNewDisplay", "如 创建下载任务"), false, true)}
           ${assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true)}
@@ -12509,38 +12660,34 @@ HarmonyOS"></textarea>
               <div id="assetEventAttrRows"><div class="asset-event-attr-empty">暂无事件属性</div></div>
             </div>
             <div class="asset-event-attr-actions">
-              <button class="btn asset-soft-btn" type="button" id="assetLinkExistingAttr">关联已有属性</button>
-              <button class="btn primary" type="button" id="assetAddNewAttr">添加新属性</button>
+              <button class="btn asset-soft-btn" type="button" id="assetLinkExistingAttr">关联已有事件属性</button>
             </div>
             <textarea id="assetNewProps" hidden></textarea>
           </div>
         `;
       } else if (assetCreateType === "event_property") {
         wrap.innerHTML = `
-          ${pendingConfirmId ? buildAssetSourceFields({ fieldLabel: "来源字段", fieldRequired: true }) : ""}
+          ${buildAssetSourceFields({ fieldLabel: "来源字段", fieldRequired: true })}
+          ${buildAssetSubjectField(true)}
           ${assetCreateField("base", "属性名", assetCreateInput("assetNewName", propNamePlaceholder), false, true)}
           ${assetCreateField("base", "属性显示名", assetCreateInput("assetNewDisplay", propDisplayPlaceholder), false, true)}
           ${assetCreateField("base", "数据类型", dataTypeSelect("assetNewDataType"), false, true)}
           ${assetCreateField("base", "默认字典", `<select class="select xl-source-picker" id="assetNewDict">${eventAttrDictOptions("")}</select>`, false, false)}
           ${assetCreateField("base", "默认枚举", assetDefaultEnumControl(), false, false)}
-          ${!pendingConfirmId ? assetCreateField("base", "属性类型", assetCreateSelect("assetNewPropertyKind", ["事件属性", "公共属性"], "事件属性"), false, false) : ""}
-          ${pendingConfirmId ? assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true) : ""}
-          ${pendingConfirmId ? assetCreateField("base", "更新方式", assetCreateSelect("assetNewUpdate", updateOptions), false, true) : ""}
-          ${pendingConfirmId ? assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true) : ""}
+          ${assetCreateField("base", "属性类型", assetCreateSelect("assetNewPropertyKind", ["事件属性", "公共属性"], "事件属性"), false, false)}
           ${assetCreateField("base", "属性说明", `<textarea class="field" id="assetNewDesc" style="height:80px;padding-top:10px;resize:vertical" placeholder="请输入属性说明"></textarea>`, true, false)}
         `;
       } else if (assetCreateType === "user_property") {
         wrap.innerHTML = `
-          ${pendingConfirmId ? buildAssetSourceFields({ fieldLabel: "来源字段", fieldRequired: true }) : ""}
+          ${buildAssetSourceFields({ fieldLabel: "属性值字段", fieldRequired: true })}
+          ${buildAssetSubjectField(true)}
           ${assetCreateField("base", "属性名", assetCreateInput("assetNewName", propNamePlaceholder), false, true)}
           ${assetCreateField("base", "属性显示名", assetCreateInput("assetNewDisplay", propDisplayPlaceholder), false, true)}
           ${assetCreateField("base", "数据类型", dataTypeSelect("assetNewDataType"), false, true)}
+          ${assetCreateField("base", "属性类型", assetCreateSelect("assetNewPropertyKind", ["用户属性", "公共属性"], "用户属性"), false, false)}
           ${assetCreateField("base", "是否标签", assetCreateSelect("assetNewLabelEnabled", yesNo, "是"), false, true)}
           ${assetCreateField("base", "默认字典", `<select class="select xl-source-picker" id="assetNewDict">${eventAttrDictOptions("")}</select>`, false, false)}
           ${assetCreateField("base", "默认枚举", assetDefaultEnumControl(), false, false)}
-          ${pendingConfirmId ? assetCreateField("base", "业务域", assetCreateSelect("assetNewDomain", domains), false, true) : ""}
-          ${pendingConfirmId ? assetCreateField("base", "更新方式", assetCreateSelect("assetNewUpdate", updateOptions), false, true) : ""}
-          ${pendingConfirmId ? assetCreateField("base", "显示状态", assetCreateSelect("assetNewStatus", visible), false, true) : ""}
           ${assetCreateField("base", "属性说明", `<textarea class="field" id="assetNewDesc" style="height:80px;padding-top:10px;resize:vertical" placeholder="请输入属性说明"></textarea>`, true, false)}
         `;
       } else if (assetCreateType === "dict") {
@@ -12592,9 +12739,11 @@ HarmonyOS"></textarea>
         const adjustNote = pending.confirmType && pending.confirmType !== pending.recommendedType ? `<br>人工调整：${escapeHtml(pending.confirmType)}${pending.adjustReason ? `（${escapeHtml(pending.adjustReason)}）` : ""}` : "";
         wrap.insertAdjacentHTML("afterbegin", `<div class="asset-create-source-note"><strong>系统推荐</strong>：${escapeHtml(pending.recommendedType)}。${adjustNote}<br>推荐依据：${escapeHtml(pending.reason || "-")}<br>请确认或修改类型，确认后生成正式资产；敏感字段默认受控。</div>`);
       } else if (!assetEditMode) {
-        const manualHint = ["event", "event_property", "user_property"].includes(assetCreateType)
-          ? "按逻辑口径登记，不强制绑定来源库 / 表 / 字段；需要物理血缘时可走字段确认链路补充。"
-          : "请先选择来源库 / 表 / 字段，系统会自动带出字段类型、字段描述和来源血缘。";
+        const manualHint = assetCreateType === "event"
+          ? "先选择来源库、来源表和单一主体；事件属性只支持关联已有事件属性，不在元事件里新增。"
+          : ["event_property", "user_property"].includes(assetCreateType)
+            ? "必须选择来源库 / 表 / 字段和单一主体，保存后作为已映射属性资产。"
+            : "请先选择来源库 / 表 / 字段，系统会自动带出字段类型、字段描述和来源血缘。";
         wrap.insertAdjacentHTML("afterbegin", `<div class="asset-create-source-note"><strong>手动登记</strong>：仅用于系统推荐遗漏、历史资产迁移或临时补录。${manualHint}</div>`);
       }
       bindAssetSourcePickers();
@@ -12608,6 +12757,10 @@ HarmonyOS"></textarea>
     }
 
     function assetVal(id) { return (document.getElementById(id)?.value || "").trim(); }
+
+    function markAssetInputError(id, isError) {
+      document.getElementById(id)?.classList.toggle("input-error", Boolean(isError));
+    }
 
     function bindAssetDefaultEnumControl() {
       const btn = document.getElementById("assetDefaultEnumBtn");
@@ -12637,7 +12790,7 @@ HarmonyOS"></textarea>
       const row = findAssetById(id);
       if (!row) return;
       if (!canEditAsset(row)) {
-        showToast("只能编辑自己创建的资产；可复制任意资产字段名");
+        showToast("仅创建人或超级管理员可编辑资产；可复制任意资产字段名");
         return;
       }
       assetEditMode = true;
@@ -12656,7 +12809,7 @@ HarmonyOS"></textarea>
         setAssetVal("assetNewBehaviorSource", "自定义事件");
         setAssetVal("assetNewTimeGrain", row.timeGrain || "天");
         setAssetVal("assetNewDefaultMetric", row.defaultMetric || "次数");
-        setAssetVal("assetNewSubjectId", row.subjectId || "guid");
+        setAssetVal("assetNewSubjectId", normalizeAssetSubjectKey(row.subjectId || subjectKeysForAssetRow(row)[0] || "guid"));
         setAssetVal("assetNewIdMapping", row.idMappingStatus || "接入中");
         setAssetVal("assetNewUpload", normalizeAssetFilterValue("upload", row.upload || "有数据"));
         setAssetVal("assetNewReceive", row.receive || "允许");
@@ -12669,13 +12822,15 @@ HarmonyOS"></textarea>
         setAssetVal("assetNewDataType", row.type || "STRING");
         setAssetVal("assetNewUpdate", row.update || "T+1");
         setAssetVal("assetNewPropertyKind", row.propertyKind || "事件属性");
+        setAssetVal("assetNewSubjectId", normalizeAssetSubjectKey(row.subjectId || subjectKeysForAssetRow(row)[0] || ""));
         setAssetVal("assetNewDict", row.dict || "");
         setAssetDefaultEnumValues(row.enumValues || []);
-        setAssetVal("assetNewColumn", row.name || "");
+        setAssetVal("assetNewColumn", row.sourceField || row.name || "");
       } else if (assetCreateType === "user_property") {
         setAssetVal("assetNewDataType", row.type || "STRING");
+        setAssetVal("assetNewPropertyKind", row.propertyKind || "用户属性");
         setAssetVal("assetNewPropertyLogic", row.propertyLogic || "当前状态");
-        setAssetVal("assetNewSubjectId", row.subjectId || "guid");
+        setAssetVal("assetNewSubjectId", normalizeAssetSubjectKey(row.subjectId || subjectKeysForAssetRow(row)[0] || "guid"));
         setAssetVal("assetNewIdMapping", row.idMappingStatus || "接入中");
         setAssetVal("assetNewPartitionField", row.partitionField || "ds");
         setAssetVal("assetNewUpdate", row.update || "T+1");
@@ -12686,7 +12841,7 @@ HarmonyOS"></textarea>
         setAssetDefaultEnumValues(row.enumValues || []);
         setAssetVal("assetNewCoverage", row.coverage || "待计算");
         setAssetVal("assetNewCoverageRate", row.coverageRate || "待计算");
-        setAssetVal("assetNewColumn", row.name || "");
+        setAssetVal("assetNewColumn", row.sourceField || row.name || "");
       } else {
         setAssetVal("assetNewUpdated", row.updated || "2026-05-12");
       }
@@ -12704,6 +12859,27 @@ HarmonyOS"></textarea>
 
     function rebuildAssetSearchIndex(row) {
       row._searchText = Object.values(row).flat().join(" ").toLowerCase();
+    }
+
+    function validateAssetSourceRequirements() {
+      const requiresTable = ["event", "event_property", "user_property"].includes(assetCreateType);
+      const requiresField = ["event_property", "user_property"].includes(assetCreateType);
+      const requiresSubject = ["event", "event_property", "user_property"].includes(assetCreateType);
+      const missingTable = requiresTable && !assetVal("assetNewTable");
+      const missingField = requiresField && !assetVal("assetNewColumn");
+      const missingSubject = requiresSubject && !normalizeAssetSubjectKey(assetVal("assetNewSubjectId"));
+      markAssetInputError("assetNewTable", missingTable);
+      markAssetInputError("assetNewColumn", missingField);
+      markAssetInputError("assetNewSubjectId", missingSubject);
+      if (missingTable || missingField || missingSubject) {
+        const tips = [];
+        if (missingTable) tips.push("来源表");
+        if (missingField) tips.push("来源字段");
+        if (missingSubject) tips.push("主体");
+        showToast("请先选择" + tips.join("、"));
+        return false;
+      }
+      return true;
     }
 
     function addCreatedAsset() {
@@ -12724,8 +12900,9 @@ HarmonyOS"></textarea>
         showToast("事件名仅支持英文、数字和下划线");
         return;
       }
+      if (!validateAssetSourceRequirements()) return;
       const now = Date.now();
-      const domain = assetVal("assetNewDomain") || "公共";
+      const domain = assetVal("assetNewDomain") || (selectedWarehouseTable() ? inferDomainFromTable(selectedWarehouseTable()) : "公共");
       const owner = currentAssetOperator;
       const desc = assetVal("assetNewDesc") || "待补充业务口径。";
       const assetToday = "2026-05-18";
@@ -12738,14 +12915,12 @@ HarmonyOS"></textarea>
         const props = collectEventAttrRows();
         const eventTags = assetVal("assetNewEventTag").split(/,|，/).map(x => x.trim()).filter(Boolean);
         const table = selectedWarehouseTable();
-        const field = selectedWarehouseField();
-        const measureSource = field ? warehouseMeasureSourceFieldsForField(field) : {};
         const sourceType = table ? warehouseEventSourceType(table) : (assetVal("assetNewBehaviorSource") || existing?.sourceType || "自定义事件");
-        row = { ...(existing || {}), id: existing?.id || `custom_event_${now}`, name, display, domain, behaviorSource:pendingConfirmId ? (assetVal("assetNewBehaviorSource") || sourceType) : "自定义事件", timeGrain:assetVal("assetNewTimeGrain") || existing?.timeGrain || "天", defaultMetric:field ? warehouseDefaultMetricLabel(field) : (assetVal("assetNewDefaultMetric") || existing?.defaultMetric || "次数"), subjectId:assetVal("assetNewSubjectId") || existing?.subjectId || "guid", idMappingStatus:assetVal("assetNewIdMapping") || existing?.idMappingStatus || "接入中", upload:normalizeAssetFilterValue("upload", assetVal("assetNewUpload") || existing?.upload || "有数据"), status:assetVal("assetNewStatus") || "可见", receive:assetVal("assetNewReceive") || "允许", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:"是", attrs:props.length || 0, volume30d:existing?.volume30d || "待计算", lastIngest:existing?.lastIngest || "待入库", lastUpdater:owner, lastUpdatedAt:assetToday, owner, desc, properties:props, eventTags, downstream:existing?.downstream || {tags:0, segments:0, boards:0}, trend:existing?.trend || trend(1), public:existing?.public || "否", platform:assetVal("assetNewPlatform") || existing?.platform || "全部", volumeSort:existing?.volumeSort || 0, sourceType, behaviorSourceType:sourceType, timeField:table ? warehouseTimeFieldForEvent(table, warehouseFieldRowsForTable(table.name)) : (existing?.timeField || "ds"), countField:measureSource.countField || existing?.countField || "", distributionField:measureSource.distributionField || existing?.distributionField || "", durationField:measureSource.durationField || existing?.durationField || "", amountField:measureSource.amountField || existing?.amountField || "", capacityField:measureSource.capacityField || existing?.capacityField || "", primaryMeasureType:measureSource.primaryMeasureType || existing?.primaryMeasureType || "count", supportedMeasures:field ? warehouseSupportedMeasuresForField(field, table || {}) : (existing?.supportedMeasures || ["总次数", "分布"]), ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
+        row = { ...(existing || {}), id: existing?.id || `custom_event_${now}`, name, display, domain, behaviorSource:pendingConfirmId ? (assetVal("assetNewBehaviorSource") || sourceType) : "自定义事件", timeGrain:assetVal("assetNewTimeGrain") || existing?.timeGrain || "天", defaultMetric:assetVal("assetNewDefaultMetric") || existing?.defaultMetric || "次数", subjectId:assetVal("assetNewSubjectId") || existing?.subjectId || "guid", idMappingStatus:assetVal("assetNewIdMapping") || existing?.idMappingStatus || "接入中", upload:normalizeAssetFilterValue("upload", assetVal("assetNewUpload") || existing?.upload || "有数据"), status:assetVal("assetNewStatus") || "可见", receive:assetVal("assetNewReceive") || "允许", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:"是", attrs:props.length || 0, volume30d:existing?.volume30d || "待计算", lastIngest:existing?.lastIngest || "待入库", lastUpdater:owner, lastUpdatedAt:assetToday, owner, desc, properties:props, eventTags, downstream:existing?.downstream || {tags:0, segments:0, boards:0}, trend:existing?.trend || trend(1), public:existing?.public || "否", platform:assetVal("assetNewPlatform") || existing?.platform || "全部", volumeSort:existing?.volumeSort || 0, sourceType, behaviorSourceType:sourceType, timeField:table ? warehouseTimeFieldForEvent(table, warehouseFieldRowsForTable(table.name)) : (existing?.timeField || "ds"), countField:existing?.countField || "", distributionField:existing?.distributionField || "", durationField:existing?.durationField || "", amountField:existing?.amountField || "", capacityField:existing?.capacityField || "", primaryMeasureType:existing?.primaryMeasureType || "count", supportedMeasures:existing?.supportedMeasures || ["总次数", "分布"], ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "event_property") {
         row = { ...(existing || {}), id: existing?.id || `custom_ep_${now}`, name, display, domain, propertyKind:assetVal("assetNewPropertyKind") || existing?.propertyKind || (pendingConfirmId ? "公共属性" : "事件属性"), type:assetVal("assetNewDataType") || "STRING", propertyScope:existing?.propertyScope || "待关联", enum:defaultEnumValues.length ? "是" : "否", filterEnabled:existing?.filterEnabled || "是", events:existing?.events || ["待关联元事件"], dict:assetVal("assetNewDict") || "无", fillRate:existing?.fillRate || "待计算", fillSort:existing?.fillSort || 0, sample:existing?.sample || "--", owner, desc, enumValues:defaultEnumValues, upload:existing?.upload || "有", update:assetVal("assetNewUpdate") || "T+1", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:(assetVal("assetNewPropertyKind") || existing?.propertyKind) === "公共属性" ? "是" : (existing?.public || "否"), ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "user_property") {
-        row = { ...(existing || {}), id: existing?.id || `custom_up_${now}`, name, display, domain, propertyKind:"自定义资产", type:assetVal("assetNewDataType") || "STRING", propertyLogic:assetVal("assetNewPropertyLogic") || "当前状态", subjectId:assetVal("assetNewSubjectId") || "guid", idMappingStatus:assetVal("assetNewIdMapping") || "接入中", partitionField:assetVal("assetNewPartitionField") || "ds", businessVisible:assetVal("assetNewBusinessVisible") || "是", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:assetVal("assetNewSegmentEnabled") || "是", update:assetVal("assetNewUpdate") || "T+1", coverage:assetVal("assetNewCoverage") || "待计算", coverageRate:assetVal("assetNewCoverageRate") || "待计算", coverageSort:existing?.coverageSort || 0, owner, desc, dict:assetVal("assetNewDict") || "无", enum:defaultEnumValues.length ? "是" : "否", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:domain === "公共" ? "是" : "否", enumValues:defaultEnumValues, ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
+        row = { ...(existing || {}), id: existing?.id || `custom_up_${now}`, name, display, domain, propertyKind:assetVal("assetNewPropertyKind") || existing?.propertyKind || "用户属性", type:assetVal("assetNewDataType") || "STRING", propertyLogic:assetVal("assetNewPropertyLogic") || "当前状态", subjectId:assetVal("assetNewSubjectId") || "guid", idMappingStatus:assetVal("assetNewIdMapping") || "接入中", partitionField:assetVal("assetNewPartitionField") || "ds", businessVisible:assetVal("assetNewBusinessVisible") || "是", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:assetVal("assetNewSegmentEnabled") || "是", update:assetVal("assetNewUpdate") || "T+1", coverage:assetVal("assetNewCoverage") || "待计算", coverageRate:assetVal("assetNewCoverageRate") || "待计算", coverageSort:existing?.coverageSort || 0, owner, desc, dict:assetVal("assetNewDict") || "无", enum:defaultEnumValues.length ? "是" : "否", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:(assetVal("assetNewPropertyKind") || existing?.propertyKind) === "公共属性" ? "是" : "否", enumValues:defaultEnumValues, ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "dict") {
         row = { ...(existing || {}), id: existing?.id || `custom_dict_${now}`, name, domain, enumCount:existing?.enumCount || 0, related:existing?.related || "待关联", updated:assetVal("assetNewUpdated") || "2026-05-12", owner, desc, enumValues:existing?.enumValues || [], display, status:assetVal("assetNewStatus") || "可见", ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "table") {
@@ -18099,9 +18274,9 @@ where dt = '\${bizdate}'</textarea></div>
 #assetExistingAttrModal .asset-existing-attr-head,
 #assetExistingAttrModal .asset-existing-attr-row {
   display: grid;
-  grid-template-columns: 72px minmax(150px, 1fr) minmax(130px, 0.8fr) 112px minmax(220px, 1.4fr);
+  grid-template-columns: 72px minmax(150px, 1fr) minmax(130px, 0.8fr) 112px 118px minmax(220px, 1.4fr);
   align-items: center;
-  min-width: 760px;
+  min-width: 900px;
 }
 #assetExistingAttrModal .asset-existing-attr-head {
   min-height: 52px;
