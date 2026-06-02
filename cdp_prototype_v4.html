@@ -6812,15 +6812,15 @@
             <div class="form-grid rule-basic-grid">
               <div class="form-row">
                 <label>标签显示名 <span class="required-star">*</span></label>
-                <input class="field" id="tagDisplayName" value="迅雷广告转化意向分层" placeholder="外显中文，例如：迅雷广告转化意向分层">
+                <input class="field" id="tagDisplayName" value="" placeholder="外显中文，例如：广告转化意向分层">
               </div>
               <div class="form-row">
                 <label>标签名称 <span class="required-star">*</span></label>
-                <div class="rt-name-combo"><span>user_tag_</span><input class="field" id="tagNameSuffix" value="ad_convert_intent" placeholder="请输入英文/数字/下划线"></div>
+                <div class="rt-name-combo"><span>user_tag_</span><input class="field" id="tagNameSuffix" value="" placeholder="请输入英文/数字/下划线"></div>
               </div>
               <div class="form-row rt-form-row-textarea">
                 <label>标签描述</label>
-                <textarea class="field" id="tagDescription" style="height:72px;padding-top:10px;resize:vertical" placeholder="选填：说明标签业务口径、适用场景和使用限制。">用于模拟广告曝光、点击、下载/云盘/播放等行为后的转化意向分层，后续可替换成真实迅雷业务规则。</textarea>
+                <textarea class="field" id="tagDescription" style="height:72px;padding-top:10px;resize:vertical" placeholder="选填：说明标签业务口径、适用场景和使用限制。"></textarea>
               </div>
               <div class="form-row rt-biz-domain-filter">
                 <label>业务域筛选</label>
@@ -6972,7 +6972,7 @@
 
           <div class="rt-create-float-tools" aria-label="创建页快捷操作">
             <button class="rt-float-tool" id="quickBackTop" type="button" title="回到页面顶部" aria-label="回到页面顶部">⬆️</button>
-            <button class="rt-float-tool" id="quickSaveDraft" type="button" title="保存草稿" aria-label="保存草稿">🔘</button>
+            <button class="rt-float-tool" id="quickSaveDraft" type="button" title="保存当前规则" aria-label="保存当前规则">存</button>
           </div>
 
           <aside class="panel preview-panel">
@@ -8258,7 +8258,7 @@ HarmonyOS"></textarea>
     }
 
     function slugifyTagName(name) {
-      const dict = { "迅雷广告转化意向分层": "ad_convert_intent", "下载活跃度": "download_activity", "云盘活跃度": "cloud_activity", "搜索活跃度": "search_activity", "消费活跃度": "consume_activity", "会员类型": "member_type", "非会员细分": "non_member_segment", "生命周期阶段": "lifecycle_stage", "平台": "platform", "产品": "product" };
+      const dict = { "下载活跃度": "download_activity", "云盘活跃度": "cloud_activity", "搜索活跃度": "search_activity", "消费活跃度": "consume_activity", "会员类型": "member_type", "非会员细分": "non_member_segment", "生命周期阶段": "lifecycle_stage", "平台": "platform", "产品": "product" };
       if (dict[name]) return dict[name];
       return String(name || "rule_tag").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 32) || "rule_tag";
     }
@@ -8300,9 +8300,9 @@ HarmonyOS"></textarea>
       if (sub) sub.textContent = "业务用户走无代码路径，SQL 标签保留给数分维护。";
       const btn = document.getElementById("createRuleLabel");
       if (btn) btn.textContent = "创建";
-      document.getElementById("tagDisplayName") && (document.getElementById("tagDisplayName").value = "迅雷广告转化意向分层");
-      document.getElementById("tagNameSuffix") && (document.getElementById("tagNameSuffix").value = "ad_convert_intent");
-      document.getElementById("tagDescription") && (document.getElementById("tagDescription").value = "用于模拟广告曝光、点击、下载/云盘/播放等行为后的转化意向分层，后续可替换成真实迅雷业务规则。");
+      document.getElementById("tagDisplayName") && (document.getElementById("tagDisplayName").value = "");
+      document.getElementById("tagNameSuffix") && (document.getElementById("tagNameSuffix").value = "");
+      document.getElementById("tagDescription") && (document.getElementById("tagDescription").value = "");
       ensureSelectOption(document.getElementById("tagBizDomain"), "");
       ensureSelectOption(document.getElementById("tagCategory1"), "行为画像");
       ensureSelectOption(document.getElementById("tagCategory2"), "");
@@ -9619,10 +9619,7 @@ HarmonyOS"></textarea>
         hint: "后续可继续扩展配置、血缘和申请流程。",
         filters: [{ id:"domain", label:"业务域", all:"全部" }],
         columns: [["name","资产名","22%"],["display","显示名","18%"],["domain","业务域","10%"],["status","状态","10%"],["updated","最近更新","12%"],["owner","负责人","10%"],["actions","操作","8%"]],
-        rows: [
-          { id:`${type}_1`, name:`${type}_sample_1`, display:`${assetTypeLabels[type]}示例一`, domain:"公共", status:"可见", updated:"2026-05-10", owner:"数据平台", desc:`${assetTypeLabels[type]}示例资产。` },
-          { id:`${type}_2`, name:`${type}_sample_2`, display:`${assetTypeLabels[type]}示例二`, domain:"主端", status:"可见", updated:"2026-05-09", owner:"主端数分", desc:`${assetTypeLabels[type]}示例资产。` }
-        ]
+        rows: []
       };
     });
 
@@ -9665,7 +9662,7 @@ HarmonyOS"></textarea>
     ];
     assetDatasets.event_property.columns = [
       ["name", "属性", "300px", true],
-      ["propertyKind", "属性类型", "125px", true],
+      ["propertyKind", "属性归类", "125px", true],
       ["type", "数据类型", "130px", true],
       ["events", "关联元事件", "170px", true],
       ["dict", "字典", "150px", true],
@@ -9697,7 +9694,7 @@ HarmonyOS"></textarea>
     ];
     assetDatasets.user_property.columns = [
       ["name", "属性", "300px", true],
-      ["propertyKind", "属性类型", "125px", true],
+      ["propertyKind", "属性归类", "125px", true],
       ["type", "数据类型", "130px", true],
       ["dict", "字典", "150px", true],
       ["enum", "枚举", "90px", true],
@@ -9755,6 +9752,14 @@ HarmonyOS"></textarea>
     }
     function warehouseTableRows() {
       return (assetDatasets.table?.rows || []).filter(row => row && row.name);
+    }
+    function warehouseIsFirstVersionTable(row = {}) {
+      const layer = warehouseSafeText(row.layer).toLowerCase().replace(/\s+/g, "");
+      const name = warehouseSafeText(row.name || row.sourceTable).toLowerCase();
+      return /^dwd/.test(layer) || /^dws/.test(layer) || /(^|\.)dwd_/.test(name) || /(^|\.)dws_/.test(name);
+    }
+    function warehouseFirstVersionTables(rows = warehouseTableRows()) {
+      return rows.filter(warehouseIsFirstVersionTable);
     }
     function warehouseIsGuidOrUserTable(table) {
       const grain = warehouseSafeText(table.grain).toLowerCase();
@@ -10025,7 +10030,7 @@ HarmonyOS"></textarea>
       return `${name}::${type}`;
     }
     function buildWarehouseDerivedAssets() {
-      const tables = warehouseTableRows();
+      const tables = warehouseFirstVersionTables();
       const eventRows = [];
       const eventByTable = new Map();
       const eventPropertyMap = new Map();
@@ -10317,6 +10322,8 @@ HarmonyOS"></textarea>
         assetDatasets.user_property.rows[0].lastUpdater = currentAssetOperator;
         assetDatasets.user_property.rows[0].lastUpdatedAt = "2026-05-18";
       }
+      assetDatasets.table.rows = warehouseFirstVersionTables(assetDatasets.table.rows);
+      assetDatasets.table.subtitle = "首版仅接入 DWD / DWS 层 Hive 表，作为元事件、事件属性和用户属性的来源。";
 
       assetDatasets.event.subtitle = "由数仓数据字典中的行为表与行为字段自动映射生成，可用于标签规则中的「用户行为满足」。";
       assetDatasets.event_property.subtitle = "由行为表中的上下文字段自动映射生成，用于行为规则里的「添加筛选」。";
@@ -10531,6 +10538,7 @@ HarmonyOS"></textarea>
           }
         ]
       };
+      assetDatasets.pending_asset.rows = assetDatasets.pending_asset.rows.filter(row => warehouseIsFirstVersionTable(row));
     }
 
     function refreshDataAssetCounts() {
@@ -10772,7 +10780,7 @@ HarmonyOS"></textarea>
         if (dataAssetState.pendingTab === "table") {
           return {
             sourceDb: sourceDbList(),
-            layer: ["ODS层", "DWD层", "DWM层", "DWS层", "DIM层", "ADS 层"],
+            layer: ["DWD层", "DWS层"],
             confirmType: ["建议接入", "需人工判断", "暂不接入"],
             status: ["新表待评估", "已接入", "暂不接入"]
           }[filterId] || null;
@@ -11166,8 +11174,12 @@ HarmonyOS"></textarea>
     }
 
     function renderPropertyEventTable(propertyRow) {
-      const events = (propertyRow.events || []).map(resolvePropertyEventRow);
-      if (!events.length) return `<div class="empty" style="min-height:96px">暂无所属元事件</div>`;
+      const rawEvents = Array.isArray(propertyRow.events) ? propertyRow.events : (propertyRow.events ? [propertyRow.events] : []);
+      const events = rawEvents
+        .map(item => String(item || "").trim())
+        .filter(item => item && item !== "-" && item !== "待关联" && item !== "待关联元事件")
+        .map(resolvePropertyEventRow);
+      if (!events.length) return `<div class="empty" style="min-height:96px">暂无关联元事件</div>`;
       return `
         <div class="asset-event-property-table asset-property-event-table">
           <div class="asset-event-property-row asset-property-event-row asset-event-property-head">
@@ -11252,21 +11264,53 @@ HarmonyOS"></textarea>
       let sections = "";
       if (type === "event") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["事件名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["行为来源类型", escapeHtml(row.behaviorSource || row.sourceType || "汇总型")], ["时间字段", escapeHtml(row.timeField || "ds")], ["默认统计口径", escapeHtml(row.defaultMetric || "次数")], ["支持统计口径", escapeHtml((row.supportedMeasures || ["总次数", "分布"]).join(" / "))], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["上报状态", pill(row.upload)], ["显示状态", pill(row.status)], ["标签可用", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["最近入库", escapeHtml(row.lastIngest)], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
+          ["事件名", `<code>${escapeHtml(row.name)}</code>`],
+          ["业务域", pill(row.domain)],
+          ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || "").split(".")[0] || "-")],
+          ["来源表", row.sourceTable ? `<code>${escapeHtml(row.sourceTable)}</code>` : "-"],
+          ["主体", escapeHtml(row.subjectId || "-")],
+          ["时间字段", escapeHtml(row.timeField || "-")],
+          ["支持统计口径", escapeHtml((row.supportedMeasures || ["总次数", "分布"]).join("、"))],
+          ["上报数据", pill(row.upload)],
+          ["显示状态", pill(row.status)],
+          ["标签筛选", pill(row.labelEnabled)],
+          ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)],
+          ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>事件属性</h3>${renderEventPropertyTable(row)}</div>`;
-        sections += `<div class="asset-detail-section"><h3>下游使用</h3>${detailKv([["标签", `<b>${row.downstream?.tags || 0}</b> 个`], ["分群", `<b>${row.downstream?.segments || 0}</b> 个`], ["看板", `<b>${row.downstream?.boards || 0}</b> 个`]])}</div>`;
       } else if (type === "event_property") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["所属业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["适用范围", escapeHtml(row.propertyScope || "当前元事件")], ["是否枚举", pill(row.enum)], ["筛选可用", pill(row.filterEnabled)], ["示例值", `<code>${escapeHtml(row.sample)}</code>`], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
+          ["属性名", `<code>${escapeHtml(row.name)}</code>`],
+          ["业务域", pill(row.domain)],
+          ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || "").split(".")[0] || "-")],
+          ["来源表", row.sourceTable ? `<code>${escapeHtml(row.sourceTable)}</code>` : "-"],
+          ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"],
+          ["主体", escapeHtml(row.subjectId || subjectKeysForAssetRow(row)[0] || "-")],
+          ["数据类型", dataTypeCell(row.type || row.sourceFieldType || "-")],
+          ["属性归类", pill(row.propertyKind || "自定义属性")],
+          ["是否枚举", pill(row.enum)],
+          ["默认字典", escapeHtml(row.dict || "无")],
+          ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)],
+          ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
-        sections += `<div class="asset-detail-section"><h3>所属元事件</h3>${renderPropertyEventTable(row)}</div>`;
-        sections += `<div class="asset-detail-section"><h3>枚举值 / 字典</h3>${renderEnumTable(row.enumValues)}</div>`;
+        sections += `<div class="asset-detail-section"><h3>关联元事件</h3>${renderPropertyEventTable(row)}</div>`;
+        sections += `<div class="asset-detail-section"><h3>枚举值与字典</h3>${renderEnumTable(row.enumValues)}</div>`;
       } else if (type === "user_property") {
         sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
-          ["属性名", `<code>${escapeHtml(row.name)}</code>`], ["业务域", pill(row.domain)], ["数据类型", escapeHtml(row.type)], ["属性口径", escapeHtml(row.propertyLogic || "当前状态")], ["主体 ID", escapeHtml(row.subjectId || "-")], ["ID Mapping", escapeHtml(row.idMappingStatus || "接入中")], ["快照分区", escapeHtml(row.partitionField || "ds")], ["业务可见", pill(row.businessVisible || "是")], ["是否标签", pill(row.labelEnabled)], ["分群可用", pill(row.segmentEnabled)], ["更新方式", escapeHtml(row.update)], ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)], ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
+          ["属性名", `<code>${escapeHtml(row.name)}</code>`],
+          ["业务域", pill(row.domain)],
+          ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || "").split(".")[0] || "-")],
+          ["来源表", row.sourceTable ? `<code>${escapeHtml(row.sourceTable)}</code>` : "-"],
+          ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"],
+          ["主体", escapeHtml(row.subjectId || subjectKeysForAssetRow(row)[0] || "-")],
+          ["数据类型", dataTypeCell(row.type || row.sourceFieldType || "-")],
+          ["属性归类", pill(row.propertyKind || "自定义属性")],
+          ["是否标签", pill(row.labelEnabled)],
+          ["默认字典", escapeHtml(row.dict || "无")],
+          ["创建人", escapeHtml(row.createdBy || row.createdConfirmer || row.owner || currentAssetOperator)],
+          ["确认人", escapeHtml(row.lastUpdater || row.confirmedBy || currentAssetOperator)]
         ])}</div>`;
-        sections += `<div class="asset-detail-section"><h3>枚举值 / 字典</h3>${renderEnumTable(row.enumValues)}</div>`;
+        sections += `<div class="asset-detail-section"><h3>枚举值与字典</h3>${renderEnumTable(row.enumValues)}</div>`;
       } else if (type === "table") {
         const tableFields = warehouseFieldMap[row.name] || [];
         const docValue = row.desc && /^https?:\/\//.test(row.desc) ? `<a href="${escapeHtml(row.desc)}" target="_blank" rel="noopener">查看表使用说明</a>` : escapeHtml(row.desc || "-");
@@ -11277,13 +11321,40 @@ HarmonyOS"></textarea>
         sections += `<div class="asset-detail-section"><h3>字段清单${tableFields.length ? `（${tableFields.length} 个）` : ""}</h3>${visibleFields.length ? `<div class="warehouse-field-table">${visibleFields.map(f => `<div class="warehouse-field-row"><b>${escapeHtml(f.name)}</b><span class="warehouse-type-cell">${dataTypeCell(f.type)}</span><span>${escapeHtml(f.desc || "-")}</span></div>`).join("")}</div>${tableFields.length > visibleFields.length ? `<p>已展示前 ${visibleFields.length} 个字段，可通过搜索定位更多字段。</p>` : ""}` : `<div class="empty" style="min-height:96px">该表暂无字段明细</div>`}</div>`;
       } else if (type === "pending_asset") {
         sections += `<div class="asset-detail-section"><h3>来源信息</h3>${detailKv([
-          ["确认队列", pill(row.stage)], [row.queue === "field" ? "字段" : "表名", `<code>${escapeHtml(row.name)}</code>`], ["字段中文名 / 表中文名", escapeHtml(row.display || "-")], ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || row.name || "").split(".")[0] || "-")], ["来源表", `<code>${escapeHtml(row.sourceTable || row.name)}</code>`], ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"], ["字段类型", escapeHtml(row.sourceFieldType || "-")], ["数仓层级", escapeHtml(row.layer || "-")], ["表颗粒度 / 主体", `${escapeHtml(row.grain || "-")}${row.subjectId ? ` / ${escapeHtml(row.subjectId)}` : ""}`], ["更新周期", escapeHtml(row.update || "T+1")], ["创建人", escapeHtml(row.owner || "-")]
+          ["确认队列", pill(row.stage)], [row.queue === "field" ? "字段" : "表名", `<code>${escapeHtml(row.name)}</code>`], ["字段中文名或表中文名", escapeHtml(row.display || "-")], ["来源库", escapeHtml(row.sourceDb || String(row.sourceTable || row.name || "").split(".")[0] || "-")], ["来源表", `<code>${escapeHtml(row.sourceTable || row.name)}</code>`], ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"], ["字段类型", dataTypeCell(row.sourceFieldType || "-")], ["数仓层级", escapeHtml(row.layer || "-")], ["表颗粒度与主体", `${escapeHtml(row.grain || "-")}${row.subjectId ? ` / ${escapeHtml(row.subjectId)}` : ""}`], ["更新周期", escapeHtml(row.update || "T+1")], ["创建人", escapeHtml(row.owner || "-")]
         ])}</div>`;
         sections += `<div class="asset-detail-section"><h3>系统推荐</h3>${detailKv([
           [row.queue === "field" ? "确认类型" : "系统判断", pill(row.confirmType || row.recommendedType || "待确认")], ["推荐依据", `<span>${escapeHtml(row.reason || "-")}</span>`], ["确认状态", statusText(row.status)], ["敏感等级", escapeHtml(row.sensitive || "普通")]
         ])}</div>`;
+      } else if (type === "dict") {
+        sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
+          ["字典名", `<code>${escapeHtml(row.name)}</code>`],
+          ["显示名", escapeHtml(row.display || row.name || "-")],
+          ["业务域", pill(row.domain)],
+          ["枚举数量", `<b>${escapeHtml(row.enumCount || (row.enumValues || []).length || 0)}</b> 个`],
+          ["关联属性", escapeHtml(Array.isArray(row.related) ? row.related.join("、") : (row.related || "-"))],
+          ["负责人", escapeHtml(row.owner || "-")]
+        ])}</div>`;
+        sections += `<div class="asset-detail-section"><h3>枚举值</h3>${renderEnumTable(row.enumValues)}</div>`;
+      } else if (type === "metric") {
+        sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
+          ["指标名", `<code>${escapeHtml(row.name)}</code>`],
+          ["显示名", escapeHtml(row.display || row.definition || "-")],
+          ["业务域", pill(row.domain)],
+          ["指标分类", escapeHtml(row.category || "-")],
+          ["统计粒度", escapeHtml(row.grain || "-")],
+          ["来源表", row.sourceTable ? `<code>${escapeHtml(row.sourceTable)}</code>` : "-"],
+          ["来源字段", row.sourceField ? `<code>${escapeHtml(row.sourceField)}</code>` : "-"],
+          ["负责人", escapeHtml(row.owner || "-")]
+        ])}</div>`;
       } else {
-        sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv(Object.entries(row).filter(([k]) => !["id", "desc", "enumValues"].includes(k)).map(([k, v]) => [k, escapeHtml(String(v))]))}</div>`;
+        sections += `<div class="asset-detail-section"><h3>基础信息</h3>${detailKv([
+          ["资产名", `<code>${escapeHtml(row.name || "-")}</code>`],
+          ["显示名", escapeHtml(row.display || "-")],
+          ["业务域", row.domain ? pill(row.domain) : "-"],
+          ["显示状态", row.status ? pill(row.status) : "-"],
+          ["负责人", escapeHtml(row.owner || "-")]
+        ])}</div>`;
         if (row.enumValues) sections += `<div class="asset-detail-section"><h3>枚举值</h3>${renderEnumTable(row.enumValues)}</div>`;
       }
       body.innerHTML = sections;
@@ -11652,13 +11723,13 @@ HarmonyOS"></textarea>
       const layer = getXlActiveLayer();
       if (type === "event") {
         const group = layer.behaviorGroups[0] || (layer.behaviorGroups[0] = makeBehaviorGroup());
-        const behavior = Object.assign(makeBehaviorRow(xlAssetDisplay(row), "1"), { timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30 });
+        const behavior = Object.assign(makeBehaviorRow(xlAssetDisplay(row), "1"), xlTimeRowPreset("过去 30 天"));
         group.rows.unshift(behavior);
         showToast(`已带入行为事件：${xlAssetDisplay(row)}`);
       } else if (type === "event_property") {
         const eventName = Array.isArray(row.events) && row.events.length ? row.events[0] : (xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "广告展示");
         const group = layer.behaviorGroups[0] || (layer.behaviorGroups[0] = makeBehaviorGroup());
-        const behavior = Object.assign(makeBehaviorRow(eventName, "1"), { timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30, filters: [makeFilter(xlAssetDisplay(row), "等于", xlDefaultValueForAsset(row, ""))] });
+        const behavior = Object.assign(makeBehaviorRow(eventName, "1"), xlTimeRowPreset("过去 30 天"), { filters: [makeFilter(xlAssetDisplay(row), "等于", xlDefaultValueForAsset(row, ""))] });
         group.rows.unshift(behavior);
         showToast(`已带入事件属性筛选：${xlAssetDisplay(row)}`);
       } else if (type === "user_property") {
@@ -11886,13 +11957,13 @@ HarmonyOS"></textarea>
     }
 
     function sourceDbList() {
-      const rows = assetDatasets.table?.rows || [];
+      const rows = warehouseFirstVersionTables();
       const dbs = rows.map(row => String(row.name || "").split(".")[0]).filter(Boolean);
       return [...new Set(["dw_xlyun", ...dbs])];
     }
 
     function currentWarehouseTables() {
-      return assetDatasets.table?.rows || [];
+      return warehouseFirstVersionTables();
     }
 
     function assetSourceTableSelect(id, selected = "") {
@@ -12642,7 +12713,7 @@ HarmonyOS"></textarea>
         : `<select class="select" id="assetNewBehaviorSource" disabled aria-disabled="true"><option value="自定义事件" selected>自定义事件</option></select>`;
       if (assetCreateType === "event") {
         wrap.innerHTML = `
-          ${buildAssetSourceFields({ includeField: false })}
+          ${buildAssetSourceFields({ fieldLabel: "字段", fieldRequired: true })}
           ${buildAssetSubjectField(true)}
           ${assetCreateField("base", "事件名", assetCreateInput("assetNewName", "如 download_create，仅支持英文/数字/下划线"), false, true)}
           ${assetCreateField("base", "事件显示名", assetCreateInput("assetNewDisplay", "如 创建下载任务"), false, true)}
@@ -12671,10 +12742,9 @@ HarmonyOS"></textarea>
           ${buildAssetSubjectField(true)}
           ${assetCreateField("base", "属性名", assetCreateInput("assetNewName", propNamePlaceholder), false, true)}
           ${assetCreateField("base", "属性显示名", assetCreateInput("assetNewDisplay", propDisplayPlaceholder), false, true)}
-          ${assetCreateField("base", "数据类型", dataTypeSelect("assetNewDataType"), false, true)}
           ${assetCreateField("base", "默认字典", `<select class="select xl-source-picker" id="assetNewDict">${eventAttrDictOptions("")}</select>`, false, false)}
           ${assetCreateField("base", "默认枚举", assetDefaultEnumControl(), false, false)}
-          ${assetCreateField("base", "属性类型", assetCreateSelect("assetNewPropertyKind", ["事件属性", "公共属性"], "事件属性"), false, false)}
+          ${assetCreateField("base", "属性归类", assetCreateSelect("assetNewPropertyKind", ["自定义属性", "公共属性"], "自定义属性"), false, false)}
           ${assetCreateField("base", "属性说明", `<textarea class="field" id="assetNewDesc" style="height:80px;padding-top:10px;resize:vertical" placeholder="请输入属性说明"></textarea>`, true, false)}
         `;
       } else if (assetCreateType === "user_property") {
@@ -12683,8 +12753,7 @@ HarmonyOS"></textarea>
           ${buildAssetSubjectField(true)}
           ${assetCreateField("base", "属性名", assetCreateInput("assetNewName", propNamePlaceholder), false, true)}
           ${assetCreateField("base", "属性显示名", assetCreateInput("assetNewDisplay", propDisplayPlaceholder), false, true)}
-          ${assetCreateField("base", "数据类型", dataTypeSelect("assetNewDataType"), false, true)}
-          ${assetCreateField("base", "属性类型", assetCreateSelect("assetNewPropertyKind", ["用户属性", "公共属性"], "用户属性"), false, false)}
+          ${assetCreateField("base", "属性归类", assetCreateSelect("assetNewPropertyKind", ["自定义属性", "公共属性"], "自定义属性"), false, false)}
           ${assetCreateField("base", "是否标签", assetCreateSelect("assetNewLabelEnabled", yesNo, "是"), false, true)}
           ${assetCreateField("base", "默认字典", `<select class="select xl-source-picker" id="assetNewDict">${eventAttrDictOptions("")}</select>`, false, false)}
           ${assetCreateField("base", "默认枚举", assetDefaultEnumControl(), false, false)}
@@ -12821,14 +12890,14 @@ HarmonyOS"></textarea>
       } else if (assetCreateType === "event_property") {
         setAssetVal("assetNewDataType", row.type || "STRING");
         setAssetVal("assetNewUpdate", row.update || "T+1");
-        setAssetVal("assetNewPropertyKind", row.propertyKind || "事件属性");
+        setAssetVal("assetNewPropertyKind", row.propertyKind || "自定义属性");
         setAssetVal("assetNewSubjectId", normalizeAssetSubjectKey(row.subjectId || subjectKeysForAssetRow(row)[0] || ""));
         setAssetVal("assetNewDict", row.dict || "");
         setAssetDefaultEnumValues(row.enumValues || []);
         setAssetVal("assetNewColumn", row.sourceField || row.name || "");
       } else if (assetCreateType === "user_property") {
         setAssetVal("assetNewDataType", row.type || "STRING");
-        setAssetVal("assetNewPropertyKind", row.propertyKind || "用户属性");
+        setAssetVal("assetNewPropertyKind", row.propertyKind || "自定义属性");
         setAssetVal("assetNewPropertyLogic", row.propertyLogic || "当前状态");
         setAssetVal("assetNewSubjectId", normalizeAssetSubjectKey(row.subjectId || subjectKeysForAssetRow(row)[0] || "guid"));
         setAssetVal("assetNewIdMapping", row.idMappingStatus || "接入中");
@@ -12863,7 +12932,7 @@ HarmonyOS"></textarea>
 
     function validateAssetSourceRequirements() {
       const requiresTable = ["event", "event_property", "user_property"].includes(assetCreateType);
-      const requiresField = ["event_property", "user_property"].includes(assetCreateType);
+      const requiresField = ["event", "event_property", "user_property"].includes(assetCreateType);
       const requiresSubject = ["event", "event_property", "user_property"].includes(assetCreateType);
       const missingTable = requiresTable && !assetVal("assetNewTable");
       const missingField = requiresField && !assetVal("assetNewColumn");
@@ -12918,9 +12987,9 @@ HarmonyOS"></textarea>
         const sourceType = table ? warehouseEventSourceType(table) : (assetVal("assetNewBehaviorSource") || existing?.sourceType || "自定义事件");
         row = { ...(existing || {}), id: existing?.id || `custom_event_${now}`, name, display, domain, behaviorSource:pendingConfirmId ? (assetVal("assetNewBehaviorSource") || sourceType) : "自定义事件", timeGrain:assetVal("assetNewTimeGrain") || existing?.timeGrain || "天", defaultMetric:assetVal("assetNewDefaultMetric") || existing?.defaultMetric || "次数", subjectId:assetVal("assetNewSubjectId") || existing?.subjectId || "guid", idMappingStatus:assetVal("assetNewIdMapping") || existing?.idMappingStatus || "接入中", upload:normalizeAssetFilterValue("upload", assetVal("assetNewUpload") || existing?.upload || "有数据"), status:assetVal("assetNewStatus") || "可见", receive:assetVal("assetNewReceive") || "允许", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:"是", attrs:props.length || 0, volume30d:existing?.volume30d || "待计算", lastIngest:existing?.lastIngest || "待入库", lastUpdater:owner, lastUpdatedAt:assetToday, owner, desc, properties:props, eventTags, downstream:existing?.downstream || {tags:0, segments:0, boards:0}, trend:existing?.trend || trend(1), public:existing?.public || "否", platform:assetVal("assetNewPlatform") || existing?.platform || "全部", volumeSort:existing?.volumeSort || 0, sourceType, behaviorSourceType:sourceType, timeField:table ? warehouseTimeFieldForEvent(table, warehouseFieldRowsForTable(table.name)) : (existing?.timeField || "ds"), countField:existing?.countField || "", distributionField:existing?.distributionField || "", durationField:existing?.durationField || "", amountField:existing?.amountField || "", capacityField:existing?.capacityField || "", primaryMeasureType:existing?.primaryMeasureType || "count", supportedMeasures:existing?.supportedMeasures || ["总次数", "分布"], ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "event_property") {
-        row = { ...(existing || {}), id: existing?.id || `custom_ep_${now}`, name, display, domain, propertyKind:assetVal("assetNewPropertyKind") || existing?.propertyKind || (pendingConfirmId ? "公共属性" : "事件属性"), type:assetVal("assetNewDataType") || "STRING", propertyScope:existing?.propertyScope || "待关联", enum:defaultEnumValues.length ? "是" : "否", filterEnabled:existing?.filterEnabled || "是", events:existing?.events || ["待关联元事件"], dict:assetVal("assetNewDict") || "无", fillRate:existing?.fillRate || "待计算", fillSort:existing?.fillSort || 0, sample:existing?.sample || "--", owner, desc, enumValues:defaultEnumValues, upload:existing?.upload || "有", update:assetVal("assetNewUpdate") || "T+1", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:(assetVal("assetNewPropertyKind") || existing?.propertyKind) === "公共属性" ? "是" : (existing?.public || "否"), ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
+        row = { ...(existing || {}), id: existing?.id || `custom_ep_${now}`, name, display, domain, propertyKind:assetVal("assetNewPropertyKind") || existing?.propertyKind || (pendingConfirmId ? "公共属性" : "自定义属性"), type:sourcePayload.sourceFieldType || existing?.type || "STRING", propertyScope:existing?.propertyScope || "待关联", enum:defaultEnumValues.length ? "是" : "否", filterEnabled:existing?.filterEnabled || "是", events:existing?.events || ["待关联元事件"], dict:assetVal("assetNewDict") || "无", fillRate:existing?.fillRate || "待计算", fillSort:existing?.fillSort || 0, sample:existing?.sample || "--", owner, desc, enumValues:defaultEnumValues, upload:existing?.upload || "有", update:assetVal("assetNewUpdate") || "T+1", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:(assetVal("assetNewPropertyKind") || existing?.propertyKind) === "公共属性" ? "是" : (existing?.public || "否"), ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "user_property") {
-        row = { ...(existing || {}), id: existing?.id || `custom_up_${now}`, name, display, domain, propertyKind:assetVal("assetNewPropertyKind") || existing?.propertyKind || "用户属性", type:assetVal("assetNewDataType") || "STRING", propertyLogic:assetVal("assetNewPropertyLogic") || "当前状态", subjectId:assetVal("assetNewSubjectId") || "guid", idMappingStatus:assetVal("assetNewIdMapping") || "接入中", partitionField:assetVal("assetNewPartitionField") || "ds", businessVisible:assetVal("assetNewBusinessVisible") || "是", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:assetVal("assetNewSegmentEnabled") || "是", update:assetVal("assetNewUpdate") || "T+1", coverage:assetVal("assetNewCoverage") || "待计算", coverageRate:assetVal("assetNewCoverageRate") || "待计算", coverageSort:existing?.coverageSort || 0, owner, desc, dict:assetVal("assetNewDict") || "无", enum:defaultEnumValues.length ? "是" : "否", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:(assetVal("assetNewPropertyKind") || existing?.propertyKind) === "公共属性" ? "是" : "否", enumValues:defaultEnumValues, ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
+        row = { ...(existing || {}), id: existing?.id || `custom_up_${now}`, name, display, domain, propertyKind:assetVal("assetNewPropertyKind") || existing?.propertyKind || "自定义属性", type:sourcePayload.sourceFieldType || existing?.type || "STRING", propertyLogic:assetVal("assetNewPropertyLogic") || "当前状态", subjectId:assetVal("assetNewSubjectId") || "guid", idMappingStatus:assetVal("assetNewIdMapping") || "接入中", partitionField:assetVal("assetNewPartitionField") || "ds", businessVisible:assetVal("assetNewBusinessVisible") || "是", labelEnabled:assetVal("assetNewLabelEnabled") || "是", segmentEnabled:assetVal("assetNewSegmentEnabled") || "是", update:assetVal("assetNewUpdate") || "T+1", coverage:assetVal("assetNewCoverage") || "待计算", coverageRate:assetVal("assetNewCoverageRate") || "待计算", coverageSort:existing?.coverageSort || 0, owner, desc, dict:assetVal("assetNewDict") || "无", enum:defaultEnumValues.length ? "是" : "否", status:assetVal("assetNewStatus") || "可见", lastUpdater:owner, lastUpdatedAt:assetToday, public:(assetVal("assetNewPropertyKind") || existing?.propertyKind) === "公共属性" ? "是" : "否", enumValues:defaultEnumValues, ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "dict") {
         row = { ...(existing || {}), id: existing?.id || `custom_dict_${now}`, name, domain, enumCount:existing?.enumCount || 0, related:existing?.related || "待关联", updated:assetVal("assetNewUpdated") || "2026-05-12", owner, desc, enumValues:existing?.enumValues || [], display, status:assetVal("assetNewStatus") || "可见", ...sourcePayload, createdBy: existing?.createdBy || currentAssetOperator, editable:true };
       } else if (assetCreateType === "table") {
@@ -14623,7 +14692,7 @@ HarmonyOS"></textarea>
                       <div class="rt-rule">
                         <div class="rt-rule-content">
                           <span class="rt-type-badge event">事件</span>
-                          <span class="rt-time">2026-05-05 至 2026-05-11 | 最近 7 天 ▾</span>
+                          <span class="rt-time">${dateRangeByDays(7).start} 至 ${dateRangeByDays(7).end} | 最近 7 天 ▾</span>
                           <span class="rt-op">做过 ▾</span>
                           <span class="rt-field"><span class="rt-field-prefix">行为</span>创建下载任务 ▾</span>
                           <span class="rt-funnel has-filter" title="筛选条件">▽<span class="rt-funnel-badge">2</span></span>
@@ -14669,7 +14738,7 @@ HarmonyOS"></textarea>
                       <div class="rt-rule">
                         <div class="rt-rule-content">
                           <span class="rt-type-badge event">事件</span>
-                          <span class="rt-time">2026-05-05 至 2026-05-11 | 最近 7 天 ▾</span>
+                          <span class="rt-time">${dateRangeByDays(7).start} 至 ${dateRangeByDays(7).end} | 最近 7 天 ▾</span>
                           <span class="rt-op">做过 ▾</span>
                           <span class="rt-field"><span class="rt-field-prefix">行为</span>创建下载任务 ▾</span>
                           <span class="rt-funnel" title="筛选条件">▽</span>
@@ -14734,7 +14803,7 @@ HarmonyOS"></textarea>
                       <div class="rt-rule">
                         <div class="rt-rule-content">
                           <span class="rt-type-badge event">事件</span>
-                          <span class="rt-time">2026-05-05 至 2026-05-11 | 最近 7 天 ▾</span>
+                          <span class="rt-time">${dateRangeByDays(7).start} 至 ${dateRangeByDays(7).end} | 最近 7 天 ▾</span>
                           <span class="rt-op">做过 ▾</span>
                           <span class="rt-field"><span class="rt-field-prefix">订单</span>支付成功 ▾</span>
                           <span class="rt-funnel" title="筛选条件">▽</span>
@@ -15016,7 +15085,7 @@ where dt = '\${bizdate}'</textarea></div>
             tag_type: "rule",
             tag_name: "下载活跃度",
             value_priority: ["高频下载", "中频下载", "低频下载", "无下载行为"],
-            time_window: { mode: "dynamic", label: "最近7天", start: "2026-05-05", end: "2026-05-11" },
+            time_window: { mode: "dynamic", label: "最近7天", ...dateRangeByDays(7) },
             satisfy: [
               { event: "创建下载任务", metric: "总次数", op: ">=", value: 5 },
               { event: "创建下载任务", metric: "活跃天数", op: ">=", value: 3 }
@@ -15865,14 +15934,6 @@ where dt = '\${bizdate}'</textarea></div>
       }, 650);
     });
 
-    document.getElementById("saveDraftLabel")?.addEventListener("click", () => {
-      showToast("草稿已保存");
-      returnToPreviousView("tags");
-    });
-    document.getElementById("publishLabel")?.addEventListener("click", () => {
-      showToast("已提交上线审批");
-      returnToPreviousView("tags");
-    });
     document.getElementById("segmentPrimaryAction")?.addEventListener("click", () => {
       if (currentSegmentMode === "list") {
         openSegmentRuleCreatePage({ reset: true });
@@ -16005,26 +16066,25 @@ where dt = '\${bizdate}'</textarea></div>
       [...rows.map(xlAssetDisplay), ...fallback].forEach(value => {
         if (value && !values.includes(value)) values.push(value);
       });
-      if (selected && !values.includes(selected)) values.unshift(selected);
-      return values.map(value => `<option value="${escapeHtml(value)}" ${value === selected ? "selected" : ""}>${escapeHtml(value)}</option>`).join("");
+      const hasSelected = selected && values.includes(selected);
+      const placeholder = hasSelected ? "" : `<option value="" selected disabled>${values.length ? "请选择" : "暂无可选"}</option>`;
+      return placeholder + values.map(value => `<option value="${escapeHtml(value)}" ${value === selected ? "selected" : ""}>${escapeHtml(value)}</option>`).join("");
     }
     function xlRuleAssetOptions(type, selected) {
-      const fallback = type === "event" ? xlEvents : type === "user_property" ? xlAttrFields : [];
-      return xlAssetOptionHTML(xlAssetRows(type), selected, fallback);
+      return xlAssetOptionHTML(xlAssetRows(type), selected, []);
     }
     function xlEventPropertyRowsFor(eventDisplay) {
       const event = String(eventDisplay || "").trim();
       const rows = xlAssetRows("event_property");
-      const matched = rows.filter(row => Array.isArray(row.events) && row.events.some(item => String(item) === event));
-      return matched.length ? matched : rows;
+      return rows.filter(row => Array.isArray(row.events) && row.events.some(item => String(item) === event));
     }
     function xlRuleEventPropertyOptions(eventDisplay, selected) {
-      return xlAssetOptionHTML(xlEventPropertyRowsFor(eventDisplay), selected, xlEventFilters);
+      return xlAssetOptionHTML(xlEventPropertyRowsFor(eventDisplay), selected, []);
     }
     function xlFindEventProperty(eventDisplay, fieldDisplay) {
       const rows = xlEventPropertyRowsFor(eventDisplay);
       const target = String(fieldDisplay || "").trim();
-      return rows.find(row => xlAssetDisplay(row) === target || row.name === target || row.id === target) || xlFindAssetByDisplay("event_property", target);
+      return rows.find(row => xlAssetDisplay(row) === target || row.name === target || row.id === target) || null;
     }
     function xlAssetDataType(row, fallback = "STRING") {
       return normDataType(row?.type || row?.sourceFieldType || fallback);
@@ -16049,7 +16109,7 @@ where dt = '\${bizdate}'</textarea></div>
       const dt = xlAssetDataType(row);
       if (["NUMBER", "INTEGER", "BIGINT", "DOUBLE"].includes(dt)) return "1";
       if (dt === "BOOLEAN") return "是";
-      if (["DATE", "TIME", "DATETIME", "TIMESTAMP"].includes(dt)) return "2026-05-10";
+      if (["DATE", "TIME", "DATETIME", "TIMESTAMP"].includes(dt)) return xlLocalDate(-1);
       return fallback || "";
     }
     function xlResolveAttrAsset(field) {
@@ -16075,12 +16135,12 @@ where dt = '\${bizdate}'</textarea></div>
 
 
     /* ========== 迅雷规则标签原型：只保留用户属性 + 用户事件，并实现可点击交互 ========== */
-    const xlAttrFields = ["平台类型", "首次渠道名称", "个推ID", "会员类型", "生命周期阶段", "最近活跃平台", "是否历史付费", "当前会员状态", "用户价值等级", "客诉等级"];
+    const xlAttrFields = [];
     const xlAttrOps = ["包含", "等于", "不等于", "不包含", "为空", "不为空"];
-    const xlAttrValues = ["Android", "iOS", "PC", "Mac", "标投", "自然量", "达人渠道", "03746547", "非会员", "已到期会员", "高价值", "普通用户"];
-    const xlEvents = ["广告展示", "Web 元素点击", "创建下载任务", "云盘存资源", "云盘取回", "播放行为", "搜索/访问网页", "会员支付/续费", "资源位曝光"];
-    const xlEventFilters = ["广告位ID", "素材ID", "下载来源", "资源类型", "文件类型", "平台类型", "会员类型", "渠道来源", "资源位名称"];
-    const xlEventValues = ["03746547", "首页 Banner", "站外调起", "本地下载", "视频", "压缩包", "Android", "PC", "标投", "超级会员"];
+    const xlAttrValues = [];
+    const xlEvents = [];
+    const xlEventFilters = [];
+    const xlEventValues = [];
     const xlAggs = ["总次数", "分布"];
     const xlNumOps = ["≥", ">", "=", "≤", "<"];
     function xlNormalizeAgg(agg) {
@@ -16089,18 +16149,75 @@ where dt = '\${bizdate}'</textarea></div>
     function xlAggUnit(agg) {
       return xlNormalizeAgg(agg) === "分布" ? "天" : "次";
     }
-    const xlQuickTimes = [
-      { label: "今日", start: "2026-05-11", end: "2026-05-11", mode: "dynamic", days: 1 },
-      { label: "昨日", start: "2026-05-10", end: "2026-05-10", mode: "dynamic", days: 1 },
-      { label: "本周", start: "2026-05-11", end: "2026-05-17", mode: "dynamic", days: 7 },
-      { label: "上周", start: "2026-05-04", end: "2026-05-10", mode: "dynamic", days: 7 },
-      { label: "本月", start: "2026-05-01", end: "2026-05-31", mode: "dynamic", days: 31 },
-      { label: "上月", start: "2026-04-01", end: "2026-04-30", mode: "dynamic", days: 30 },
-      { label: "过去 7 天", start: "2026-05-05", end: "2026-05-11", mode: "dynamic", days: 7 },
-      { label: "过去 30 天", start: "2026-04-12", end: "2026-05-11", mode: "dynamic", days: 30 },
-      { label: "过去 90 天", start: "2026-02-11", end: "2026-05-11", mode: "dynamic", days: 90 },
-      { label: "上线至今", start: "2025-01-01", end: "2026-05-11", mode: "static", days: 496 }
-    ];
+    function xlPad2(n) { return String(n).padStart(2, "0"); }
+    function xlDateString(date) { return date.getFullYear() + "-" + xlPad2(date.getMonth() + 1) + "-" + xlPad2(date.getDate()); }
+    function xlDateFromString(value) {
+      const parts = String(value || "").split("-").map(Number);
+      if (parts.length !== 3 || parts.some(n => !Number.isFinite(n))) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+    function xlLocalDate(offsetDays = 0, base = new Date()) {
+      const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + Number(offsetDays || 0));
+      return xlDateString(d);
+    }
+    function xlDateSpanDays(start, end) {
+      const s = xlDateFromString(start);
+      const e = xlDateFromString(end);
+      if (!s || !e) return 1;
+      return Math.max(1, Math.round((e - s) / 86400000) + 1);
+    }
+    function xlRelativeDateRange(days, label) {
+      const n = Math.max(1, Number(days) || 1);
+      return { label: label || ("过去 " + n + " 天"), start: xlLocalDate(1 - n), end: xlLocalDate(0), mode: "dynamic", days: n };
+    }
+    function xlWeekRange(offsetWeeks, label) {
+      const today = new Date();
+      const mondayOffset = (today.getDay() + 6) % 7;
+      const start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - mondayOffset + offsetWeeks * 7);
+      const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+      return { label, start: xlDateString(start), end: xlDateString(end), mode: "dynamic", days: 7 };
+    }
+    function xlMonthRange(offsetMonths, label) {
+      const today = new Date();
+      const start = new Date(today.getFullYear(), today.getMonth() + offsetMonths, 1);
+      const end = new Date(today.getFullYear(), today.getMonth() + offsetMonths + 1, 0);
+      const startText = xlDateString(start);
+      const endText = xlDateString(end);
+      return { label, start: startText, end: endText, mode: "dynamic", days: xlDateSpanDays(startText, endText) };
+    }
+    function xlBuildQuickTimes() {
+      const today = xlLocalDate(0);
+      const yesterday = xlLocalDate(-1);
+      const onlineStart = "2025-01-01";
+      return [
+        { label: "今日", start: today, end: today, mode: "dynamic", days: 1 },
+        { label: "昨日", start: yesterday, end: yesterday, mode: "dynamic", days: 1 },
+        xlWeekRange(0, "本周"),
+        xlWeekRange(-1, "上周"),
+        xlMonthRange(0, "本月"),
+        xlMonthRange(-1, "上月"),
+        xlRelativeDateRange(7),
+        xlRelativeDateRange(30),
+        xlRelativeDateRange(90),
+        { label: "上线至今", start: onlineStart, end: today, mode: "static", days: xlDateSpanDays(onlineStart, today) }
+      ];
+    }
+    function xlQuickTimes() { return xlBuildQuickTimes(); }
+    function xlQuickTimeByLabel(label) { return xlBuildQuickTimes().find(item => item.label === label); }
+    function xlTimeRowPreset(label) {
+      const q = xlQuickTimeByLabel(label) || xlRelativeDateRange(1, label || "昨日");
+      return { timeLabel: q.label, timeMode: q.mode, start: q.start, end: q.end, days: q.days };
+    }
+    function xlIsTodayRange(item) {
+      if (!item) return false;
+      const label = item.label || item.timeLabel;
+      if (label === "今日") return true;
+      const today = xlLocalDate(0);
+      return Boolean(item.start && item.end && item.start <= today && today <= item.end);
+    }
+    function xlLayerIncludesToday(layer) {
+      return Boolean(layer?.behaviorGroups?.some(group => group.rows.some(row => xlIsTodayRange(row))));
+    }
 
     function xlId(prefix) {
       return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
@@ -16109,19 +16226,19 @@ where dt = '\${bizdate}'</textarea></div>
     function xlOptions(options, selected) { return renderOptions(options, selected); }
     function xlLayerFallbackName(layer, index) { return (layer.name && layer.name.trim()) || `分层${index + 1}`; }
 
-    function makeAttrRow(field = "平台类型", op = "包含", value = "Android") {
+    function makeAttrRow(field = "", op = "等于", value = "") {
       return { id: xlId("attr"), field, op, value };
     }
     function makeAttrGroup(logic = "and", rows = [makeAttrRow()]) {
       return { id: xlId("ag"), logic, rows };
     }
-    function makeBehaviorRow(event = "广告展示", value = "1") {
-      return { id: xlId("beh"), timeLabel: "昨日", timeMode: "dynamic", start: "2026-05-10", end: "2026-05-10", days: 1, action: "做过", event, agg: "总次数", op: "≥", value, unit: "次", filterLogic: "and", filters: [] };
+    function makeBehaviorRow(event = "", value = "") {
+      return { id: xlId("beh"), ...xlTimeRowPreset("昨日"), action: "做过", event, agg: "总次数", op: "≥", value, unit: "次", filterLogic: "and", filters: [] };
     }
     function makeBehaviorGroup(logic = "and", rows = [makeBehaviorRow()]) {
       return { id: xlId("bg"), logic, rows };
     }
-    function makeFilter(field = "广告位ID", op = "等于", value = "03746547") {
+    function makeFilter(field = "", op = "等于", value = "") {
       return { id: xlId("filter"), field, op, value };
     }
 
@@ -16151,40 +16268,15 @@ where dt = '\${bizdate}'</textarea></div>
       if (!force && window.xunleiRuleState?.layers?.length) return;
       const l1 = {
         id: xlId("layer"),
-        name: "高意向",
-        remark: "示例：昨日看过广告且发生点击，或来自标投渠道并创建过下载任务的广告高意向用户。后续可替换成真实口径。",
+        name: "",
+        remark: "",
         relation: "and",
-        attrGroups: [
-          makeAttrGroup("and", [makeAttrRow("平台类型", "包含", "Android")]),
-          makeAttrGroup("or", [makeAttrRow("首次渠道名称", "包含", "标投"), makeAttrRow("个推ID", "等于", "03746547")])
-        ],
-        attrGroupRelation: "or",
-        behaviorGroups: [
-          makeBehaviorGroup("and", [
-            Object.assign(makeBehaviorRow("广告展示", "1"), { filters: [makeFilter("广告位ID", "等于", "03746547")] }),
-            Object.assign(makeBehaviorRow("Web 元素点击", "1"), { filters: [makeFilter("素材ID", "包含", "首页 Banner")] })
-          ])
-        ],
-        behaviorGroupRelation: "and"
-      };
-      const l2 = {
-        id: xlId("layer"),
-        name: "低意向",
-        remark: "示例：近 30 天有广告展示但未发生点击或下载转化，作为广告低意向枚举值。后续可替换成真实口径。",
-        relation: "and",
-        attrGroups: [
-          makeAttrGroup("and", [makeAttrRow("会员类型", "等于", "非会员"), makeAttrRow("首次渠道名称", "不等于", "标投")])
-        ],
+        attrGroups: [makeAttrGroup("and", [makeAttrRow()])],
         attrGroupRelation: "and",
-        behaviorGroups: [
-          makeBehaviorGroup("and", [
-            Object.assign(makeBehaviorRow("广告展示", "1"), { timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30, filters: [makeFilter("广告位ID", "等于", "03746547")] }),
-            Object.assign(makeBehaviorRow("Web 元素点击", "1"), { action: "未做过", timeLabel: "过去 30 天", start: "2026-04-12", end: "2026-05-11", days: 30 })
-          ])
-        ],
+        behaviorGroups: [makeBehaviorGroup("and", [makeBehaviorRow()])],
         behaviorGroupRelation: "and"
       };
-      window.xunleiRuleState = { layers: [l1, l2], activeLayerId: l1.id, timeDraft: null };
+      window.xunleiRuleState = { layers: [l1], activeLayerId: l1.id, timeDraft: null };
       window.xunleiRuleState.layers.forEach(xlEnsureLayerGroupRelations);
     }
 
@@ -16382,7 +16474,7 @@ where dt = '\${bizdate}'</textarea></div>
       const state = window.xunleiRuleState;
       const draft = state.timeDraft;
       if (!draft) return "";
-      const includesToday = draft.label === "今日" || draft.end === "2026-05-11";
+      const includesToday = xlIsTodayRange(draft);
       return `
         <div class="modal-mask show" id="rtTimeMask" style="display:grid">
           <div class="modal rt-time-modal">
@@ -16395,7 +16487,7 @@ where dt = '\${bizdate}'</textarea></div>
                 <div>
                   <div class="section-title">快速选择</div>
                   <div class="rt-time-quick-list">
-                    ${xlQuickTimes.map(q => `<button class="rt-time-quick-btn ${draft.label === q.label ? "active" : ""}" data-action="pick-quick-time" data-time-label="${q.label}" type="button">${q.label}</button>`).join("")}
+                    ${xlQuickTimes().map(q => `<button class="rt-time-quick-btn ${draft.label === q.label ? "active" : ""}" data-action="pick-quick-time" data-time-label="${q.label}" type="button">${q.label}</button>`).join("")}
                   </div>
                 </div>
                 <div class="rt-time-config">
@@ -16427,7 +16519,7 @@ where dt = '\${bizdate}'</textarea></div>
       initXunleiRuleState();
       const layer = getXlActiveLayer();
       const idx = window.xunleiRuleState.layers.findIndex(l => l.id === layer.id);
-      const includesToday = layer.behaviorGroups.some(g => g.rows.some(r => r.timeLabel === "今日" || r.end === "2026-05-11"));
+      const includesToday = xlLayerIncludesToday(layer);
       return `
         <div class="config-card rt-rule-shell">
           <div class="rt-priority-hint">
@@ -16608,7 +16700,7 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "add-layer") {
           const newIndex = state.layers.length + 1;
-          const newLayer = { id: xlId("layer"), name: `分层${newIndex}`, remark: "", relation: "and", attrGroups: [makeAttrGroup()], attrGroupRelation: "and", behaviorGroups: [makeBehaviorGroup()], behaviorGroupRelation: "and" };
+          const newLayer = { id: xlId("layer"), name: "", remark: "", relation: "and", attrGroups: [makeAttrGroup()], attrGroupRelation: "and", behaviorGroups: [makeBehaviorGroup()], behaviorGroupRelation: "and" };
           state.layers.push(newLayer);
           state.activeLayerId = newLayer.id;
           renderCreateConfig("rule");
@@ -16631,7 +16723,7 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "add-group") {
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
-          groups.push(section === "attr" ? makeAttrGroup("and", [makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], "标投"))]) : makeBehaviorGroup("and", [makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1")]));
+          groups.push(section === "attr" ? makeAttrGroup("and", [makeAttrRow()]) : makeBehaviorGroup("and", [makeBehaviorRow()]));
           xlEnsureLayerGroupRelations(layer);
           renderCreateConfig("rule");
           showToast("已添加括号组");
@@ -16662,7 +16754,7 @@ where dt = '\${bizdate}'</textarea></div>
           const groups = section === "attr" ? layer.attrGroups : layer.behaviorGroups;
           const group = groupId ? groups.find(g => g.id === groupId) : groups[0];
           if (!group) return;
-          group.rows.push(section === "attr" ? makeAttrRow(xlAssetRows("user_property")[0] ? xlAssetDisplay(xlAssetRows("user_property")[0]) : "首次渠道名称", "等于", xlDefaultValueForAsset(xlAssetRows("user_property")[0], "标投")) : makeBehaviorRow(xlAssetRows("event")[0] ? xlAssetDisplay(xlAssetRows("event")[0]) : "创建下载任务", "1"));
+          group.rows.push(section === "attr" ? makeAttrRow() : makeBehaviorRow());
           renderCreateConfig("rule");
           return;
         }
@@ -16688,7 +16780,7 @@ where dt = '\${bizdate}'</textarea></div>
         }
         if (action === "add-filter") {
           const found = findXlBehaviorRow(rowId);
-          if (found.row) { const firstProp = xlEventPropertyRowsFor(found.row.event)[0]; found.row.filters.push(makeFilter(firstProp ? xlAssetDisplay(firstProp) : "广告位ID", "等于", xlDefaultValueForAsset(firstProp, "03746547"))); }
+          if (found.row) { const firstProp = xlEventPropertyRowsFor(found.row.event)[0]; if (!firstProp) { showToast("当前事件暂无已关联事件属性"); return; } found.row.filters.push(makeFilter(xlAssetDisplay(firstProp), "等于", "")); }
           renderCreateConfig("rule");
           return;
         }
@@ -16729,7 +16821,7 @@ where dt = '\${bizdate}'</textarea></div>
           return;
         }
         if (action === "pick-quick-time") {
-          const q = xlQuickTimes.find(item => item.label === target.dataset.timeLabel);
+          const q = xlQuickTimeByLabel(target.dataset.timeLabel);
           if (q && state.timeDraft) Object.assign(state.timeDraft, { label: q.label, start: q.start, end: q.end, mode: q.mode, days: q.days });
           renderCreateConfig("rule");
           return;
@@ -16807,7 +16899,7 @@ where dt = '\${bizdate}'</textarea></div>
         if (!state.timeDraft) return;
         const key = target.dataset.timeDraft;
         state.timeDraft[key] = key === "days" ? Number(target.value) : target.value;
-        if (key === "days") state.timeDraft.label = `过去 ${target.value || 1} 天`;
+        if (key === "days") Object.assign(state.timeDraft, xlRelativeDateRange(state.timeDraft.days, `过去 ${state.timeDraft.days || 1} 天`));
         renderCreateConfig("rule");
       }
     }
@@ -16846,7 +16938,7 @@ where dt = '\${bizdate}'</textarea></div>
       const attrRows = active.attrGroups.reduce((sum, g) => sum + g.rows.length, 0);
       const behRows = active.behaviorGroups.reduce((sum, g) => sum + g.rows.length, 0);
       const filters = active.behaviorGroups.reduce((sum, g) => sum + g.rows.reduce((s, r) => s + (r.filters?.length || 0), 0), 0);
-      const includesToday = window.xunleiRuleState.layers.some(l => l.behaviorGroups.some(g => g.rows.some(r => r.timeLabel === "今日" || r.end === "2026-05-11")));
+      const includesToday = window.xunleiRuleState.layers.some(layer => xlLayerIncludesToday(layer));
       const estimateStatus = document.getElementById("estimateStatus");
       const coverCount = document.getElementById("coverCount");
       const timeline = document.querySelector("#standardPreview .timeline");
@@ -16883,8 +16975,7 @@ where dt = '\${bizdate}'</textarea></div>
     function getXlTodayString(){const n=new Date();return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`;}
     function xlMakeCreatedTag(status="草稿"){const cfg=xlGetUpdateConfig();const c1=document.getElementById("tagCategory1")?.value||"行为画像";const c2=document.getElementById("tagCategory2")?.value||"";const domain=document.getElementById("tagBizDomain")?.value||"未分配";const cover=document.getElementById("coverCount")?.textContent||"待计算";const teamKeyMap={"公共":"all","未分配":"all","主端":"main","会员":"member","生态":"eco","中台":"center","广告":"main","下载":"main","云盘":"main","播放":"main","搜索":"main","触达":"main","取回":"main","转存":"main","分享":"main","活跃":"main"};const colorMap={"公共":"gray","未分配":"gray","主端":"blue","会员":"amber","生态":"teal","中台":"gray","广告":"blue","下载":"blue","云盘":"blue","播放":"teal","搜索":"teal","触达":"amber","取回":"blue","转存":"blue","分享":"teal","活跃":"teal"};return {name:document.getElementById("tagDisplayName")?.value.trim()||"未命名规则标签",tagSuffix:document.getElementById("tagNameSuffix")?.value.trim()||"rule_tag",description:document.getElementById("tagDescription")?.value.trim()||"",team:domain,teamKey:teamKeyMap[domain]||"all",category:c1,category2:c2,type:"规则标签",valueType:"枚举型",cover,coverValue:parseFloat(String(cover).replace(/[^0-9.]/g,""))||0,rate:"待计算",rateValue:0,updated:getXlTodayString(),update:cfg.update_mode==="routine"?`每日 ${cfg.earliest_time}`:"手动",calls:0,method:"无代码规则",status,color:colorMap[domain]||"gray",createdAt:Date.now(),createdBy:currentAssetOperator};}
     function xlUpsertCreatedTag(status="草稿"){const tag=xlMakeCreatedTag(status);const keyName=window.currentEditingTagName||tag.name;const i=curatedTags.findIndex(x=>x.name===keyName);if(i>=0)curatedTags.splice(i,1);curatedTags.unshift(tag);window.currentEditingTagName=tag.name;tagSortState.key="createdAt";tagSortState.dir="desc";document.querySelectorAll("#view-tags th.sortable").forEach(x=>x.classList.remove("asc","desc"));document.querySelectorAll(".team-tabs .tab").forEach(t=>t.classList.toggle("active",t.dataset.team==="all"));currentTagTeam="all";return tag;}
-    function xlSaveRuleDraftFromQuickButton(){initXunleiRuleState();const missing=validateXlRuleBasicInfo();if(missing.length){showToast(`请先补充：${missing.join("、")}`);return false;}showToast("规则标签草稿已保存");return true;}
-
+    function xlSaveRuleDraftFromQuickButton(){initXunleiRuleState();const missing=validateXlRuleBasicInfo();if(missing.length){showToast(`请先补充：${missing.join("、")}`);return false;}const tag=xlUpsertCreatedTag("草稿");updateCreatePreview("rule");showToast(`已保存当前规则：${tag.name}`);return true;}
     function xlGetUpdateConfig() {
       const activeBtn = document.querySelector(".rt-update-mode.active");
       const mode = activeBtn?.dataset.updateMode || "routine";
@@ -16932,7 +17023,7 @@ where dt = '\${bizdate}'</textarea></div>
     }
 
     function rewireRuleTagSubmitButtons() {
-      ["saveDraftLabel", "publishLabel", "estimateBtn"].forEach(id => {
+      ["estimateBtn"].forEach(id => {
         const oldBtn = document.getElementById(id);
         if (!oldBtn) return;
         const newBtn = oldBtn.cloneNode(true);
@@ -16952,18 +17043,6 @@ where dt = '\${bizdate}'</textarea></div>
           document.getElementById("coverCount").textContent = `${cover.toFixed(1)}万`;
           showToast("昨日分区计算完成");
         }, 650);
-      });
-      document.getElementById("saveDraftLabel")?.addEventListener("click", () => {
-        initXunleiRuleState();
-        const missing = validateXlRuleBasicInfo();
-        if (missing.length) { showToast(`请先补充：${missing.join("、")}`); return; }
-        showToast("规则标签草稿已保存");
-      });
-      document.getElementById("publishLabel")?.addEventListener("click", () => {
-        initXunleiRuleState();
-        const missing = validateXlRuleBasicInfo();
-        if (missing.length) { showToast(`请先补充：${missing.join("、")}`); return; }
-        showToast("已提交规则标签上线审批");
       });
       ["tagDisplayName", "tagNameSuffix", "tagDescription", "tagBizDomain", "tagCategory1", "tagCategory2"].forEach(id => {
         const el = document.getElementById(id);
